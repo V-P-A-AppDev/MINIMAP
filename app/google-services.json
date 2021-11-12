@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "315655790636",
+    "project_id": "minimap-c8e06",
+    "storage_bucket": "minimap-c8e06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315655790636:android:6fb3e5f48ead0f47d27189",
+        "android_client_info": {
+          "package_name": "com.example.minimap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "315655790636-rrkecc13noavdusquhp88hkp8e6327eo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.minimap",
+            "certificate_hash": "325df613fe8c2142d79a5e8784b27a3bdac4db3b"
+          }
+        },
+        {
+          "client_id": "315655790636-tv59tgvqfdlndg5jhdbue1blmijn6ppa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANJ1eln93Edwm8fezRvAFZqa1sxg49CE4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "315655790636-tv59tgvqfdlndg5jhdbue1blmijn6ppa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
