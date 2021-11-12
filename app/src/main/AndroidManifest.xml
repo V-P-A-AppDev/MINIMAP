@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MiniMap">
         <activity
+            android:name=".RequesterLoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
