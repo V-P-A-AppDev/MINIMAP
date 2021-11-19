@@ -4,34 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RequesterLoginActivity"
+    tools:context=".HelperLoginActivity"
     android:orientation="vertical">
 
     <EditText
+        android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="email"
-        android:id="@+id/email"
-        />
+        android:hint="email" />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="password"
         android:id="@+id/password"
         />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="login"
         android:id="@+id/login"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/green"
         />
+
     <Button
+        android:id="@+id/signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/green"
         android:text="signup"
-        android:id="@+id/signup"
-        android:backgroundTint="@color/blue"
         />
 
 </LinearLayout>

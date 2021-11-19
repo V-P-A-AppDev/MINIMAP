@@ -10,18 +10,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class RequesterLoginActivity extends AppCompatActivity {
+public class HelperLoginActivity extends AppCompatActivity {
     private EditText etEmail , etPassword;
     private Button bLogin , bSignup;
 
@@ -30,7 +27,7 @@ public class RequesterLoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_requester_login);
+        setContentView(R.layout.activity_helper_login);
 
         Auth = FirebaseAuth.getInstance();
 
@@ -39,7 +36,7 @@ public class RequesterLoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null){
-                    Intent intent = new Intent(RequesterLoginActivity.this , Map.class);
+                    Intent intent = new Intent(HelperLoginActivity.this , HelperMapActivity.class);
                     startActivity(intent);
                     finish();
                     return;
@@ -58,15 +55,15 @@ public class RequesterLoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
-                Auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(RequesterLoginActivity.this, new OnCompleteListener<AuthResult>(){
+                Auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(HelperLoginActivity.this, new OnCompleteListener<AuthResult>(){
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Toast.makeText(RequesterLoginActivity.this, "Sign Up Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(HelperLoginActivity.this, "Sign Up Error", Toast.LENGTH_SHORT).show();
                         }
                         else{
                             String id = Auth.getCurrentUser().getUid();
-                            DatabaseReference user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Requester").child(id);
+                            DatabaseReference user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Helper").child(id);
                             user_db.setValue(true);
                         }
                     }
@@ -81,11 +78,11 @@ public class RequesterLoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
-                Auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(RequesterLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                Auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(HelperLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()){
-                            Toast.makeText(RequesterLoginActivity.this, "Sign in Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(HelperLoginActivity.this, "Sign in Error", Toast.LENGTH_SHORT).show();
                         }
                         else{
 

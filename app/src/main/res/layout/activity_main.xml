@@ -10,8 +10,17 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="requester"
+        android:text="Requester"
         android:id="@+id/Requester"
+        android:backgroundTint="@color/blue"
         />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Helper"
+        android:id="@+id/Helper"
+        android:backgroundTint="@color/green"
+         />
 
 </LinearLayout>
