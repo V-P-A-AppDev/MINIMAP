@@ -13,8 +13,9 @@ com/example/minimap/MainActivity.java
  com.example.minimap.MainActivity$2
 com/example/minimap/databinding/ActivityHelperMapBinding.java
  com.example.minimap.databinding.ActivityHelperMapBinding
-com/example/minimap/databinding/ActivityMapBinding.java
- com.example.minimap.databinding.ActivityMapBinding
+com/example/minimap/HelperMapActivity.java
+ com.example.minimap.HelperMapActivity
+ com.example.minimap.HelperMapActivity$1
 com/example/minimap/databinding/ActivityRequesterLoginBinding.java
  com.example.minimap.databinding.ActivityRequesterLoginBinding
 com/example/minimap/databinding/ActivityMainBinding.java
@@ -23,9 +24,8 @@ com/example/minimap/Map.java
  com.example.minimap.Map
 com/example/minimap/databinding/ActivityHelperLoginBinding.java
  com.example.minimap.databinding.ActivityHelperLoginBinding
-com/example/minimap/HelperMapActivity.java
- com.example.minimap.HelperMapActivity
- com.example.minimap.HelperMapActivity$1
+com/example/minimap/databinding/ActivityMapBinding.java
+ com.example.minimap.databinding.ActivityMapBinding
 com/example/minimap/HelperLoginActivity.java
  com.example.minimap.HelperLoginActivity
  com.example.minimap.HelperLoginActivity$1
