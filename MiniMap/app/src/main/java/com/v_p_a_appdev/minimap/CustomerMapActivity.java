@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -27,6 +29,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.v_p_a_appdev.minimap.databinding.ActivityCustomerMapBinding;
@@ -52,7 +55,7 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
         binding = ActivityCustomerMapBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        //*Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -79,6 +82,55 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
                 requestLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here"));
                 requestButton.setText("Searching for someone in the area.");
+
+
+
+                getClosestWorker();
+            }
+        });
+    }
+    private int radius=1;
+    private boolean workerFound = false;
+    private String workerFoundId;
+    private void getClosestWorker() {
+        DatabaseReference workerLocation= FirebaseDatabase.getInstance().getReference().child("WorkersAvailable");
+        GeoFire geoFire = new GeoFire(workerLocation);
+        GeoQuery geoQuery=geoFire.queryAtLocation(new GeoLocation(requestLocation.latitude,requestLocation.longitude),radius);
+        geoQuery.removeAllListeners();
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+
+
+
+            //*After the first worker was found , even if there's more in the area , he would be the choice .
+            public void onKeyEntered(String key, GeoLocation location) {
+                if(!workerFound){
+                    workerFound=true;
+                    workerFoundId=key;
+                }
+            }
+
+            @Override
+            public void onKeyExited(String key) {
+
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+                if(!workerFound){
+                    radius++;
+                    getClosestWorker();
+                }
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+
             }
         });
     }
@@ -162,3 +214,15 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
         super.onStop();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

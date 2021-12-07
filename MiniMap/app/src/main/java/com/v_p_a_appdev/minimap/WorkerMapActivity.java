@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import android.content.Context;//*
+import android.content.Context;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,8 +14,8 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.location.LocationManager;//*
-import android.widget.Toast;//*
+import android.location.LocationManager;
+import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
@@ -28,7 +28,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.location.FusedLocationProviderClient;//*
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -54,7 +54,7 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
         binding = ActivityWorkerMapBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        //*Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -73,15 +73,16 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
                 return;
             }
         });
-        /*LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);//*
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,this);//*
-        lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);//*
 
-*/
+
+        //*LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        //*locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,this);
+        //*lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
     }
 
 
-    /**
+    /*
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
@@ -178,4 +179,8 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
     }
 
 }
+
+
+
+
 
