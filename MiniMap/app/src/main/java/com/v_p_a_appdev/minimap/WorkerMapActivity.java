@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
+
 import android.content.Context;//*
 import android.Manifest;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.location.LocationManager;//*
 import android.widget.Toast;//*
+
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
@@ -35,7 +37,7 @@ import com.v_p_a_appdev.minimap.databinding.ActivityWorkerMapBinding;
 
 public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
-    private static final int LOCATION_REQUEST_CODE =1 ;
+    private static final int LOCATION_REQUEST_CODE = 1;
     private GoogleMap mMap;
     private ActivityWorkerMapBinding binding;
     GoogleApiClient currentGoogleApiClient;
@@ -44,6 +46,7 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
 
     SupportMapFragment mapFragment;
     private Button logoutButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,12 +62,12 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
         } else {//*
             mapFragment.getMapAsync(this);
         }//*
-        logoutButton=(Button)findViewById(R.id.logout);
-        logoutButton.setOnClickListener(new View.OnClickListener(){
+        logoutButton = (Button) findViewById(R.id.logout);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(WorkerMapActivity.this,MainActivity.class);
+                Intent intent = new Intent(WorkerMapActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 return;
@@ -75,7 +78,7 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
         lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);//*
 
 */
-         }
+    }
 
 
     /**
@@ -95,32 +98,36 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
         }
         buildGooogleApiClient();
         mMap.setMyLocationEnabled(true);
+        if (lastLocation == null)
+            return;
         LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
-    protected synchronized void buildGooogleApiClient(){
-        currentGoogleApiClient=new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
+
+    protected synchronized void buildGooogleApiClient() {
+        currentGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
         currentGoogleApiClient.connect();
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        lastLocation=location;
-        LatLng latlng = new LatLng(location.getLatitude(),location.getLongitude());
+        if (location == null)
+            return;
+        lastLocation = location;
+        LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
         //*Basically it goes in between 1 to 21 to i've choosen somewhere in the middle.
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-        /*
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("DriversAvailable");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.setLocation(userId,new GeoLocation(location.getLatitude(),location.getLongitude()));//*lastLocation<->location.
-        */
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        locationRequest = com.google.android.gms.location.LocationRequest.create();//*new LocationRequest()
+//        locationRequest = com.google.android.gms.location.LocationRequest.create();//*new LocationRequest()
+        locationRequest = new LocationRequest();
         //*Set an interval for 1 second.
         locationRequest.setInterval(1000);
         locationRequest.setFastestInterval(1000);
@@ -146,20 +153,10 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
     protected void onStop() {
         super.onStop();
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("DriversAvailable");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkerAvailable");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
     }
-
-
-
-
-
-
-
-
-
-
 
 
     @Override
