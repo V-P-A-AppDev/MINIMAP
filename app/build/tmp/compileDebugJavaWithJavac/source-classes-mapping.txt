@@ -7,12 +7,12 @@ com/example/minimap/RequesterLoginActivity.java
  com.example.minimap.RequesterLoginActivity$2$1
  com.example.minimap.RequesterLoginActivity$3
  com.example.minimap.RequesterLoginActivity$3$1
+com/example/minimap/databinding/ActivityHelperMapBinding.java
+ com.example.minimap.databinding.ActivityHelperMapBinding
 com/example/minimap/MainActivity.java
  com.example.minimap.MainActivity
  com.example.minimap.MainActivity$1
  com.example.minimap.MainActivity$2
-com/example/minimap/databinding/ActivityHelperMapBinding.java
- com.example.minimap.databinding.ActivityHelperMapBinding
 com/example/minimap/HelperMapActivity.java
  com.example.minimap.HelperMapActivity
  com.example.minimap.HelperMapActivity$1
