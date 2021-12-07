@@ -122,6 +122,8 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.setLocation(userId,new GeoLocation(location.getLatitude(),location.getLongitude()));//*lastLocation<->location.
+
+
     }
 
     @Override
@@ -156,6 +158,7 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkerAvailable");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
+
     }
 
 
