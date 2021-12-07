@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1051552005004",
+    "firebase_url": "https://minimap-f6b59-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "minimap-f6b59",
+    "storage_bucket": "minimap-f6b59.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1051552005004:android:234b7e053d1601ed27f4a9",
+        "android_client_info": {
+          "package_name": "com.v_p_a_appdev.minimap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1051552005004-368e3bek1k4hfvkfvi0lsj7mi5an2vpi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.v_p_a_appdev.minimap",
+            "certificate_hash": "2c6106d1f8bf26a9363f5662e4f65db3bff34cc3"
+          }
+        },
+        {
+          "client_id": "1051552005004-sai3perm4a4q9nqv16lf8lfjplo2a035.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIPX13ZIMbHMsQszxOXBg6lcSWpRbeQwc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1051552005004-sai3perm4a4q9nqv16lf8lfjplo2a035.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

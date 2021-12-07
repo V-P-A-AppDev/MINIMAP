@@ -1,4 +1,0 @@
-com/example/minimap/ExampleInstrumentedTest.java
- com.example.minimap.ExampleInstrumentedTest
-com/example/minimap/test/BuildConfig.java
- com.example.minimap.test.BuildConfig
