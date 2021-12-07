@@ -156,7 +156,8 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
     protected void onStop() {
         super.onStop();
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkerAvailable");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
+
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
 

@@ -212,6 +212,11 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
     @Override
     protected void onStop() {
         super.onStop();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
+
+        GeoFire geoFire = new GeoFire(ref);
+        geoFire.removeLocation(userId);
     }
 }
 
