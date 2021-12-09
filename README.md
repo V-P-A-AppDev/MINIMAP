@@ -1,7 +1,7 @@
 # MINIMAP
 
 <p align="center">
-<img src = images/MiniMaplogo.png>
+<img src = https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/minimaplogo.png?raw=true>
 </p>
 
 this reposetory contains Android application code.
