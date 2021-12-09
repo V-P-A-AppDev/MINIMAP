@@ -29,11 +29,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.v_p_a_appdev.minimap.databinding.ActivityWorkerMapBinding;
+
+import java.util.List;
+import java.util.Map;
 
 public class WorkerMapActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
@@ -47,6 +54,9 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
     SupportMapFragment mapFragment;
     private Button logoutButton;
     String userId;
+
+    private Marker JobMarker;
+    private String customerId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,18 +90,65 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+        getAssignedCustomer();
     }
 
+    private void getAssignedCustomer(){
+        String workerID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference assignedCustRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Workers").child(workerID);
 
-    /*
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+        assignedCustRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
+                    if(map.get("CustomerJobId") != null)
+                    {
+                        customerId = map.get("CustomerJobId").toString();
+                        getAssignedCustomerLocation();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void getAssignedCustomerLocation(){
+        DatabaseReference assingedCustRef = FirebaseDatabase.getInstance().getReference().child("customerRequest").child(customerId).child("l");
+        assingedCustRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    List<Object> map = (List<Object>) snapshot.getValue();
+                    double CustLat = 0;
+                    double CustLng = 0;
+                    if(map.get(0) != null){
+                        CustLat = Double.parseDouble(map.get(0).toString());
+                    }
+                    if(map.get(0) != null){
+                        CustLng = Double.parseDouble(map.get(1).toString());
+                    }
+                    LatLng CustLatLng = new LatLng(CustLat, CustLng);
+                    if(JobMarker != null)
+                    {
+                        JobMarker.remove();
+                    }
+                    JobMarker = mMap.addMarker(new MarkerOptions().position(CustLatLng).title("Customer location"));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -120,11 +177,23 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
         //*Basically it goes in between 1 to 21 to i've choosen somewhere in the middle.
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
-        GeoFire geoFire = new GeoFire(ref);
-        geoFire.setLocation(userId,new GeoLocation(location.getLatitude(),location.getLongitude()));//*lastLocation<->location.
 
+        String userId = FirebaseAuth.getInstance().getUid();
+        DatabaseReference refAvailable = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
+        DatabaseReference refbusy = FirebaseDatabase.getInstance().getReference("WorkersBusy");
+        GeoFire geoFireAvailable = new GeoFire(refAvailable);
+        GeoFire geoFireBusy = new GeoFire(refbusy);
 
+        switch (customerId){
+            case "":
+                geoFireBusy.removeLocation(userId);
+                geoFireAvailable.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+                break;
+            default:
+                geoFireAvailable.removeLocation(userId);
+                geoFireBusy.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+                break;
+        }
     }
 
     @Override

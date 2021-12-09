@@ -31,12 +31,18 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.v_p_a_appdev.minimap.databinding.ActivityCustomerMapBinding;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class CustomerMapActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
@@ -119,6 +125,14 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                 if(!workerFound){
                     workerFound=true;
                     workerFoundId=key;
+                    DatabaseReference workerRef = FirebaseDatabase.getInstance().getReference("Users").child("Workers").child(workerFoundId);
+                    String customerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    HashMap hmap = new HashMap();
+                    hmap.put("CustomerJobId", customerId);
+                    workerRef.updateChildren(hmap);
+
+                    getWorkerLocation();
+                    requestButton.setText("Looking for worker location");
                 }
             }
 
@@ -145,6 +159,39 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
 
             }
         });
+    }
+    private Marker WorkerMarker;
+    private void getWorkerLocation(){
+        DatabaseReference workerLocRef = FirebaseDatabase.getInstance().getReference().child("WorkersAvailable").child(workerFoundId).child("l");
+        workerLocRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    List<Object> map = (List<Object>) snapshot.getValue();
+                    double workerLat = 0;
+                    double workerLng = 0;
+                    requestButton.setText("Worker Found");
+                    if(map.get(0) != null){
+                        workerLat = Double.parseDouble(map.get(0).toString());
+                    }
+                    if(map.get(0) != null){
+                        workerLng = Double.parseDouble(map.get(1).toString());
+                    }
+                    LatLng workerLatLng = new LatLng(workerLat, workerLng);
+                    if(WorkerMarker != null)
+                    {
+                        WorkerMarker.remove();
+                    }
+                    WorkerMarker = mMap.addMarker(new MarkerOptions().position(workerLatLng).title("Your worker"));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     /**
