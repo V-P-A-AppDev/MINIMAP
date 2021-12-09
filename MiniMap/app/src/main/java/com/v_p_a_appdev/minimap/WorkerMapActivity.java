@@ -35,7 +35,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.v_p_a_appdev.minimap.databinding.ActivityWorkerMapBinding;
 
-public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+public class WorkerMapActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     private static final int LOCATION_REQUEST_CODE = 1;
     private GoogleMap mMap;
@@ -46,6 +46,7 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
 
     SupportMapFragment mapFragment;
     private Button logoutButton;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
 
         binding = ActivityWorkerMapBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         //*Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -75,9 +76,9 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
         });
 
 
-        //*LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        //*locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,this);
-        //*lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
     }
 
@@ -119,7 +120,6 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
         //*Basically it goes in between 1 to 21 to i've choosen somewhere in the middle.
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.setLocation(userId,new GeoLocation(location.getLatitude(),location.getLongitude()));//*lastLocation<->location.
@@ -138,6 +138,7 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(WorkerMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
         }
+        currentGoogleApiClient.connect();
         LocationServices.FusedLocationApi.requestLocationUpdates(currentGoogleApiClient, locationRequest, this);
     }
 
@@ -155,9 +156,7 @@ public class WorkerMapActivity extends FragmentActivity implements OnMapReadyCal
     @Override
     protected void onStop() {
         super.onStop();
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
-
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
 

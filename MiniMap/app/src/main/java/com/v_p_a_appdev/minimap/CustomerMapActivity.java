@@ -7,9 +7,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,7 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.v_p_a_appdev.minimap.databinding.ActivityCustomerMapBinding;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class CustomerMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+public class CustomerMapActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     private static final int LOCATION_REQUEST_CODE = 1;
     private GoogleMap mMap;
@@ -44,6 +47,7 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
     Location lastLocation;
     LocationRequest locationRequest;
     SupportMapFragment mapFragment;
+    String userId;
 
     private Button logoutButton, requestButton;
     private LatLng requestLocation;
@@ -54,6 +58,7 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
 
         binding = ActivityCustomerMapBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         //*Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -71,6 +76,11 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
                 return;
             }
         });
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(CustomerMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+        } else {
+            mapFragment.getMapAsync(this);
+        }
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,10 +94,12 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
                 requestButton.setText("Searching for someone in the area.");
 
 
-
                 getClosestWorker();
             }
         });
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
     private int radius=1;
     private boolean workerFound = false;
@@ -180,6 +192,10 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(CustomerMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);//*
         }
+        while(!currentGoogleApiClient.isConnected()){
+            buildGooogleApiClient();
+            System.out.println(currentGoogleApiClient.isConnected());
+        }
         LocationServices.FusedLocationApi.requestLocationUpdates(currentGoogleApiClient, locationRequest, this);
     }
 
@@ -212,9 +228,7 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
     @Override
     protected void onStop() {
         super.onStop();
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
-
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
     }

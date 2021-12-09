@@ -10,7 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/logout"
-        android:text="Logout"/>
+        android:text="Logout"
+        android:backgroundTint="@color/blue"/>
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -21,5 +22,6 @@
         android:layout_height="wrap_content"
         android:text="Ask For Help"
         android:id="@+id/request"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/blue"/>
 </FrameLayout>
