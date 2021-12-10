@@ -27,6 +27,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -52,6 +53,7 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
     SupportMapFragment mapFragment;
     private Button logoutButton;
     String userId;
+    private boolean isloggingout = false;
 
     private Marker JobMarker;
     private String customerId = "";
@@ -75,6 +77,8 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isloggingout = true;
+                disconnectworker();
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(WorkerMapActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -142,7 +146,7 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
                     {
                         JobMarker.remove();
                     }
-                    JobMarker = mMap.addMarker(new MarkerOptions().position(CustLatLng).title("Customer location"));
+                    JobMarker = mMap.addMarker(new MarkerOptions().position(CustLatLng).title("Customer location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.customermarker)));
                 }
             }
 
@@ -225,14 +229,20 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
 
     }
 
+    private void disconnectworker()
+    {
+        LocationServices.FusedLocationApi.removeLocationUpdates(currentGoogleApiClient, this);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
+        GeoFire geoFire = new GeoFire(ref);
+        geoFire.removeLocation(userId);
+    }
 
     @Override
     protected void onStop() {
         super.onStop();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
-        GeoFire geoFire = new GeoFire(ref);
-        geoFire.removeLocation(userId);
-
+        if(!isloggingout){
+            disconnectworker();
+        }
     }
 
 
