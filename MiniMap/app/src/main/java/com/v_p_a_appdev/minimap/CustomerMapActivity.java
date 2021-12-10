@@ -107,24 +107,25 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
-    private int radius=1;
+
+    private int radius = 1;
     private boolean workerFound = false;
     private String workerFoundId;
+
     private void getClosestWorker() {
-        DatabaseReference workerLocation= FirebaseDatabase.getInstance().getReference().child("WorkersAvailable");
+        DatabaseReference workerLocation = FirebaseDatabase.getInstance().getReference().child("WorkersAvailable");
         GeoFire geoFire = new GeoFire(workerLocation);
-        GeoQuery geoQuery=geoFire.queryAtLocation(new GeoLocation(requestLocation.latitude,requestLocation.longitude),radius);
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(requestLocation.latitude, requestLocation.longitude), radius);
         geoQuery.removeAllListeners();
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
 
 
-
             //*After the first worker was found , even if there's more in the area , he would be the choice .
             public void onKeyEntered(String key, GeoLocation location) {
-                if(!workerFound){
-                    workerFound=true;
-                    workerFoundId=key;
+                if (!workerFound) {
+                    workerFound = true;
+                    workerFoundId = key;
                     DatabaseReference workerRef = FirebaseDatabase.getInstance().getReference("Users").child("Workers").child(workerFoundId);
                     String customerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     HashMap hmap = new HashMap();
@@ -148,7 +149,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
 
             @Override
             public void onGeoQueryReady() {
-                if(!workerFound){
+                if (!workerFound) {
                     radius++;
                     getClosestWorker();
                 }
@@ -160,27 +161,38 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
             }
         });
     }
+
     private Marker WorkerMarker;
-    private void getWorkerLocation(){
-        DatabaseReference workerLocRef = FirebaseDatabase.getInstance().getReference().child("WorkersAvailable").child(workerFoundId).child("l");
+
+    private void getWorkerLocation() {
+        DatabaseReference workerLocRef = FirebaseDatabase.getInstance().getReference().child("WorkersBusy").child(workerFoundId).child("l");
         workerLocRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     List<Object> map = (List<Object>) snapshot.getValue();
                     double workerLat = 0;
                     double workerLng = 0;
                     requestButton.setText("Worker Found");
-                    if(map.get(0) != null){
+                    if (map.get(0) != null) {
                         workerLat = Double.parseDouble(map.get(0).toString());
                     }
-                    if(map.get(0) != null){
+                    if (map.get(0) != null) {
                         workerLng = Double.parseDouble(map.get(1).toString());
                     }
                     LatLng workerLatLng = new LatLng(workerLat, workerLng);
-                    if(WorkerMarker != null)
-                    {
+                    if (WorkerMarker != null) {
                         WorkerMarker.remove();
+                    }
+                    Location workerLocation = new Location("");
+                    workerLocation.setLatitude(workerLatLng.latitude);
+                    workerLocation.setLongitude(workerLatLng.longitude);
+                    float distance = workerLocation.distanceTo(lastLocation);
+
+                    if (distance < 100) {
+                        requestButton.setText("Worker is here");
+                    } else {
+                        requestButton.setText("Worker found: " + String.valueOf(distance));
                     }
                     WorkerMarker = mMap.addMarker(new MarkerOptions().position(workerLatLng).title("Your worker"));
                 }
@@ -220,7 +232,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
 
     @Override
     public void onLocationChanged(Location location) {
-        if(location == null)
+        if (location == null)
             return;
         lastLocation = location;
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
@@ -239,7 +251,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(CustomerMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);//*
         }
-        while(!currentGoogleApiClient.isConnected()){
+        while (!currentGoogleApiClient.isConnected()) {
             buildGooogleApiClient();
             System.out.println(currentGoogleApiClient.isConnected());
         }
@@ -278,6 +290,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
+
     }
 }
 

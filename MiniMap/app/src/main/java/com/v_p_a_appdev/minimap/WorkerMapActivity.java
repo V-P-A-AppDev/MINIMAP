@@ -95,18 +95,14 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
 
     private void getAssignedCustomer(){
         String workerID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference assignedCustRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Workers").child(workerID);
+        DatabaseReference assignedCustRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Workers").child(workerID).child("CustomerJobId");
 
         assignedCustRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
-                    if(map.get("CustomerJobId") != null)
-                    {
-                        customerId = map.get("CustomerJobId").toString();
-                        getAssignedCustomerLocation();
-                    }
+                    customerId = snapshot.getValue().toString();
+                    getAssignedCustomerLocation();
                 }
             }
 
