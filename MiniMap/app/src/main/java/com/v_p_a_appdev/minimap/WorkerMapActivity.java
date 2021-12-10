@@ -28,7 +28,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +39,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.v_p_a_appdev.minimap.databinding.ActivityWorkerMapBinding;
 
 import java.util.List;
-import java.util.Map;
 
 public class WorkerMapActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
@@ -104,6 +102,15 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
                     customerId = snapshot.getValue().toString();
                     getAssignedCustomerLocation();
                 }
+                else{
+                    customerId = "";
+                    if(JobMarker != null){
+                        JobMarker.remove();
+                    }
+                    if(assignedCustLocationRef != null) {
+                        assignedCustLocationRef.removeEventListener(assignedCustLocationRefListener);
+                    }
+                }
             }
 
             @Override
@@ -113,13 +120,14 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
         });
 
     }
-
+    private DatabaseReference assignedCustLocationRef;
+    private ValueEventListener assignedCustLocationRefListener;
     private void getAssignedCustomerLocation(){
-        DatabaseReference assingedCustRef = FirebaseDatabase.getInstance().getReference().child("customerRequest").child(customerId).child("l");
-        assingedCustRef.addValueEventListener(new ValueEventListener() {
+        assignedCustLocationRef = FirebaseDatabase.getInstance().getReference().child("customerRequest").child(customerId).child("l");
+        assignedCustLocationRefListener = assignedCustLocationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
+                if(snapshot.exists() && !customerId.equals("")){
                     List<Object> map = (List<Object>) snapshot.getValue();
                     double CustLat = 0;
                     double CustLng = 0;
