@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.location.LocationManager;
 import android.widget.Toast;
@@ -50,7 +51,7 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
     LocationRequest locationRequest;
 
     SupportMapFragment mapFragment;
-    private Button logoutButton;
+    private Button logoutButton, settingButton;
     String userId;
     private boolean isLoggingOut = false;
 
@@ -73,6 +74,17 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
             mapFragment.getMapAsync(this);
         }//*
         logoutButton = findViewById(R.id.logout);
+        settingButton = findViewById(R.id.settings);
+
+
+        settingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WorkerMapActivity.this, WorkerSettingsActivity.class);
+                startActivity(intent);
+                return;
+            }
+        });
         logoutButton.setOnClickListener(v -> {
             isLoggingOut = true;
             disconnectwWorker();

@@ -12,13 +12,19 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.MiniMap"
-        android:fullBackupContent="@xml/backup_descriptor">
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".WorkerSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerSettingsActivity"
+            android:exported="false" />
         <activity
             android:name=".CustomerMapActivity"
             android:exported="false" />

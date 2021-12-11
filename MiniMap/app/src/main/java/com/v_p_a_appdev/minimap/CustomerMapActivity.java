@@ -13,6 +13,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -55,7 +56,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
     SupportMapFragment mapFragment;
     String userId;
 
-    private Button logoutButton, requestButton;
+    private Button logoutButton, requestButton, settingButton;
     private LatLng requestLocation;
     private boolean isRequesting;
     private Marker workerMarker;
@@ -79,6 +80,15 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         }
         logoutButton = findViewById(R.id.logout);
         requestButton = findViewById(R.id.request);
+        settingButton = findViewById(R.id.settings);
+        settingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CustomerMapActivity.this,CustomerSettingsActivity.class);
+                startActivity(intent);
+                return;
+            }
+        });
         logoutButton.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(CustomerMapActivity.this, MainActivity.class);
@@ -126,7 +136,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                 GeoFire geoFire = new GeoFire(ref);
                 geoFire.setLocation(userId, new GeoLocation(lastLocation.getLatitude(), lastLocation.getLongitude()));
                 requestLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-                customerMarker = mMap.addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.drawable.screen)));
+                customerMarker = mMap.addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher_foreground)));
                 requestButton.setText("Cancel.");
                 getClosestWorker();
             }
