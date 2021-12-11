@@ -55,7 +55,7 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
     String userId;
     private boolean isloggingout = false;
 
-    private Marker JobMarker;
+    private Marker jobMarker;
     private String customerId = "";
 
     @Override
@@ -103,13 +103,20 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    customerId = snapshot.getValue().toString();
+
+                   /*
+                   Map<String,Object>map=(Map<String,Object>map)snapshot.getValue();
+                   if(map.get("customerCaseId")!=null){
+                        customerId= map.get("customerCaseId").toString();
+                    }
+                    */
+                    /**/customerId = snapshot.getValue().toString();
                     getAssignedCustomerLocation();
                 }
                 else{
                     customerId = "";
-                    if(JobMarker != null){
-                        JobMarker.remove();
+                    if(jobMarker != null){
+                        jobMarker.remove();
                     }
                     if(assignedCustLocationRef != null) {
                         assignedCustLocationRef.removeEventListener(assignedCustLocationRefListener);
@@ -141,12 +148,12 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
                     if(map.get(0) != null){
                         CustLng = Double.parseDouble(map.get(1).toString());
                     }
-                    LatLng CustLatLng = new LatLng(CustLat, CustLng);
-                    if(JobMarker != null)
+                    LatLng custLatLng = new LatLng(CustLat, CustLng);
+                    /*if(jobMarker != null)
                     {
-                        JobMarker.remove();
+                        jobMarker.remove();
                     }
-                    JobMarker = mMap.addMarker(new MarkerOptions().position(CustLatLng).title("Customer location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.customermarker)));
+                    jobMarker =*/ mMap.addMarker(new MarkerOptions().position(custLatLng).title("Customer location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.workermarker)));
                 }
             }
 
@@ -178,8 +185,9 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
 
     @Override
     public void onLocationChanged(Location location) {
-        if (location == null)
+        if (location == null) {
             return;
+        }
         lastLocation = location;
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
@@ -188,16 +196,18 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
 
         String userId = FirebaseAuth.getInstance().getUid();
         DatabaseReference refAvailable = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
-        DatabaseReference refbusy = FirebaseDatabase.getInstance().getReference("WorkersBusy");
+        DatabaseReference refBusy = FirebaseDatabase.getInstance().getReference("WorkersBusy");
         GeoFire geoFireAvailable = new GeoFire(refAvailable);
-        GeoFire geoFireBusy = new GeoFire(refbusy);
+        GeoFire geoFireBusy = new GeoFire(refBusy);
 
         switch (customerId){
             case "":
+                //*Case the worker is available.
                 geoFireBusy.removeLocation(userId);
                 geoFireAvailable.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
                 break;
             default:
+                //*Case the worker is currently busy .
                 geoFireAvailable.removeLocation(userId);
                 geoFireBusy.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
                 break;

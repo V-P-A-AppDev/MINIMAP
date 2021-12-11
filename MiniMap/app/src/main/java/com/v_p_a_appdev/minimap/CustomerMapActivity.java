@@ -57,8 +57,8 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
 
     private Button logoutButton, requestButton;
     private LatLng requestLocation;
-    private boolean isrequesting;
-    private Marker WorkerMarker;
+    private boolean isRequesting;
+    private Marker workerMarker;
     private Marker custMarker;
 
     @Override
@@ -97,8 +97,8 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isrequesting) {
-                    isrequesting = false;
+                if (isRequesting) {
+                    isRequesting = false;
                     geoQuery.removeAllListeners();
                     workerLocRef.removeEventListener(workerLocationRefListener);
 
@@ -117,21 +117,21 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                     if (custMarker != null) {
                         custMarker.remove();
                     }
-                    if (WorkerMarker != null) {
-                        WorkerMarker.remove();
+                    if (workerMarker != null) {
+                        workerMarker.remove();
                     }
                     requestButton.setText("Ask for help");
 
 
                 } else {
-                    isrequesting = true;
+                    isRequesting = true;
                     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
 
                     GeoFire geoFire = new GeoFire(ref);
                     geoFire.setLocation(userId, new GeoLocation(lastLocation.getLatitude(), lastLocation.getLongitude()));
                     requestLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-                    custMarker = mMap.addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.customermarker)));
+                    custMarker = mMap.addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here")/*.icon(BitmapDescriptorFactory.fromResource(R.mipmap.customermarker))*/);
                     requestButton.setText("Searching for someone in the area.");
                     getClosestWorker();
                 }
@@ -154,9 +154,9 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         geoQuery.removeAllListeners();
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
-            //*After the first worker was found , even if there's more in the area , he would be the choice .
+            //*After the first worker was found , even if there's more in the area , he would be the choice.
             public void onKeyEntered(String key, GeoLocation location) {
-                if (!workerFound && isrequesting) {
+                if (!workerFound && isRequesting) {
                     workerFound = true;
                     workerFoundId = key;
                     DatabaseReference workerRef = FirebaseDatabase.getInstance().getReference("Users").child("Workers").child(workerFoundId);
@@ -164,9 +164,8 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                     HashMap hmap = new HashMap();
                     hmap.put("CustomerJobId", customerId);
                     workerRef.updateChildren(hmap);
-
                     getWorkerLocation();
-                    requestButton.setText("Looking for worker location");
+                    requestButton.setText("Looking for someone");
                 }
             }
 
@@ -203,7 +202,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         workerLocationRefListener = workerLocRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists() && isrequesting) {
+                if (snapshot.exists() && isRequesting) {
                     List<Object> map = (List<Object>) snapshot.getValue();
                     double workerLat = 0;
                     double workerLng = 0;
@@ -211,12 +210,12 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                     if (map.get(0) != null) {
                         workerLat = Double.parseDouble(map.get(0).toString());
                     }
-                    if (map.get(0) != null) {
+                    if (map.get(1) != null) {
                         workerLng = Double.parseDouble(map.get(1).toString());
                     }
                     LatLng workerLatLng = new LatLng(workerLat, workerLng);
-                    if (WorkerMarker != null) {
-                        WorkerMarker.remove();
+                    if (workerMarker != null) {
+                        workerMarker.remove();
                     }
                     Location workerLocation = new Location("");
                     workerLocation.setLatitude(workerLatLng.latitude);
@@ -228,7 +227,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                     } else {
                         requestButton.setText("Worker found: " + String.valueOf(distance));
                     }
-                    WorkerMarker = mMap.addMarker(new MarkerOptions().position(workerLatLng).title("Your worker").icon(BitmapDescriptorFactory.fromResource(R.mipmap.workermarker)));
+                    workerMarker = mMap.addMarker(new MarkerOptions().position(workerLatLng).title("Your worker").icon(BitmapDescriptorFactory.fromResource(R.mipmap.workermarker)));
                 }
             }
 

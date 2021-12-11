@@ -22,6 +22,9 @@
         <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/layout/activity_worker_login.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/layout/activity_worker_map.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3828125" />
+        <entry key="app/src/main/res/layout/activity_customer_login.xml" value="0.17291666666666666" />
+        <entry key="app/src/main/res/layout/activity_customer_map.xml" value="0.17291666666666666" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.17291666666666666" />
       </map>
     </option>
   </component>
