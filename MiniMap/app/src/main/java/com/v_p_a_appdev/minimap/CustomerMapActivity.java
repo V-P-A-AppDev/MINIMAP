@@ -13,7 +13,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -59,7 +58,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
     private LatLng requestLocation;
     private boolean isRequesting;
     private Marker workerMarker;
-    private Marker custMarker;
+    private Marker customerMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,12 +90,13 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         } else {
             mapFragment.getMapAsync(this);
         }
+        //*When a click on the request button is being performed.
         requestButton.setOnClickListener(v -> {
+            //*If the request button is already pressed then it means that the customer wants to cancel it .
             if (isRequesting) {
                 isRequesting = false;
                 geoQuery.removeAllListeners();
                 workerLocRef.removeEventListener(workerLocationRefListener);
-
                 if (workerFoundId != null) {
                     DatabaseReference workerRef = FirebaseDatabase.getInstance().getReference("Users").child("Workers").child(workerFoundId);
                     workerRef.setValue(true);
@@ -109,8 +109,8 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                 GeoFire geoFire = new GeoFire(ref);
                 geoFire.removeLocation(userId);
 
-                if (custMarker != null) {
-                    custMarker.remove();
+                if (customerMarker != null) {
+                    customerMarker.remove();
                 }
                 if (workerMarker != null) {
                     workerMarker.remove();
@@ -126,7 +126,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                 GeoFire geoFire = new GeoFire(ref);
                 geoFire.setLocation(userId, new GeoLocation(lastLocation.getLatitude(), lastLocation.getLongitude()));
                 requestLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-                custMarker = mMap.addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here")/*.icon(BitmapDescriptorFactory.fromResource(R.mipmap.customermarker))*/);
+                customerMarker = mMap.addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher_foreground)));
                 requestButton.setText("Cancel.");
                 getClosestWorker();
             }

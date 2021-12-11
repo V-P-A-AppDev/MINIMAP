@@ -139,12 +139,10 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
                         CustLng = Double.parseDouble(map.get(1).toString());
                     }
                     LatLng custLatLng = new LatLng(CustLat, CustLng);
-                    /*if(jobMarker != null)
-                    {
+                    if (jobMarker != null) {
                         jobMarker.remove();
                     }
-                    jobMarker =*/
-                    mMap.addMarker(new MarkerOptions().position(custLatLng).title("Customer location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.workermarker)));
+                    jobMarker = mMap.addMarker(new MarkerOptions().position(custLatLng).title("Customer location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.workermarker)));
                 }
             }
 
