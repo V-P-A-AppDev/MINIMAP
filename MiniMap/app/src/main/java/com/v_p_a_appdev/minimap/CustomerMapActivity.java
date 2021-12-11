@@ -77,64 +77,58 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         } else {//*
             mapFragment.getMapAsync(this);
         }
-        logoutButton = (Button) findViewById(R.id.logout);
-        requestButton = (Button) findViewById(R.id.request);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(CustomerMapActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-                return;
-            }
+        logoutButton = findViewById(R.id.logout);
+        requestButton = findViewById(R.id.request);
+        logoutButton.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(CustomerMapActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return;
         });
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(CustomerMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
         } else {
             mapFragment.getMapAsync(this);
         }
-        requestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isRequesting) {
-                    isRequesting = false;
-                    geoQuery.removeAllListeners();
-                    workerLocRef.removeEventListener(workerLocationRefListener);
+        requestButton.setOnClickListener(v -> {
+            if (isRequesting) {
+                isRequesting = false;
+                geoQuery.removeAllListeners();
+                workerLocRef.removeEventListener(workerLocationRefListener);
 
-                    if (workerFoundId != null) {
-                        DatabaseReference workerRef = FirebaseDatabase.getInstance().getReference("Users").child("Workers").child(workerFoundId);
-                        workerRef.setValue(true);
-                        workerFoundId = null;
-                    }
-                    workerFound = false;
-                    radius = 1;
-                    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
-                    GeoFire geoFire = new GeoFire(ref);
-                    geoFire.removeLocation(userId);
-
-                    if (custMarker != null) {
-                        custMarker.remove();
-                    }
-                    if (workerMarker != null) {
-                        workerMarker.remove();
-                    }
-                    requestButton.setText("Ask for help");
-
-
-                } else {
-                    isRequesting = true;
-                    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
-
-                    GeoFire geoFire = new GeoFire(ref);
-                    geoFire.setLocation(userId, new GeoLocation(lastLocation.getLatitude(), lastLocation.getLongitude()));
-                    requestLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-                    custMarker = mMap.addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here")/*.icon(BitmapDescriptorFactory.fromResource(R.mipmap.customermarker))*/);
-                    requestButton.setText("Searching for someone in the area.");
-                    getClosestWorker();
+                if (workerFoundId != null) {
+                    DatabaseReference workerRef = FirebaseDatabase.getInstance().getReference("Users").child("Workers").child(workerFoundId);
+                    workerRef.setValue(true);
+                    workerFoundId = null;
                 }
+                workerFound = false;
+                radius = 1;
+                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
+                GeoFire geoFire = new GeoFire(ref);
+                geoFire.removeLocation(userId);
+
+                if (custMarker != null) {
+                    custMarker.remove();
+                }
+                if (workerMarker != null) {
+                    workerMarker.remove();
+                }
+                requestButton.setText("Ask for help");
+
+
+            } else {
+                isRequesting = true;
+                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
+
+                GeoFire geoFire = new GeoFire(ref);
+                geoFire.setLocation(userId, new GeoLocation(lastLocation.getLatitude(), lastLocation.getLongitude()));
+                requestLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+                custMarker = mMap.addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here")/*.icon(BitmapDescriptorFactory.fromResource(R.mipmap.customermarker))*/);
+                requestButton.setText("Searching for someone in the area.");
+                getClosestWorker();
             }
         });
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -225,7 +219,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                     if (distance < 100) {
                         requestButton.setText("Worker is here");
                     } else {
-                        requestButton.setText("Worker found: " + String.valueOf(distance));
+                        requestButton.setText("Worker found: " + /*String.valueOf*/(distance));
                     }
                     workerMarker = mMap.addMarker(new MarkerOptions().position(workerLatLng).title("Your worker").icon(BitmapDescriptorFactory.fromResource(R.mipmap.workermarker)));
                 }
@@ -240,7 +234,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(CustomerMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);//*
@@ -259,7 +253,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(@NonNull Location location) {
         if (location == null)
             return;
         lastLocation = location;
@@ -289,14 +283,11 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case LOCATION_REQUEST_CODE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mapFragment.getMapAsync(this);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Access to location is needed!", Toast.LENGTH_LONG).show();
-                }
-                break;
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mapFragment.getMapAsync(this);
+            } else {
+                Toast.makeText(getApplicationContext(), "Access to location is needed!", Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -12,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.location.LocationManager;
 import android.widget.Toast;
@@ -73,18 +72,15 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
         } else {//*
             mapFragment.getMapAsync(this);
         }//*
-        logoutButton = (Button) findViewById(R.id.logout);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isloggingout = true;
-                disconnectworker();
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(WorkerMapActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-                return;
-            }
+        logoutButton = findViewById(R.id.logout);
+        logoutButton.setOnClickListener(v -> {
+            isloggingout = true;
+            disconnectwWorker();
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(WorkerMapActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return;
         });
 
 
@@ -165,12 +161,12 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(WorkerMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
         }
-        buildGooogleApiClient();
+        buildGoogleApiClient();
         mMap.setMyLocationEnabled(true);
         if (lastLocation == null)
             return;
@@ -178,20 +174,20 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
-    protected synchronized void buildGooogleApiClient() {
+    protected synchronized void buildGoogleApiClient() {
         currentGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
         currentGoogleApiClient.connect();
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(@NonNull Location location) {
         if (location == null) {
             return;
         }
         lastLocation = location;
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
-        //*Basically it goes in between 1 to 21 to i've choosen somewhere in the middle.
+        //*Basically it goes in between 1 to 21 to i've chosen somewhere in the middle.
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
         String userId = FirebaseAuth.getInstance().getUid();
@@ -200,17 +196,12 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
         GeoFire geoFireAvailable = new GeoFire(refAvailable);
         GeoFire geoFireBusy = new GeoFire(refBusy);
 
-        switch (customerId){
-            case "":
-                //*Case the worker is available.
-                geoFireBusy.removeLocation(userId);
-                geoFireAvailable.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
-                break;
-            default:
-                //*Case the worker is currently busy .
-                geoFireAvailable.removeLocation(userId);
-                geoFireBusy.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
-                break;
+        if ("".equals(customerId)) {//*Case the worker is available.
+            geoFireBusy.removeLocation(userId);
+            geoFireAvailable.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+        } else {//*Case the worker is currently busy .
+            geoFireAvailable.removeLocation(userId);
+            geoFireBusy.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
         }
     }
 
@@ -239,7 +230,7 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
 
     }
 
-    private void disconnectworker()
+    private void disconnectwWorker()
     {
         LocationServices.FusedLocationApi.removeLocationUpdates(currentGoogleApiClient, this);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
@@ -251,7 +242,7 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
     protected void onStop() {
         super.onStop();
         if(!isloggingout){
-            disconnectworker();
+            disconnectwWorker();
         }
     }
 
@@ -259,14 +250,11 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case LOCATION_REQUEST_CODE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mapFragment.getMapAsync(this);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Access to location is needed!", Toast.LENGTH_LONG).show();
-                }
-                break;
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mapFragment.getMapAsync(this);
+            } else {
+                Toast.makeText(getApplicationContext(), "Access to location is needed!", Toast.LENGTH_LONG).show();
             }
         }
     }

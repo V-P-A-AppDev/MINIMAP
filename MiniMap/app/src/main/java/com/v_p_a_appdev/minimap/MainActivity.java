@@ -15,7 +15,6 @@ import androidx.core.app.ActivityCompat;
 
 public class MainActivity extends AppCompatActivity {
     private static final int LOCATION_REQUEST_CODE = 1;
-    private Button customerButton,workerButton;
 
 
     @Override
@@ -26,25 +25,19 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
         }
 
-        workerButton=(Button) findViewById(R.id.worker);
-        customerButton=(Button) findViewById(R.id.customer);
-        workerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,WorkerLoginActivity.class);
-                startActivity(intent);
-                finish();
-                return;
-            }
+        Button workerButton = findViewById(R.id.worker);
+        Button customerButton = findViewById(R.id.customer);
+        workerButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this,WorkerLoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
         });
-        customerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,CustomerLoginActivity.class);
-                startActivity(intent);
-                finish();
-                return;
-            }
+        customerButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this,CustomerLoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
         });
     }
 }

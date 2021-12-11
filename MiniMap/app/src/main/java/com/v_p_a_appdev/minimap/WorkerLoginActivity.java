@@ -20,7 +20,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class WorkerLoginActivity extends AppCompatActivity {
     private EditText emailInput,passwordInput;
-    private Button loginButton,registrationButton;
     private FirebaseAuth entranceAuth;
     private FirebaseAuth.AuthStateListener fireBaseAuthListener;
     @Override
@@ -28,60 +27,44 @@ public class WorkerLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worker_login);
         entranceAuth=FirebaseAuth.getInstance();
-        fireBaseAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user!=null){
-                    Intent intent = new Intent(WorkerLoginActivity.this,WorkerMapActivity.class);
-                    startActivity(intent);
-                    finish();
-                    return;
-                }
+        fireBaseAuthListener = firebaseAuth -> {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user!=null){
+                Intent intent = new Intent(WorkerLoginActivity.this,WorkerMapActivity.class);
+                startActivity(intent);
+                finish();
+                return;
             }
         };
 
-        emailInput=(EditText) findViewById(R.id.email);
-        passwordInput=(EditText) findViewById(R.id.password);
-        loginButton=(Button) findViewById(R.id.login);
-        registrationButton=(Button) findViewById(R.id.registration);
-        registrationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String email = emailInput.getText().toString();
-                final String password = passwordInput.getText().toString();
-                if(password.length()<6){
-                    Toast.makeText(WorkerLoginActivity.this,"The password should be 6 charecters at least .",Toast.LENGTH_SHORT).show();
+        emailInput= findViewById(R.id.email);
+        passwordInput= findViewById(R.id.password);
+        Button loginButton = findViewById(R.id.login);
+        Button registrationButton = findViewById(R.id.registration);
+        registrationButton.setOnClickListener(v -> {
+            final String email = emailInput.getText().toString();
+            final String password = passwordInput.getText().toString();
+            if(password.length()<6){
+                Toast.makeText(WorkerLoginActivity.this,"The password should be 6 charecters at least .",Toast.LENGTH_SHORT).show();
+            }
+            entranceAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(WorkerLoginActivity.this, task -> {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(WorkerLoginActivity.this, "Something went wrong with the registration process.", Toast.LENGTH_SHORT).show();
+                } else {
+                    String userId = entranceAuth.getCurrentUser().getUid();
+                    DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child("Workers").child(userId);
+                    currentUserDB.setValue(true);
                 }
-                entranceAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(WorkerLoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(WorkerLoginActivity.this,"Something went wrong with the registration process.",Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            String userId=entranceAuth.getCurrentUser().getUid();
-                            DatabaseReference currentUserDB= FirebaseDatabase.getInstance().getReference().child("Users").child("Workers").child(userId);
-                            currentUserDB.setValue(true);
-                        }
-                    }
-                });
-            }
+            });
         });
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String email = emailInput.getText().toString();
-                final String password = passwordInput.getText().toString();
-                entranceAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(WorkerLoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(WorkerLoginActivity.this,"Something went wrong with the authentication process.",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
+        loginButton.setOnClickListener(v -> {
+            final String email = emailInput.getText().toString();
+            final String password = passwordInput.getText().toString();
+            entranceAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(WorkerLoginActivity.this, task -> {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(WorkerLoginActivity.this, "Something went wrong with the authentication process.", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 
