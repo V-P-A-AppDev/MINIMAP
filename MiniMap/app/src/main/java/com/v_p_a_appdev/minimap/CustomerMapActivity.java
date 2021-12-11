@@ -15,6 +15,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
@@ -63,6 +66,11 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
     private Marker workerMarker;
     private Marker customerMarker;
 
+
+    private LinearLayout workerInfo;
+    private ImageView workerIcon;
+    private TextView workerName, workerPhone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +90,12 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         logoutButton = findViewById(R.id.logout);
         requestButton = findViewById(R.id.request);
         settingButton = findViewById(R.id.settings);
+        workerInfo = findViewById(R.id.workerInfo);
+        workerIcon = findViewById(R.id.workerIcon);
+        workerName = findViewById(R.id.workerName);
+        workerPhone = findViewById(R.id.workerPhone);
         settingButton.setOnClickListener(v -> {
-            Intent intent = new Intent(CustomerMapActivity.this,CustomerSettingsActivity.class);
+            Intent intent = new Intent(CustomerMapActivity.this, CustomerSettingsActivity.class);
             startActivity(intent);
             return;
         });
