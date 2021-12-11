@@ -52,8 +52,8 @@ public class WorkerLoginActivity extends AppCompatActivity {
                     Toast.makeText(WorkerLoginActivity.this, "Something went wrong with the registration process.", Toast.LENGTH_SHORT).show();
                 } else {
                     String userId = entranceAuth.getCurrentUser().getUid();
-                    DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child("Workers").child(userId);
-                    currentUserDB.setValue(true);
+                    DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child("Workers").child(userId).child("name");
+                    currentUserDB.setValue(email);
                 }
             });
         });
@@ -80,7 +80,6 @@ public class WorkerLoginActivity extends AppCompatActivity {
         entranceAuth.removeAuthStateListener(fireBaseAuthListener);
     }
 }
-
 
 
 

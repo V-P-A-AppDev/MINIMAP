@@ -47,6 +47,7 @@ import com.v_p_a_appdev.minimap.databinding.ActivityCustomerMapBinding;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class CustomerMapActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
@@ -118,8 +119,8 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                 geoQuery.removeAllListeners();
                 workerLocRef.removeEventListener(workerLocationRefListener);
                 if (workerFoundId != null) {
-                    DatabaseReference workerRef = FirebaseDatabase.getInstance().getReference("Users").child("Workers").child(workerFoundId);
-                    workerRef.setValue(true);
+                    DatabaseReference workerRef = FirebaseDatabase.getInstance().getReference("Users").child("Workers").child(workerFoundId).child("customerRequest");
+                    workerRef.removeValue();
                     workerFoundId = null;
                 }
                 workerFound = false;
@@ -136,7 +137,9 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                     workerMarker.remove();
                 }
                 requestButton.setText("Ask for help");
-
+                workerInfo.setVisibility(View.GONE);
+                workerName.setText("");
+                workerPhone.setText("");
 
             } else {
                 isRequesting = true;
@@ -179,6 +182,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                     hmap.put("CustomerJobId", customerId);
                     workerRef.updateChildren(hmap);
                     getWorkerLocation();
+                    getWorkerInfo();
                     requestButton.setText("Looking for someone");
                 }
             }
@@ -208,6 +212,31 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         });
     }
 
+    private void getWorkerInfo() {
+        workerInfo.setVisibility(View.VISIBLE);
+        DatabaseReference customerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Workers").child(workerFoundId);
+        customerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+                    Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
+                    if (map.get("name") != null) {
+                        workerName.setText(Objects.requireNonNull(map.get("name")).toString());
+                    }
+                    if (map.get("phone") != null) {
+                        workerPhone.setText(Objects.requireNonNull(map.get("phone")).toString());
+                    }
+                    workerIcon.setImageResource(R.mipmap.workermarker);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private DatabaseReference workerLocRef;
     private ValueEventListener workerLocationRefListener;
 
@@ -221,7 +250,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                     double workerLat = 0;
                     double workerLng = 0;
                     requestButton.setText("Worker Found");
-                    if (Objects.requireNonNull(map).get(0) != null) {
+                    if (map.get(0) != null) {
                         workerLat = Double.parseDouble(map.get(0).toString());
                     }
                     if (map.get(1) != null) {

@@ -190,7 +190,7 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
                     if (map.get("phone") != null) {
                         customerPhone.setText(Objects.requireNonNull(map.get("phone")).toString());
                     }
-                    customerIcon.setImageResource(R.mipmap.workermarker);
+                    customerIcon.setImageResource(R.mipmap.ic_launcher_foreground);
                 }
             }
 
