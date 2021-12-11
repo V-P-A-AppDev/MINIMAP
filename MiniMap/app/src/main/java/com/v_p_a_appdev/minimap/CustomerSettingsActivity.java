@@ -23,8 +23,7 @@ public class CustomerSettingsActivity extends AppCompatActivity {
 
     private EditText nameField, phoneField;
     private DatabaseReference customerDatabase;
-    private String userName;
-    private String userPhone;
+    User currentUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +47,12 @@ public class CustomerSettingsActivity extends AppCompatActivity {
 
     private void saveUserInformation() {
         if (nameField != null && phoneField != null) {
-            userName = nameField.getText().toString();
-            userPhone = phoneField.getText().toString();
+            currentUser.setUsername(nameField.getText().toString());
+            currentUser.setPhonenumber(phoneField.getText().toString());
         }
         Map info = new HashMap();
-        info.put("name", userName);
-        info.put("phone", userPhone);
+        info.put("name", currentUser.getUsername());
+        info.put("phone", currentUser.getPhonenumber());
         customerDatabase.updateChildren(info);
     }
 
@@ -64,12 +63,12 @@ public class CustomerSettingsActivity extends AppCompatActivity {
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
                     if (Objects.requireNonNull(map).get("name") != null) {
-                        userName = Objects.requireNonNull(map.get("name")).toString();
-                        nameField.setText(userName);
+                        currentUser.setUsername(Objects.requireNonNull(map.get("name")).toString());
+                        nameField.setText(currentUser.getUsername());
                     }
                     if (map.get("phone") != null) {
-                        userPhone = Objects.requireNonNull(map.get("phone")).toString();
-                        phoneField.setText(userPhone);
+                        currentUser.setPhonenumber(Objects.requireNonNull(map.get("phone")).toString());
+                        phoneField.setText(currentUser.getPhonenumber());
                     }
                 }
             }

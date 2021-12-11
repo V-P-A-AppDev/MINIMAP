@@ -53,6 +53,7 @@ import java.util.Objects;
 public class CustomerMapActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     private static final int LOCATION_REQUEST_CODE = 1;
+    private MapUtilities maputils = new MapUtilities();
     private GoogleMap mMap;
     private ActivityCustomerMapBinding binding;
     GoogleApiClient currentGoogleApiClient;
@@ -119,7 +120,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                 geoQuery.removeAllListeners();
                 workerLocRef.removeEventListener(workerLocationRefListener);
                 if (workerFoundId != null) {
-                    DatabaseReference workerRef = FirebaseDatabase.getInstance().getReference("Users").child("Workers").child(workerFoundId).child("customerRequest");
+                    DatabaseReference workerRef = FirebaseDatabase.getInstance().getReference("Users").child("Workers").child(workerFoundId).child("CustomerJobId");
                     workerRef.removeValue();
                     workerFoundId = null;
                 }
@@ -353,6 +354,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
     @Override
     protected void onStop() {
         super.onStop();
+        LocationServices.FusedLocationApi.removeLocationUpdates(currentGoogleApiClient, this);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
