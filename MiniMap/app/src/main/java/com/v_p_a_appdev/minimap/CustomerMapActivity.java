@@ -127,7 +127,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                 geoFire.setLocation(userId, new GeoLocation(lastLocation.getLatitude(), lastLocation.getLongitude()));
                 requestLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
                 custMarker = mMap.addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here")/*.icon(BitmapDescriptorFactory.fromResource(R.mipmap.customermarker))*/);
-                requestButton.setText("Searching for someone in the area.");
+                requestButton.setText("Cancel.");
                 getClosestWorker();
             }
         });
@@ -217,7 +217,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                     float distance = workerLocation.distanceTo(lastLocation);
 
                     if (distance < 100) {
-                        requestButton.setText("Worker is here");
+                        requestButton.setText("Reinforcements has arrived ;) .");
                     } else {
                         requestButton.setText("Worker found: " + /*String.valueOf*/(distance));
                     }

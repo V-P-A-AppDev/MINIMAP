@@ -28,13 +28,13 @@ public class MainActivity extends AppCompatActivity {
         Button workerButton = findViewById(R.id.worker);
         Button customerButton = findViewById(R.id.customer);
         workerButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this,WorkerLoginActivity.class);
+            Intent intent = new Intent(MainActivity.this, WorkerLoginActivity.class);
             startActivity(intent);
             finish();
             return;
         });
         customerButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this,CustomerLoginActivity.class);
+            Intent intent = new Intent(MainActivity.this, CustomerLoginActivity.class);
             startActivity(intent);
             finish();
             return;

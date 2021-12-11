@@ -19,35 +19,36 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class WorkerLoginActivity extends AppCompatActivity {
-    private EditText emailInput,passwordInput;
+    private EditText emailInput, passwordInput;
     private FirebaseAuth entranceAuth;
     private FirebaseAuth.AuthStateListener fireBaseAuthListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worker_login);
-        entranceAuth=FirebaseAuth.getInstance();
+        entranceAuth = FirebaseAuth.getInstance();
         fireBaseAuthListener = firebaseAuth -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user!=null){
-                Intent intent = new Intent(WorkerLoginActivity.this,WorkerMapActivity.class);
+            if (user != null) {
+                Intent intent = new Intent(WorkerLoginActivity.this, WorkerMapActivity.class);
                 startActivity(intent);
                 finish();
                 return;
             }
         };
 
-        emailInput= findViewById(R.id.email);
-        passwordInput= findViewById(R.id.password);
+        emailInput = findViewById(R.id.email);
+        passwordInput = findViewById(R.id.password);
         Button loginButton = findViewById(R.id.login);
         Button registrationButton = findViewById(R.id.registration);
         registrationButton.setOnClickListener(v -> {
             final String email = emailInput.getText().toString();
             final String password = passwordInput.getText().toString();
-            if(password.length()<6){
-                Toast.makeText(WorkerLoginActivity.this,"The password should be 6 charecters at least .",Toast.LENGTH_SHORT).show();
+            if (password.length() < 6) {
+                Toast.makeText(WorkerLoginActivity.this, "The password should be 6 charecters at least .", Toast.LENGTH_SHORT).show();
             }
-            entranceAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(WorkerLoginActivity.this, task -> {
+            entranceAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(WorkerLoginActivity.this, task -> {
                 if (!task.isSuccessful()) {
                     Toast.makeText(WorkerLoginActivity.this, "Something went wrong with the registration process.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -60,7 +61,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(v -> {
             final String email = emailInput.getText().toString();
             final String password = passwordInput.getText().toString();
-            entranceAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(WorkerLoginActivity.this, task -> {
+            entranceAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(WorkerLoginActivity.this, task -> {
                 if (!task.isSuccessful()) {
                     Toast.makeText(WorkerLoginActivity.this, "Something went wrong with the authentication process.", Toast.LENGTH_SHORT).show();
                 }

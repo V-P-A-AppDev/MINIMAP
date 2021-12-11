@@ -52,7 +52,7 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
     SupportMapFragment mapFragment;
     private Button logoutButton;
     String userId;
-    private boolean isloggingout = false;
+    private boolean isLoggingOut = false;
 
     private Marker jobMarker;
     private String customerId = "";
@@ -74,7 +74,7 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
         }//*
         logoutButton = findViewById(R.id.logout);
         logoutButton.setOnClickListener(v -> {
-            isloggingout = true;
+            isLoggingOut = true;
             disconnectwWorker();
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(WorkerMapActivity.this, MainActivity.class);
@@ -91,30 +91,22 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
         getAssignedCustomer();
     }
 
-    private void getAssignedCustomer(){
+    private void getAssignedCustomer() {
         String workerID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference assignedCustRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Workers").child(workerID).child("CustomerJobId");
 
         assignedCustRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-
-                   /*
-                   Map<String,Object>map=(Map<String,Object>map)snapshot.getValue();
-                   if(map.get("customerCaseId")!=null){
-                        customerId= map.get("customerCaseId").toString();
-                    }
-                    */
-                    /**/customerId = snapshot.getValue().toString();
+                if (snapshot.exists()) {
+                    customerId = snapshot.getValue().toString();
                     getAssignedCustomerLocation();
-                }
-                else{
+                } else {
                     customerId = "";
-                    if(jobMarker != null){
+                    if (jobMarker != null) {
                         jobMarker.remove();
                     }
-                    if(assignedCustLocationRef != null) {
+                    if (assignedCustLocationRef != null) {
                         assignedCustLocationRef.removeEventListener(assignedCustLocationRefListener);
                     }
                 }
@@ -127,21 +119,23 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
         });
 
     }
+
     private DatabaseReference assignedCustLocationRef;
     private ValueEventListener assignedCustLocationRefListener;
-    private void getAssignedCustomerLocation(){
+
+    private void getAssignedCustomerLocation() {
         assignedCustLocationRef = FirebaseDatabase.getInstance().getReference().child("customerRequest").child(customerId).child("l");
         assignedCustLocationRefListener = assignedCustLocationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists() && !customerId.equals("")){
+                if (snapshot.exists() && !customerId.equals("")) {
                     List<Object> map = (List<Object>) snapshot.getValue();
                     double CustLat = 0;
                     double CustLng = 0;
-                    if(map.get(0) != null){
+                    if (map.get(0) != null) {
                         CustLat = Double.parseDouble(map.get(0).toString());
                     }
-                    if(map.get(0) != null){
+                    if (map.get(0) != null) {
                         CustLng = Double.parseDouble(map.get(1).toString());
                     }
                     LatLng custLatLng = new LatLng(CustLat, CustLng);
@@ -149,7 +143,8 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
                     {
                         jobMarker.remove();
                     }
-                    jobMarker =*/ mMap.addMarker(new MarkerOptions().position(custLatLng).title("Customer location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.workermarker)));
+                    jobMarker =*/
+                    mMap.addMarker(new MarkerOptions().position(custLatLng).title("Customer location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.workermarker)));
                 }
             }
 
@@ -230,8 +225,7 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
 
     }
 
-    private void disconnectwWorker()
-    {
+    private void disconnectwWorker() {
         LocationServices.FusedLocationApi.removeLocationUpdates(currentGoogleApiClient, this);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
         GeoFire geoFire = new GeoFire(ref);
@@ -241,7 +235,7 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
     @Override
     protected void onStop() {
         super.onStop();
-        if(!isloggingout){
+        if (!isLoggingOut) {
             disconnectwWorker();
         }
     }

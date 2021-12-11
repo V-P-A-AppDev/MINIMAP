@@ -19,35 +19,36 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class CustomerLoginActivity extends AppCompatActivity {
-    private EditText emailInput,passwordInput;
+    private EditText emailInput, passwordInput;
     private FirebaseAuth entranceAuth;
     private FirebaseAuth.AuthStateListener fireBaseAuthListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_login);
-        entranceAuth=FirebaseAuth.getInstance();
+        entranceAuth = FirebaseAuth.getInstance();
         fireBaseAuthListener = firebaseAuth -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user!=null){
-                Intent intent = new Intent(CustomerLoginActivity.this,CustomerMapActivity.class);
+            if (user != null) {
+                Intent intent = new Intent(CustomerLoginActivity.this, CustomerMapActivity.class);
                 startActivity(intent);
                 finish();
                 return;
             }
         };
 
-        emailInput= findViewById(R.id.email);
-        passwordInput= findViewById(R.id.password);
+        emailInput = findViewById(R.id.email);
+        passwordInput = findViewById(R.id.password);
         Button loginButton = findViewById(R.id.login);
         Button registrationButton = findViewById(R.id.registration);
         registrationButton.setOnClickListener(v -> {
             final String email = emailInput.getText().toString();
             final String password = passwordInput.getText().toString();
-            if(password.length()<6){
-                Toast.makeText(CustomerLoginActivity.this,"The password should be 6 characters at least .",Toast.LENGTH_SHORT).show();
+            if (password.length() < 6) {
+                Toast.makeText(CustomerLoginActivity.this, "The password should be 6 characters at least .", Toast.LENGTH_SHORT).show();
             }
-            entranceAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(CustomerLoginActivity.this, task -> {
+            entranceAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(CustomerLoginActivity.this, task -> {
                 if (!task.isSuccessful()) {
                     Toast.makeText(CustomerLoginActivity.this, "Something went wrong with the registration process.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -60,7 +61,7 @@ public class CustomerLoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(v -> {
             final String email = emailInput.getText().toString();
             final String password = passwordInput.getText().toString();
-            entranceAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(CustomerLoginActivity.this, task -> {
+            entranceAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(CustomerLoginActivity.this, task -> {
                 if (!task.isSuccessful()) {
                     Toast.makeText(CustomerLoginActivity.this, "Something went wrong with the authentication process.", Toast.LENGTH_SHORT).show();
                 }
