@@ -20,12 +20,8 @@ import java.util.Map;
 
 public class WorkerSettingsActivity extends AppCompatActivity {
 
-
     private EditText nameField, phoneField;
-    private Button submitButton, previousButton;
-    private FirebaseAuth auth;
     private DatabaseReference workersDatabase;
-    private String userId;
     private String userName;
     private String userPhone;
 
@@ -35,25 +31,17 @@ public class WorkerSettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_worker_settings);
         nameField = findViewById(R.id.name);
         phoneField = findViewById(R.id.phone);
-        submitButton = findViewById(R.id.submit);
-        previousButton = findViewById(R.id.previous);
-        auth = FirebaseAuth.getInstance();
-        userId = auth.getCurrentUser().getUid();
+        Button submitButton = findViewById(R.id.submit);
+        Button previousButton = findViewById(R.id.previous);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String userId = auth.getCurrentUser().getUid();
         workersDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Workers").child(userId);
         getUserInfo();
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveUserInformation();
-            }
-        });
+        submitButton.setOnClickListener(v -> saveUserInformation());
 
-        previousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                return;
-            }
+        previousButton.setOnClickListener(v -> {
+            finish();
+            return;
         });
     }
 
@@ -92,3 +80,6 @@ public class WorkerSettingsActivity extends AppCompatActivity {
         });
     }
 }
+
+
+

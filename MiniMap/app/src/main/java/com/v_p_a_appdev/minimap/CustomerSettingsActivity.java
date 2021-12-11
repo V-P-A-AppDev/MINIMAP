@@ -17,14 +17,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class CustomerSettingsActivity extends AppCompatActivity {
 
     private EditText nameField, phoneField;
-    private Button submitButton, previousButton;
-    private FirebaseAuth auth;
     private DatabaseReference customerDatabase;
-    private String userId;
     private String userName;
     private String userPhone;
 
@@ -34,25 +32,17 @@ public class CustomerSettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_customer_settings);
         nameField = findViewById(R.id.name);
         phoneField = findViewById(R.id.phone);
-        submitButton = findViewById(R.id.submit);
-        previousButton = findViewById(R.id.previous);
-        auth = FirebaseAuth.getInstance();
-        userId = auth.getCurrentUser().getUid();
+        Button submitButton = findViewById(R.id.submit);
+        Button previousButton = findViewById(R.id.previous);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
         customerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(userId);
         getUserInfo();
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveUserInformation();
-            }
-        });
+        submitButton.setOnClickListener(v -> saveUserInformation());
 
-        previousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                return;
-            }
+        previousButton.setOnClickListener(v -> {
+            finish();
+            return;
         });
     }
 
@@ -73,12 +63,12 @@ public class CustomerSettingsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
-                    if (map.get("name") != null) {
-                        userName = map.get("name").toString();
+                    if (Objects.requireNonNull(map).get("name") != null) {
+                        userName = Objects.requireNonNull(map.get("name")).toString();
                         nameField.setText(userName);
                     }
                     if (map.get("phone") != null) {
-                        userPhone = map.get("phone").toString();
+                        userPhone = Objects.requireNonNull(map.get("phone")).toString();
                         phoneField.setText(userPhone);
                     }
                 }

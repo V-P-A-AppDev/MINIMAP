@@ -44,6 +44,7 @@ import com.v_p_a_appdev.minimap.databinding.ActivityCustomerMapBinding;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class CustomerMapActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
@@ -68,7 +69,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
 
         binding = ActivityCustomerMapBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
         //*Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -81,13 +82,10 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         logoutButton = findViewById(R.id.logout);
         requestButton = findViewById(R.id.request);
         settingButton = findViewById(R.id.settings);
-        settingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CustomerMapActivity.this,CustomerSettingsActivity.class);
-                startActivity(intent);
-                return;
-            }
+        settingButton.setOnClickListener(v -> {
+            Intent intent = new Intent(CustomerMapActivity.this,CustomerSettingsActivity.class);
+            startActivity(intent);
+            return;
         });
         logoutButton.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
@@ -164,7 +162,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                     workerFound = true;
                     workerFoundId = key;
                     DatabaseReference workerRef = FirebaseDatabase.getInstance().getReference("Users").child("Workers").child(workerFoundId);
-                    String customerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    String customerId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
                     HashMap hmap = new HashMap();
                     hmap.put("CustomerJobId", customerId);
                     workerRef.updateChildren(hmap);
@@ -211,7 +209,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                     double workerLat = 0;
                     double workerLng = 0;
                     requestButton.setText("Worker Found");
-                    if (map.get(0) != null) {
+                    if (Objects.requireNonNull(map).get(0) != null) {
                         workerLat = Double.parseDouble(map.get(0).toString());
                     }
                     if (map.get(1) != null) {
@@ -264,8 +262,6 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        if (location == null)
-            return;
         lastLocation = location;
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
