@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.MiniMap">
+        android:theme="@style/Theme.MiniMap"
+        android:fullBackupContent="@xml/backup_descriptor">
         <activity
             android:name=".CustomerMapActivity"
             android:exported="false" />

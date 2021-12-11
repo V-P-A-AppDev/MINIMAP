@@ -34,7 +34,6 @@ public class CustomerLoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(CustomerLoginActivity.this, CustomerMapActivity.class);
                 startActivity(intent);
                 finish();
-                return;
             }
         };
 

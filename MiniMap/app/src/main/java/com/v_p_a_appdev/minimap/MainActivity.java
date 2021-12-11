@@ -31,13 +31,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, WorkerLoginActivity.class);
             startActivity(intent);
             finish();
-            return;
         });
         customerButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, CustomerLoginActivity.class);
             startActivity(intent);
             finish();
-            return;
         });
     }
 }

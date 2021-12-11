@@ -80,7 +80,6 @@ public class WorkerMapActivity extends FragmentActivity implements LocationListe
             Intent intent = new Intent(WorkerMapActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
-            return;
         });
 
 

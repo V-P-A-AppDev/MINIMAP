@@ -34,7 +34,6 @@ public class WorkerLoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(WorkerLoginActivity.this, WorkerMapActivity.class);
                 startActivity(intent);
                 finish();
-                return;
             }
         };
 

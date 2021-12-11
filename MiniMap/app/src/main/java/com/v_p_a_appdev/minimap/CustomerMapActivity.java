@@ -37,8 +37,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.v_p_a_appdev.minimap.databinding.ActivityCustomerMapBinding;
+
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.v_p_a_appdev.minimap.databinding.ActivityCustomerMapBinding;
 
 import java.util.HashMap;
 import java.util.List;
@@ -83,7 +84,6 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
             Intent intent = new Intent(CustomerMapActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
-            return;
         });
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(CustomerMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
@@ -126,7 +126,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                 GeoFire geoFire = new GeoFire(ref);
                 geoFire.setLocation(userId, new GeoLocation(lastLocation.getLatitude(), lastLocation.getLongitude()));
                 requestLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-                customerMarker = mMap.addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher_foreground)));
+                customerMarker = mMap.addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.drawable.screen)));
                 requestButton.setText("Cancel.");
                 getClosestWorker();
             }
