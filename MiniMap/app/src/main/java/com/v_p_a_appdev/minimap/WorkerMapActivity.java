@@ -43,11 +43,8 @@ public class WorkerMapActivity extends UserMapActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        customerInfo = findViewById(R.id.customerInfo);
-        customerIcon = findViewById(R.id.customerIcon);
-        customerName = findViewById(R.id.customerName);
-        customerPhone = findViewById(R.id.customerPhone);
-        logoutButton = findViewById(R.id.logout);
+
+        initialize();
 
         logoutButton.setOnClickListener(v -> {
             isLoggingOut = true;
@@ -58,6 +55,14 @@ public class WorkerMapActivity extends UserMapActivity {
             finish();
         });
         getAssignedCustomer();
+    }
+
+    private void initialize(){
+        customerInfo = findViewById(R.id.customerInfo);
+        customerIcon = findViewById(R.id.customerIcon);
+        customerName = findViewById(R.id.customerName);
+        customerPhone = findViewById(R.id.customerPhone);
+        logoutButton = findViewById(R.id.logout);
     }
 
     private void getAssignedCustomer() {
@@ -158,7 +163,7 @@ public class WorkerMapActivity extends UserMapActivity {
         if (isLoggingOut){
             return;
         }
-        lastLocation = location;
+        userLocation.lastLocation = location;
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
         mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latlng));
         //*Basically it goes in between 1 to 21 to i've chosen somewhere in the middle.

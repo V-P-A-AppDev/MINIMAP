@@ -65,13 +65,8 @@ public class CustomerMapActivity extends UserMapActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initialize();
 
-        logoutButton = findViewById(R.id.logout);
-        requestButton = findViewById(R.id.request);
-        workerInfo = findViewById(R.id.workerInfo);
-        workerIcon = findViewById(R.id.workerIcon);
-        workerName = findViewById(R.id.workerName);
-        workerPhone = findViewById(R.id.workerPhone);
         logoutButton.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, MainActivity.class);
@@ -115,13 +110,22 @@ public class CustomerMapActivity extends UserMapActivity{
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
 
                 GeoFire geoFire = new GeoFire(ref);
-                geoFire.setLocation(userId, new GeoLocation(lastLocation.getLatitude(), lastLocation.getLongitude()));
-                requestLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+                geoFire.setLocation(userId, new GeoLocation(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude()));
+                requestLocation = new LatLng(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude());
                 customerMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher_foreground)));
                 requestButton.setText("Cancel.");
                 getClosestWorker();
             }
         });
+    }
+
+    private void initialize(){
+        logoutButton = findViewById(R.id.logout);
+        requestButton = findViewById(R.id.request);
+        workerInfo = findViewById(R.id.workerInfo);
+        workerIcon = findViewById(R.id.workerIcon);
+        workerName = findViewById(R.id.workerName);
+        workerPhone = findViewById(R.id.workerPhone);
     }
 
     private int radius = 1;
@@ -228,7 +232,7 @@ public class CustomerMapActivity extends UserMapActivity{
                     Location workerLocation = new Location("");
                     workerLocation.setLatitude(workerLatLng.latitude);
                     workerLocation.setLongitude(workerLatLng.longitude);
-                    float distance = workerLocation.distanceTo(lastLocation);
+                    float distance = workerLocation.distanceTo(userLocation.lastLocation);
 
                     if (distance < 100) {
                         requestButton.setText("Reinforcements has arrived ;) .");
