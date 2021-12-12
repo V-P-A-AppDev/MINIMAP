@@ -40,7 +40,6 @@ public abstract class UserSettingActivity extends AppCompatActivity {
 
         previousButton.setOnClickListener(v -> {
             finish();
-            return;
         });
     }
 
@@ -54,7 +53,6 @@ public abstract class UserSettingActivity extends AppCompatActivity {
         info.put("phone", currentUser.getPhoneNumber());
         UserDatabase.updateChildren(info);
         finish();
-        return;
     }
 
     private void getUserInfo() {

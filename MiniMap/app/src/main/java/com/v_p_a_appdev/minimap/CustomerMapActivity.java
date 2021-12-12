@@ -41,7 +41,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.v_p_a_appdev.minimap.databinding.ActivityCustomerMapBinding;
 
@@ -50,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class CustomerMapActivity extends UserMapActivity{
+public class CustomerMapActivity extends UserMapActivity {
 
     private Button logoutButton, requestButton;
     private LatLng requestLocation;
@@ -64,9 +63,7 @@ public class CustomerMapActivity extends UserMapActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initialize();
-
         logoutButton.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, MainActivity.class);
@@ -119,7 +116,7 @@ public class CustomerMapActivity extends UserMapActivity{
         });
     }
 
-    private void initialize(){
+    private void initialize() {
         logoutButton = findViewById(R.id.logout);
         requestButton = findViewById(R.id.request);
         workerInfo = findViewById(R.id.workerInfo);
@@ -176,7 +173,6 @@ public class CustomerMapActivity extends UserMapActivity{
 
             @Override
             public void onGeoQueryError(DatabaseError error) {
-
             }
         });
     }
@@ -233,7 +229,6 @@ public class CustomerMapActivity extends UserMapActivity{
                     workerLocation.setLatitude(workerLatLng.latitude);
                     workerLocation.setLongitude(workerLatLng.longitude);
                     float distance = workerLocation.distanceTo(userLocation.lastLocation);
-
                     if (distance < 100) {
                         requestButton.setText("Reinforcements has arrived ;) .");
                     } else {
@@ -272,6 +267,10 @@ public class CustomerMapActivity extends UserMapActivity{
         setContentView(R.layout.activity_customer_map);
     }
 }
+
+
+
+
 
 
 

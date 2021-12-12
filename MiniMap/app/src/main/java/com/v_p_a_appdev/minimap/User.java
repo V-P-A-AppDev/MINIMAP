@@ -4,13 +4,12 @@ public class User {
     private String userName;
     private String phoneNumber;
 
-    public User(){
+    public User() {
         userName = "";
         phoneNumber = "";
     }
 
-    public User(String userName, String phoneNumber)
-    {
+    public User(String userName, String phoneNumber) {
         this.userName = userName;
         this.phoneNumber = phoneNumber;
     }

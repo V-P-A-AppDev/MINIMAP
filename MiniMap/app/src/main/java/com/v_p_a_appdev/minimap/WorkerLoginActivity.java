@@ -3,7 +3,7 @@ package com.v_p_a_appdev.minimap;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class WorkerLoginActivity extends UserLoginActivity{
+public class WorkerLoginActivity extends UserLoginActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         userType = "Workers";

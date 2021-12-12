@@ -8,7 +8,7 @@ public class UserLocation {
     Location lastLocation;
     LocationRequest locationRequest;
 
-    public void CreateLocationRequest(){
+    public void CreateLocationRequest() {
         locationRequest = new LocationRequest();
         //*Set an interval for 1 second.
         locationRequest.setInterval(1000);

@@ -25,3 +25,4 @@ public class ExampleInstrumentedTest {
         assertEquals("com.v_p_a_appdev.minimap", appContext.getPackageName());
     }
 }
+
