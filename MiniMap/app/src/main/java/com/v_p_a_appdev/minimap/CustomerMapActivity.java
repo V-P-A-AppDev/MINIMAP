@@ -53,13 +53,10 @@ import java.util.Objects;
 public class CustomerMapActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     private static final int LOCATION_REQUEST_CODE = 1;
-    private MapUtilities maputils = new MapUtilities();
-    private GoogleMap mMap;
     private ActivityCustomerMapBinding binding;
-    GoogleApiClient currentGoogleApiClient;
+    private MapUtilities maputils = new MapUtilities();
     Location lastLocation;
     LocationRequest locationRequest;
-    SupportMapFragment mapFragment;
     String userId;
 
     private Button logoutButton, requestButton, settingButton;
@@ -82,12 +79,11 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
         //*Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        maputils.setMapFragment((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(CustomerMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);//*
         } else {//*
-            mapFragment.getMapAsync(this);
+            maputils.getMapFragment().getMapAsync(this);
         }
         logoutButton = findViewById(R.id.logout);
         requestButton = findViewById(R.id.request);
@@ -107,11 +103,11 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
             startActivity(intent);
             finish();
         });
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(CustomerMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
-        } else {
-            mapFragment.getMapAsync(this);
-        }
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(CustomerMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+//        } else {
+//            mapFragment.getMapAsync(this);
+//        }
         //*When a click on the request button is being performed.
         requestButton.setOnClickListener(v -> {
             //*If the request button is already pressed then it means that the customer wants to cancel it .
@@ -150,7 +146,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                 GeoFire geoFire = new GeoFire(ref);
                 geoFire.setLocation(userId, new GeoLocation(lastLocation.getLatitude(), lastLocation.getLongitude()));
                 requestLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-                customerMarker = mMap.addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher_foreground)));
+                customerMarker = maputils.getmMap().addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher_foreground)));
                 requestButton.setText("Cancel.");
                 getClosestWorker();
             }
@@ -271,7 +267,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
                     } else {
                         requestButton.setText("Worker found: " + /*String.valueOf*/(distance));
                     }
-                    workerMarker = mMap.addMarker(new MarkerOptions().position(workerLatLng).title("Your worker").icon(BitmapDescriptorFactory.fromResource(R.mipmap.workermarker)));
+                    workerMarker = maputils.getmMap().addMarker(new MarkerOptions().position(workerLatLng).title("Your worker").icon(BitmapDescriptorFactory.fromResource(R.mipmap.workermarker)));
                 }
             }
 
@@ -285,30 +281,30 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        mMap = googleMap;
+        maputils.setmMap(googleMap);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(CustomerMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);//*
         }
         buildGooogleApiClient();
-        mMap.setMyLocationEnabled(true);
+        maputils.getmMap().setMyLocationEnabled(true);
         if (lastLocation == null)
             return;
         LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        maputils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
     protected synchronized void buildGooogleApiClient() {
-        currentGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
-        currentGoogleApiClient.connect();
+        maputils.setCurrentGoogleApiClient(new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(LocationServices.API).build());
+        maputils.getCurrentGoogleApiClient().connect();
     }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
         lastLocation = location;
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+        maputils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latlng));
         //*Basically it goes in between 1 to 21 to i've choosen somewhere in the middle.
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        maputils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(11));
     }
 
     @Override
@@ -321,11 +317,11 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(CustomerMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);//*
         }
-        while (!currentGoogleApiClient.isConnected()) {
+        while (!maputils.getCurrentGoogleApiClient().isConnected()) {
             buildGooogleApiClient();
-            System.out.println(currentGoogleApiClient.isConnected());
+            System.out.println(maputils.getCurrentGoogleApiClient().isConnected());
         }
-        LocationServices.FusedLocationApi.requestLocationUpdates(currentGoogleApiClient, locationRequest, this);
+        LocationServices.FusedLocationApi.requestLocationUpdates(maputils.getCurrentGoogleApiClient(), locationRequest, this);
     }
 
     @Override
@@ -333,7 +329,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mapFragment.getMapAsync(this);
+                maputils.getMapFragment().getMapAsync(this);
             } else {
                 Toast.makeText(getApplicationContext(), "Access to location is needed!", Toast.LENGTH_LONG).show();
             }
@@ -354,7 +350,7 @@ public class CustomerMapActivity extends FragmentActivity implements LocationLis
     @Override
     protected void onStop() {
         super.onStop();
-        LocationServices.FusedLocationApi.removeLocationUpdates(currentGoogleApiClient, this);
+        LocationServices.FusedLocationApi.removeLocationUpdates(maputils.getCurrentGoogleApiClient(), this);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
