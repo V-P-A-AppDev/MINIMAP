@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.net.PlacesClient;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final int LOCATION_REQUEST_CODE = 1;
@@ -24,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
         }
+        Places.initialize(getApplicationContext(), String.valueOf(R.string.google_maps_key));
+        PlacesClient placesClient = Places.createClient(this);
 
         Button workerButton = findViewById(R.id.worker);
         Button customerButton = findViewById(R.id.customer);

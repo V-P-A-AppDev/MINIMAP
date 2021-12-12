@@ -1,33 +1,33 @@
 package com.v_p_a_appdev.minimap;
 
 public class User {
-    private String username;
-    private String phonenumber;
+    private String userName;
+    private String phoneNumber;
 
     public User(){
-        username = "";
-        phonenumber = "";
+        userName = "";
+        phoneNumber = "";
     }
 
-    public User(String username, String phonenumber)
+    public User(String userName, String phoneNumber)
     {
-        this.username = username;
-        this.phonenumber = phonenumber;
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getPhonenumber() {
-        return phonenumber;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
