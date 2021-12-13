@@ -34,12 +34,12 @@ import java.util.Objects;
 
 public class RequesterMapActivity extends UserMapActivity {
 
-    private Button logoutButton, requestButton;
+    private Button logoutButton, requestButton, openMenuButton, closeMenuButton;
     private LatLng requestLocation;
     private boolean isRequesting;
     private Marker helperMarker;
     private Marker requesterMarker;
-    private LinearLayout helperInfo;
+    private LinearLayout helperInfo, menuPopUp;
     private ImageView helperIcon;
     private TextView helperName, helperPhone;
 
@@ -53,12 +53,24 @@ public class RequesterMapActivity extends UserMapActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initialize();
+
+
         logoutButton.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         });
+        openMenuButton.setOnClickListener(v -> {
+            menuPopUp.setVisibility(View.VISIBLE);
+            openMenuButton.setVisibility(View.GONE);
+        });
+
+        closeMenuButton.setOnClickListener(v -> {
+            menuPopUp.setVisibility(View.GONE);
+            openMenuButton.setVisibility(View.VISIBLE);
+        });
+
 
         //*When a click on the request button is being performed.
         requestButton.setOnClickListener(v -> {
@@ -105,6 +117,7 @@ public class RequesterMapActivity extends UserMapActivity {
                 getClosestHelper();
             }
         });
+
     }
 
     private void initialize() {
@@ -114,6 +127,9 @@ public class RequesterMapActivity extends UserMapActivity {
         helperIcon = findViewById(R.id.helperIcon);
         helperName = findViewById(R.id.helperName);
         helperPhone = findViewById(R.id.helperPhone);
+        openMenuButton = findViewById(R.id.openMenu);
+        closeMenuButton = findViewById(R.id.closeMenu);
+        menuPopUp = findViewById(R.id.requesterMenu);
     }
 
 
@@ -254,7 +270,6 @@ public class RequesterMapActivity extends UserMapActivity {
         setContentView(R.layout.activity_requester_map);
     }
 }
-
 
 
 

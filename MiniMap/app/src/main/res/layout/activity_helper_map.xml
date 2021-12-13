@@ -6,12 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".HelperMapActivity">
 
-    <Button
-        android:id="@+id/logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/orange"
-        android:text="Logout" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
@@ -20,12 +14,44 @@
         android:layout_height="match_parent" />
 
     <Button
-        android:id="@+id/settings"
+        android:id="@+id/openMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
         android:backgroundTint="@color/orange"
-        android:text="Settings." />
+        android:text="Menu."
+        android:visibility="visible"/>
+
+    <LinearLayout
+        android:id="@+id/helperMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="#7D4D4D4D"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/closeMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/orange"
+            android:text="X" />
+
+        <Button
+            android:id="@+id/settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/orange"
+            android:text="Settings." />
+
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/orange"
+            android:text="Logout" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/requesterInfo"
@@ -54,16 +80,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="20sp"
-                android:paddingBottom="10sp"/>
+                android:paddingBottom="10sp" />
 
             <TextView
                 android:id="@+id/requesterPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="20sp"
-                android:paddingBottom="10sp"
                 android:autoLink="phone"
-                android:linksClickable="true" />
+                android:linksClickable="true"
+                android:paddingTop="20sp"
+                android:paddingBottom="10sp" />
 
         </LinearLayout>
 

@@ -1,6 +1,5 @@
 package com.v_p_a_appdev.minimap;
 
-
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
@@ -33,20 +32,18 @@ import java.util.Map;
 import java.util.Objects;
 
 public class HelperMapActivity extends UserMapActivity {
-    private Button logoutButton;
+    private Button logoutButton, openMenuButton, closeMenuButton;
     private boolean isLoggingOut = false;
     private Marker jobMarker;
     private String requesterId = "";
-    private LinearLayout requesterInfo;
+    private LinearLayout requesterInfo, menuPopUp;
     private ImageView requesterIcon;
     private TextView requesterName, requesterPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initialize();
-
         logoutButton.setOnClickListener(v -> {
             isLoggingOut = true;
             disconnectwHelper();
@@ -56,9 +53,20 @@ public class HelperMapActivity extends UserMapActivity {
             finish();
         });
         requesterPhone.setOnClickListener(v -> {
-           ShowDialer(requesterPhone);
+            ShowDialer(requesterPhone);
         });
         getAssignedRequester();
+        openMenuButton.setOnClickListener(v -> {
+            menuPopUp.setVisibility(View.VISIBLE);
+            openMenuButton.setVisibility(View.GONE);
+        });
+
+        closeMenuButton.setOnClickListener(v -> {
+            menuPopUp.setVisibility(View.GONE);
+            openMenuButton.setVisibility(View.VISIBLE);
+        });
+
+
     }
 
     private void initialize() {
@@ -67,12 +75,16 @@ public class HelperMapActivity extends UserMapActivity {
         requesterName = findViewById(R.id.requesterName);
         requesterPhone = findViewById(R.id.requesterPhone);
         logoutButton = findViewById(R.id.logout);
+
+
+        openMenuButton = findViewById(R.id.openMenu);
+        closeMenuButton = findViewById(R.id.closeMenu);
+        menuPopUp = findViewById(R.id.helperMenu);
     }
 
     private void getAssignedRequester() {
         String helperID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         DatabaseReference assignedReqRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(helperID).child("RequesterJobId");
-
         assignedReqRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -220,7 +232,7 @@ public class HelperMapActivity extends UserMapActivity {
         startActivity(intent);
     }
 
-    public void ShowDialer(View view){
+    public void ShowDialer(View view) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + requesterPhone.getText().toString()));
         startActivity(intent);
@@ -232,8 +244,5 @@ public class HelperMapActivity extends UserMapActivity {
         setContentView(R.layout.activity_helper_map);
     }
 }
-
-
-
 
 
