@@ -1,9 +1,9 @@
 @startuml
-class com.v_p_a_appdev.minimap.WorkerSettingsActivity {
+class com.v_p_a_appdev.minimap.HelperSettingsActivity {
 # void onCreate(Bundle)
 # void loadActivity()
 }
-class com.v_p_a_appdev.minimap.CustomerMapActivity {
+class com.v_p_a_appdev.minimap.RequesterMapActivity {
 - Button logoutButton
 - LatLng requestLocation
 - boolean isRequesting
@@ -43,11 +43,11 @@ abstract class com.v_p_a_appdev.minimap.UserLoginActivity {
 ~ {abstract}void loadActivity()
 ~ {abstract}void changeScreen()
 }
-class com.v_p_a_appdev.minimap.CustomerSettingsActivity {
+class com.v_p_a_appdev.minimap.RequesterSettingsActivity {
 # void onCreate(Bundle)
 # void loadActivity()
 }
-class com.v_p_a_appdev.minimap.WorkerMapActivity {
+class com.v_p_a_appdev.minimap.HelperMapActivity {
 - Button logoutButton
 - boolean isLoggingOut
 - Marker jobMarker
@@ -69,7 +69,7 @@ class com.v_p_a_appdev.minimap.WorkerMapActivity {
 # void loadSetting()
 # void loadActivity()
 }
-class com.v_p_a_appdev.minimap.CustomerLoginActivity {
+class com.v_p_a_appdev.minimap.RequesterLoginActivity {
 # void onCreate(Bundle)
 ~ void loadActivity()
 ~ void changeScreen()
@@ -88,7 +88,7 @@ class com.v_p_a_appdev.minimap.MainActivity {
 - {static} int LOCATION_REQUEST_CODE
 # void onCreate(Bundle)
 }
-class com.v_p_a_appdev.minimap.WorkerLoginActivity {
+class com.v_p_a_appdev.minimap.HelperLoginActivity {
 # void onCreate(Bundle)
 ~ void loadActivity()
 ~ void changeScreen()
@@ -136,14 +136,14 @@ abstract class com.v_p_a_appdev.minimap.UserMapActivity {
 }
 
 
-com.v_p_a_appdev.minimap.UserSettingActivity <|-- com.v_p_a_appdev.minimap.WorkerSettingsActivity
-com.v_p_a_appdev.minimap.UserMapActivity <|-- com.v_p_a_appdev.minimap.CustomerMapActivity
+com.v_p_a_appdev.minimap.UserSettingActivity <|-- com.v_p_a_appdev.minimap.HelperSettingsActivity
+com.v_p_a_appdev.minimap.UserMapActivity <|-- com.v_p_a_appdev.minimap.RequesterMapActivity
 androidx.appcompat.app.AppCompatActivity <|-- com.v_p_a_appdev.minimap.UserLoginActivity
-com.v_p_a_appdev.minimap.UserSettingActivity <|-- com.v_p_a_appdev.minimap.CustomerSettingsActivity
-com.v_p_a_appdev.minimap.UserMapActivity <|-- com.v_p_a_appdev.minimap.WorkerMapActivity
-com.v_p_a_appdev.minimap.UserLoginActivity <|-- com.v_p_a_appdev.minimap.CustomerLoginActivity
+com.v_p_a_appdev.minimap.UserSettingActivity <|-- com.v_p_a_appdev.minimap.RequesterSettingsActivity
+com.v_p_a_appdev.minimap.UserMapActivity <|-- com.v_p_a_appdev.minimap.HelperMapActivity
+com.v_p_a_appdev.minimap.UserLoginActivity <|-- com.v_p_a_appdev.minimap.RequesterLoginActivity
 androidx.appcompat.app.AppCompatActivity <|-- com.v_p_a_appdev.minimap.MainActivity
-com.v_p_a_appdev.minimap.UserLoginActivity <|-- com.v_p_a_appdev.minimap.WorkerLoginActivity
+com.v_p_a_appdev.minimap.UserLoginActivity <|-- com.v_p_a_appdev.minimap.HelperLoginActivity
 androidx.appcompat.app.AppCompatActivity <|-- com.v_p_a_appdev.minimap.UserSettingActivity
 android.location.LocationListener <|.. com.v_p_a_appdev.minimap.UserMapActivity
 com.google.android.gms.maps.OnMapReadyCallback <|.. com.v_p_a_appdev.minimap.UserMapActivity

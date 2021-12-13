@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WorkerMapActivity">
+    tools:context=".HelperMapActivity">
 
     <Button
         android:id="@+id/logout"
@@ -28,7 +28,7 @@
         android:text="Settings." />
 
     <LinearLayout
-        android:id="@+id/customerInfo"
+        android:id="@+id/requesterInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -37,7 +37,7 @@
         android:visibility="gone">
 
         <ImageView
-            android:id="@+id/customerIcon"
+            android:id="@+id/requesterIcon"
             android:layout_width="100sp"
             android:layout_height="100sp"
             android:padding="20sp"
@@ -50,14 +50,14 @@
             android:paddingLeft="40sp">
 
             <TextView
-                android:id="@+id/customerName"
+                android:id="@+id/requesterName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="20sp"
                 android:paddingBottom="10sp"/>
 
             <TextView
-                android:id="@+id/customerPhone"
+                android:id="@+id/requesterPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="20sp"

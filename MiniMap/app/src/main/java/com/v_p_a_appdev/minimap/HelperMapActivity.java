@@ -32,14 +32,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class WorkerMapActivity extends UserMapActivity {
+public class HelperMapActivity extends UserMapActivity {
     private Button logoutButton;
     private boolean isLoggingOut = false;
     private Marker jobMarker;
-    private String customerId = "";
-    private LinearLayout customerInfo;
-    private ImageView customerIcon;
-    private TextView customerName, customerPhone;
+    private String requesterId = "";
+    private LinearLayout requesterInfo;
+    private ImageView requesterIcon;
+    private TextView requesterName, requesterPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,48 +49,48 @@ public class WorkerMapActivity extends UserMapActivity {
 
         logoutButton.setOnClickListener(v -> {
             isLoggingOut = true;
-            disconnectwWorker();
+            disconnectwHelper();
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         });
-        customerPhone.setOnClickListener(v -> {
-           ShowDialer(customerPhone);
+        requesterPhone.setOnClickListener(v -> {
+           ShowDialer(requesterPhone);
         });
-        getAssignedCustomer();
+        getAssignedRequester();
     }
 
     private void initialize() {
-        customerInfo = findViewById(R.id.customerInfo);
-        customerIcon = findViewById(R.id.customerIcon);
-        customerName = findViewById(R.id.customerName);
-        customerPhone = findViewById(R.id.customerPhone);
+        requesterInfo = findViewById(R.id.requesterInfo);
+        requesterIcon = findViewById(R.id.requesterIcon);
+        requesterName = findViewById(R.id.requesterName);
+        requesterPhone = findViewById(R.id.requesterPhone);
         logoutButton = findViewById(R.id.logout);
     }
 
-    private void getAssignedCustomer() {
-        String workerID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        DatabaseReference assignedCustRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Workers").child(workerID).child("CustomerJobId");
+    private void getAssignedRequester() {
+        String helperID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        DatabaseReference assignedReqRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(helperID).child("RequesterJobId");
 
-        assignedCustRef.addValueEventListener(new ValueEventListener() {
+        assignedReqRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    customerId = Objects.requireNonNull(snapshot.getValue()).toString();
-                    getAssignedCustomerLocation();
-                    getAssignedCustomerInfo();
+                    requesterId = Objects.requireNonNull(snapshot.getValue()).toString();
+                    getAssignedRequesterLocation();
+                    getAssignedRequesterInfo();
                 } else {
-                    customerId = "";
+                    requesterId = "";
                     if (jobMarker != null) {
                         jobMarker.remove();
                     }
-                    if (assignedCustLocationRef != null) {
-                        assignedCustLocationRef.removeEventListener(assignedCustLocationRefListener);
+                    if (assignedReqLocationRef != null) {
+                        assignedReqLocationRef.removeEventListener(assignedReqLocationRefListener);
                     }
-                    customerInfo.setVisibility(View.GONE);
-                    customerName.setText("");
-                    customerPhone.setText("");
+                    requesterInfo.setVisibility(View.GONE);
+                    requesterName.setText("");
+                    requesterPhone.setText("");
                 }
             }
 
@@ -102,29 +102,29 @@ public class WorkerMapActivity extends UserMapActivity {
 
     }
 
-    private DatabaseReference assignedCustLocationRef;
-    private ValueEventListener assignedCustLocationRefListener;
+    private DatabaseReference assignedReqLocationRef;
+    private ValueEventListener assignedReqLocationRefListener;
 
-    private void getAssignedCustomerLocation() {
-        assignedCustLocationRef = FirebaseDatabase.getInstance().getReference().child("customerRequest").child(customerId).child("l");
-        assignedCustLocationRefListener = assignedCustLocationRef.addValueEventListener(new ValueEventListener() {
+    private void getAssignedRequesterLocation() {
+        assignedReqLocationRef = FirebaseDatabase.getInstance().getReference().child("requesterRequest").child(requesterId).child("l");
+        assignedReqLocationRefListener = assignedReqLocationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists() && !customerId.equals("")) {
+                if (snapshot.exists() && !requesterId.equals("")) {
                     List<Object> map = (List<Object>) snapshot.getValue();
-                    double CustLat = 0;
-                    double CustLng = 0;
+                    double ReqLat = 0;
+                    double ReqLng = 0;
                     if (map.get(0) != null) {
-                        CustLat = Double.parseDouble(map.get(0).toString());
+                        ReqLat = Double.parseDouble(map.get(0).toString());
                     }
                     if (map.get(0) != null) {
-                        CustLng = Double.parseDouble(map.get(1).toString());
+                        ReqLng = Double.parseDouble(map.get(1).toString());
                     }
-                    LatLng custLatLng = new LatLng(CustLat, CustLng);
+                    LatLng ReqLatLng = new LatLng(ReqLat, ReqLng);
                     if (jobMarker != null) {
                         jobMarker.remove();
                     }
-                    jobMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(custLatLng).title("Customer location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.workermarker)));
+                    jobMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(ReqLatLng).title("requester location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.helpermarker)));
                 }
             }
 
@@ -136,21 +136,21 @@ public class WorkerMapActivity extends UserMapActivity {
     }
 
 
-    private void getAssignedCustomerInfo() {
-        customerInfo.setVisibility(View.VISIBLE);
-        DatabaseReference customerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(customerId);
-        customerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void getAssignedRequesterInfo() {
+        requesterInfo.setVisibility(View.VISIBLE);
+        DatabaseReference requesterDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Requesters").child(requesterId);
+        requesterDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
                     if (map.get("name") != null) {
-                        customerName.setText(Objects.requireNonNull(map.get("name")).toString());
+                        requesterName.setText(Objects.requireNonNull(map.get("name")).toString());
                     }
                     if (map.get("phone") != null) {
-                        customerPhone.setText(Objects.requireNonNull(map.get("phone")).toString());
+                        requesterPhone.setText(Objects.requireNonNull(map.get("phone")).toString());
                     }
-                    customerIcon.setImageResource(R.mipmap.ic_launcher_foreground);
+                    requesterIcon.setImageResource(R.mipmap.ic_launcher_foreground);
                 }
             }
 
@@ -174,15 +174,15 @@ public class WorkerMapActivity extends UserMapActivity {
         mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(11));
 
         String userId = FirebaseAuth.getInstance().getUid();
-        DatabaseReference refAvailable = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
-        DatabaseReference refBusy = FirebaseDatabase.getInstance().getReference("WorkersBusy");
+        DatabaseReference refAvailable = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
+        DatabaseReference refBusy = FirebaseDatabase.getInstance().getReference("HelpersBusy");
         GeoFire geoFireAvailable = new GeoFire(refAvailable);
         GeoFire geoFireBusy = new GeoFire(refBusy);
 
-        if ("".equals(customerId)) {//*Case the worker is available.
+        if ("".equals(requesterId)) {//*Case the helper is available.
             geoFireBusy.removeLocation(userId);
             geoFireAvailable.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
-        } else {//*Case the worker is currently busy .
+        } else {//*Case the helper is currently busy .
             geoFireAvailable.removeLocation(userId);
             geoFireBusy.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
         }
@@ -195,12 +195,12 @@ public class WorkerMapActivity extends UserMapActivity {
     }
 
 
-    private void disconnectwWorker() {
+    private void disconnectwHelper() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mapUtils.getCurrentGoogleApiClient(), this);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
-        ref = FirebaseDatabase.getInstance().getReference("WorkersBusy");
+        ref = FirebaseDatabase.getInstance().getReference("HelpersBusy");
         geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
 
@@ -210,26 +210,26 @@ public class WorkerMapActivity extends UserMapActivity {
     protected void onStop() {
         super.onStop();
         if (!isLoggingOut) {
-            disconnectwWorker();
+            disconnectwHelper();
         }
     }
 
     @Override
     protected void loadSetting() {
-        Intent intent = new Intent(this, WorkerSettingsActivity.class);
+        Intent intent = new Intent(this, HelperSettingsActivity.class);
         startActivity(intent);
     }
 
     public void ShowDialer(View view){
         Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + customerPhone.getText().toString()));
+        intent.setData(Uri.parse("tel:" + requesterPhone.getText().toString()));
         startActivity(intent);
     }
 
     @Override
     protected void loadActivity() {
 
-        setContentView(R.layout.activity_worker_map);
+        setContentView(R.layout.activity_helper_map);
     }
 }
 

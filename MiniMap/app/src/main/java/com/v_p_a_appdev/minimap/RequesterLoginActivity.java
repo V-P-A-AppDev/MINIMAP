@@ -4,20 +4,20 @@ package com.v_p_a_appdev.minimap;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class CustomerLoginActivity extends UserLoginActivity {
+public class RequesterLoginActivity extends UserLoginActivity {
     protected void onCreate(Bundle savedInstanceState) {
-        userType = "Customers";
+        userType = "Requesters";
         super.onCreate(savedInstanceState);
     }
 
     @Override
     void loadActivity() {
-        setContentView(R.layout.activity_customer_login);
+        setContentView(R.layout.activity_requester_login);
     }
 
     @Override
     void changeScreen() {
-        Intent intent = new Intent(CustomerLoginActivity.this, CustomerMapActivity.class);
+        Intent intent = new Intent(RequesterLoginActivity.this, RequesterMapActivity.class);
         startActivity(intent);
         finish();
     }

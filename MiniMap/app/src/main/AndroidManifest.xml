@@ -21,13 +21,13 @@
         android:theme="@style/Theme.MiniMap"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".WorkerSettingsActivity"
+            android:name=".HelperSettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".CustomerSettingsActivity"
+            android:name=".RequesterSettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".CustomerMapActivity"
+            android:name=".RequesterMapActivity"
             android:exported="false" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -42,14 +42,14 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".WorkerMapActivity"
+            android:name=".HelperMapActivity"
             android:exported="false"
             android:label="@string/title_activity_worker_map" />
         <activity
-            android:name=".CustomerLoginActivity"
+            android:name=".RequesterLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".WorkerLoginActivity"
+            android:name=".HelperLoginActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

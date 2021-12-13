@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20sp"
-    tools:context=".WorkerSettingsActivity">
+    tools:context=".HelperSettingsActivity">
 
     <EditText
         android:id="@+id/name"
