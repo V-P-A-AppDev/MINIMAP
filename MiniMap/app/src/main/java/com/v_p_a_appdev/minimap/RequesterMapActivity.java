@@ -43,6 +43,12 @@ public class RequesterMapActivity extends UserMapActivity {
     private ImageView helperIcon;
     private TextView helperName, helperPhone;
 
+    private int radius = 1;
+    private boolean helperFound = false;
+    private String helperFoundId;
+    GeoQuery geoQuery;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,13 +66,15 @@ public class RequesterMapActivity extends UserMapActivity {
             if (isRequesting) {
                 isRequesting = false;
                 geoQuery.removeAllListeners();
-                helperLocRef.removeEventListener(helperLocationRefListener);
-                if (helperFoundId != null) {
-                    DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
-                    helperRef.removeValue();
-                    helperFoundId = null;
+                if (helperFound) {
+                    helperLocRef.removeEventListener(helperLocationRefListener);
+                    if (helperFoundId != null) {
+                        DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
+                        helperRef.removeValue();
+                        helperFoundId = null;
+                    }
+                    helperFound = false;
                 }
-                helperFound = false;
                 radius = 1;
                 String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
@@ -108,10 +116,6 @@ public class RequesterMapActivity extends UserMapActivity {
         helperPhone = findViewById(R.id.helperPhone);
     }
 
-    private int radius = 1;
-    private boolean helperFound = false;
-    private String helperFoundId;
-    GeoQuery geoQuery;
 
     private void getClosestHelper() {
         DatabaseReference helperLocation = FirebaseDatabase.getInstance().getReference().child("HelpersAvailable");
