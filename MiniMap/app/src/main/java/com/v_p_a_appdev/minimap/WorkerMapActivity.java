@@ -200,6 +200,10 @@ public class WorkerMapActivity extends UserMapActivity {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("WorkersAvailable");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
+        ref = FirebaseDatabase.getInstance().getReference("WorkersBusy");
+        geoFire = new GeoFire(ref);
+        geoFire.removeLocation(userId);
+
     }
 
     @Override

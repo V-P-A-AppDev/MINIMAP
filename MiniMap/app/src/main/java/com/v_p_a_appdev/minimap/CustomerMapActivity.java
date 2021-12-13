@@ -43,7 +43,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.v_p_a_appdev.minimap.databinding.ActivityCustomerMapBinding;
 
 import java.util.HashMap;
 import java.util.List;
@@ -79,15 +78,15 @@ public class CustomerMapActivity extends UserMapActivity{
             //*If the request button is already pressed then it means that the customer wants to cancel it .
             if (isRequesting) {
                 isRequesting = false;
-                geoQuery.removeAllListeners();
-                workerLocRef.removeEventListener(workerLocationRefListener);
-                if (workerFoundId != null) {
-                    DatabaseReference workerRef = FirebaseDatabase.getInstance().getReference("Users").child("Workers").child(workerFoundId).child("CustomerJobId");
-                    workerRef.removeValue();
-                    workerFoundId = null;
-                }
-                workerFound = false;
-                radius = 1;
+//                geoQuery.removeAllListeners();
+//                workerLocRef.removeEventListener(workerLocationRefListener);
+//                if (workerFoundId != null) {
+//                    DatabaseReference workerRef = FirebaseDatabase.getInstance().getReference("Users").child("Workers").child(workerFoundId).child("CustomerJobId");
+//                    workerRef.removeValue();
+//                    workerFoundId = null;
+//                }
+//                workerFound = false;
+//                radius = 1;
                 String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
                 GeoFire geoFire = new GeoFire(ref);
@@ -112,9 +111,9 @@ public class CustomerMapActivity extends UserMapActivity{
                 GeoFire geoFire = new GeoFire(ref);
                 geoFire.setLocation(userId, new GeoLocation(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude()));
                 requestLocation = new LatLng(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude());
-                customerMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher_foreground)));
+                customerMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.logo_t_foreground)));
                 requestButton.setText("Cancel.");
-                getClosestWorker();
+                //getClosestWorker();
             }
         });
     }
