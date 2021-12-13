@@ -30,6 +30,8 @@ ___
 A map that shows the user requests around him. connecting a Helper User to The Requster user that asks for it.
 
 
+
+
 <p align="center">
      <img src="https://github.com/V-P-A-AppDev/MINIMAP/blob/main/MiniMap/gradle/uml.png"/>
 </p>
