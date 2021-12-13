@@ -4,7 +4,7 @@
      <img src = https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/minimaplogo.png?raw=true>
 </p>
 
-this reposetory contains Android application code.
+This reposetory contains Android application code.
 ___
 ## Introduction
 ---
@@ -12,10 +12,10 @@ MiniMap is an android application that helps people help others.
 There are two types of Users : a Helper and a Requester. 
 
 ### Helper
-a user that agree to help other users. He is notifid when another user ask for one.
+A user that agree to help other users. He is notifid when another user ask for one.
 
 ### Requester 
-a user that asks for aid. Send a request to the users around  him.
+A user that asks for aid. Send a request to the users around him.
 ___
 ## The goal 
 ___
@@ -39,5 +39,6 @@ A map that shows the user requests around him. connecting a Helper User to The R
 2) andriod emulator / device  
 
      
+
 
 
