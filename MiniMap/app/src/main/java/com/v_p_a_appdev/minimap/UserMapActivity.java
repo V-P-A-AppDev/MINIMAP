@@ -43,6 +43,7 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userLocation = new UserLocation();
 
         loadActivity();
         userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
