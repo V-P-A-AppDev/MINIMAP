@@ -87,7 +87,7 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
         mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latlng));
         //*Basically it goes in between 1 to 21 to i've chosen somewhere in the middle.
-        mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(11));
+        mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(14));
     }
 
     @Override

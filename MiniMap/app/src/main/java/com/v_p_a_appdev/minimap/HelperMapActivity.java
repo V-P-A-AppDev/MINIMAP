@@ -183,7 +183,7 @@ public class HelperMapActivity extends UserMapActivity {
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
         mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latlng));
         //*Basically it goes in between 1 to 21 to i've chosen somewhere in the middle.
-        mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(11));
+        mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(14));
 
         String userId = FirebaseAuth.getInstance().getUid();
         DatabaseReference refAvailable = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
