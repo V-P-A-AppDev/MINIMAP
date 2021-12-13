@@ -31,7 +31,7 @@ A map that shows the user requests around him. connecting a Helper User to The R
 
 
 <p align="center">
-     <img src="https://github.com/V-P-A-AppDev/MINIMAP/blob/main/MiniMap/uml.png"/>
+     <img src="https://github.com/V-P-A-AppDev/MINIMAP/blob/main/MiniMap/gradle/uml.png"/>
 </p>
 
 # Requirements
