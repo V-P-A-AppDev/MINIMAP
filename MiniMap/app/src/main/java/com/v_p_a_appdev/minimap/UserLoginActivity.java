@@ -47,7 +47,8 @@ public abstract class UserLoginActivity extends AppCompatActivity {
                 } else {
                     String userId = entranceAuth.getCurrentUser().getUid();
                     DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userType).child(userId).child("name");
-                    currentUserDB.setValue(email);
+                    String name = email.toString().split("@")[0];
+                    currentUserDB.setValue(name);
                 }
             });
         });

@@ -14,15 +14,12 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 
 
 public class MainActivity extends AppCompatActivity {
-    private static final int LOCATION_REQUEST_CODE = 1;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MapUtilities.LOCATION_REQUEST_CODE);
         }
         Places.initialize(getApplicationContext(), String.valueOf(R.string.google_maps_key));
         PlacesClient placesClient = Places.createClient(this);
