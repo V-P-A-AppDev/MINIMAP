@@ -59,15 +59,15 @@ public class RequesterMapActivity extends UserMapActivity {
             //*If the request button is already pressed then it means that the requester wants to cancel it .
             if (isRequesting) {
                 isRequesting = false;
-//                geoQuery.removeAllListeners();
-//                helperLocRef.removeEventListener(helperLocationRefListener);
-//                if (helperFoundId != null) {
-//                    DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
-//                    helperRef.removeValue();
-//                    helperFoundId = null;
-//                }
-//                helperFound = false;
-//                radius = 1;
+                geoQuery.removeAllListeners();
+                helperLocRef.removeEventListener(helperLocationRefListener);
+                if (helperFoundId != null) {
+                    DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
+                    helperRef.removeValue();
+                    helperFoundId = null;
+                }
+                helperFound = false;
+                radius = 1;
                 String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
                 GeoFire geoFire = new GeoFire(ref);
@@ -94,7 +94,7 @@ public class RequesterMapActivity extends UserMapActivity {
                 requestLocation = new LatLng(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude());
                 requesterMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.logo_t_foreground)));
                 requestButton.setText("Cancel.");
-                //getClosestHelper();
+                getClosestHelper();
             }
         });
     }
