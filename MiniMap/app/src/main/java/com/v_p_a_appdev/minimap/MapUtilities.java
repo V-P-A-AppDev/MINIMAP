@@ -17,7 +17,8 @@ public class MapUtilities {
     GoogleApiClient currentGoogleApiClient;
     SupportMapFragment mapFragment;
 
-    public MapUtilities(){}
+    public MapUtilities() {
+    }
 
     public GoogleApiClient getCurrentGoogleApiClient() {
         return currentGoogleApiClient;

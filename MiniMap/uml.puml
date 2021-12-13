@@ -1,0 +1,154 @@
+@startuml
+class com.v_p_a_appdev.minimap.WorkerSettingsActivity {
+# void onCreate(Bundle)
+# void loadActivity()
+}
+class com.v_p_a_appdev.minimap.CustomerMapActivity {
+- Button logoutButton
+- LatLng requestLocation
+- boolean isRequesting
+- Marker workerMarker
+- Marker customerMarker
+- LinearLayout workerInfo
+- ImageView workerIcon
+- TextView workerName
+- int radius
+- boolean workerFound
+- String workerFoundId
+~ GeoQuery geoQuery
+- DatabaseReference workerLocRef
+- ValueEventListener workerLocationRefListener
+# void onCreate(Bundle)
+- void initialize()
+- void getClosestWorker()
+- void getWorkerInfo()
+- void getWorkerLocation()
+# void onStop()
+# void loadSetting()
+# void loadActivity()
+}
+class com.v_p_a_appdev.minimap.UserLocation {
+~ Location lastLocation
+~ LocationRequest locationRequest
++ void CreateLocationRequest()
+}
+abstract class com.v_p_a_appdev.minimap.UserLoginActivity {
+- EditText emailInput
+- FirebaseAuth entranceAuth
+- FirebaseAuth.AuthStateListener fireBaseAuthListener
+# String userType
+# void onCreate(Bundle)
+# void onStart()
+# void onStop()
+~ {abstract}void loadActivity()
+~ {abstract}void changeScreen()
+}
+class com.v_p_a_appdev.minimap.CustomerSettingsActivity {
+# void onCreate(Bundle)
+# void loadActivity()
+}
+class com.v_p_a_appdev.minimap.WorkerMapActivity {
+- Button logoutButton
+- boolean isLoggingOut
+- Marker jobMarker
+- String customerId
+- LinearLayout customerInfo
+- ImageView customerIcon
+- TextView customerName
+- DatabaseReference assignedCustLocationRef
+- ValueEventListener assignedCustLocationRefListener
+# void onCreate(Bundle)
+- void initialize()
+- void getAssignedCustomer()
+- void getAssignedCustomerLocation()
+- void getAssignedCustomerInfo()
++ void onLocationChanged(Location)
++ void onConnectionSuspended(int)
+- void disconnectwWorker()
+# void onStop()
+# void loadSetting()
+# void loadActivity()
+}
+class com.v_p_a_appdev.minimap.CustomerLoginActivity {
+# void onCreate(Bundle)
+~ void loadActivity()
+~ void changeScreen()
+}
+class com.v_p_a_appdev.minimap.User {
+- String userName
+- String phoneNumber
++ <<Create>> User()
++ <<Create>> User(String,String)
++ String getUserName()
++ void setUserName(String)
++ String getPhoneNumber()
++ void setPhoneNumber(String)
+}
+class com.v_p_a_appdev.minimap.MainActivity {
+- {static} int LOCATION_REQUEST_CODE
+# void onCreate(Bundle)
+}
+class com.v_p_a_appdev.minimap.WorkerLoginActivity {
+# void onCreate(Bundle)
+~ void loadActivity()
+~ void changeScreen()
+}
+abstract class com.v_p_a_appdev.minimap.UserSettingActivity {
+- EditText nameField
+- DatabaseReference UserDatabase
+# String userType
+~ User currentUser
+# void onCreate(Bundle)
+- void saveUserInformation()
+- void getUserInfo()
+# {abstract}void loadActivity()
+}
+class com.v_p_a_appdev.minimap.MapUtilities {
++ {static} int LOCATION_REQUEST_CODE
+- GoogleMap mMap
+~ GoogleApiClient currentGoogleApiClient
+~ SupportMapFragment mapFragment
++ <<Create>> MapUtilities()
++ GoogleApiClient getCurrentGoogleApiClient()
++ GoogleMap getmMap()
++ SupportMapFragment getMapFragment()
++ void setCurrentGoogleApiClient(GoogleApiClient)
++ void setMapFragment(SupportMapFragment)
++ void setmMap(GoogleMap)
+}
+abstract class com.v_p_a_appdev.minimap.UserMapActivity {
+# MapUtilities mapUtils
+~ String userId
+~ UserLocation userLocation
+- Button settingButton
+# void onCreate(Bundle)
++ void onMapReady(GoogleMap)
+# void buildGoogleApiClient()
++ void onLocationChanged(Location)
++ void onConnected(Bundle)
+- boolean CheckConnected()
++ void onRequestPermissionsResult(int,String[],int[])
++ void onConnectionSuspended(int)
++ void onConnectionFailed(ConnectionResult)
+# void onStop()
+# {abstract}void loadSetting()
+# {abstract}void loadActivity()
+}
+
+
+com.v_p_a_appdev.minimap.UserSettingActivity <|-- com.v_p_a_appdev.minimap.WorkerSettingsActivity
+com.v_p_a_appdev.minimap.UserMapActivity <|-- com.v_p_a_appdev.minimap.CustomerMapActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.v_p_a_appdev.minimap.UserLoginActivity
+com.v_p_a_appdev.minimap.UserSettingActivity <|-- com.v_p_a_appdev.minimap.CustomerSettingsActivity
+com.v_p_a_appdev.minimap.UserMapActivity <|-- com.v_p_a_appdev.minimap.WorkerMapActivity
+com.v_p_a_appdev.minimap.UserLoginActivity <|-- com.v_p_a_appdev.minimap.CustomerLoginActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.v_p_a_appdev.minimap.MainActivity
+com.v_p_a_appdev.minimap.UserLoginActivity <|-- com.v_p_a_appdev.minimap.WorkerLoginActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.v_p_a_appdev.minimap.UserSettingActivity
+android.location.LocationListener <|.. com.v_p_a_appdev.minimap.UserMapActivity
+com.google.android.gms.maps.OnMapReadyCallback <|.. com.v_p_a_appdev.minimap.UserMapActivity
+com.v_p_a_appdev.minimap.ConnectionCallbacks <|.. com.v_p_a_appdev.minimap.UserMapActivity
+com.v_p_a_appdev.minimap.OnConnectionFailedListener <|.. com.v_p_a_appdev.minimap.UserMapActivity
+android.location.LocationListener <|.. com.v_p_a_appdev.minimap.UserMapActivity
+androidx.fragment.app.FragmentActivity <|-- com.v_p_a_appdev.minimap.UserMapActivity
+@enduml

@@ -4,7 +4,7 @@ package com.v_p_a_appdev.minimap;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class CustomerLoginActivity extends UserLoginActivity{
+public class CustomerLoginActivity extends UserLoginActivity {
     protected void onCreate(Bundle savedInstanceState) {
         userType = "Customers";
         super.onCreate(savedInstanceState);

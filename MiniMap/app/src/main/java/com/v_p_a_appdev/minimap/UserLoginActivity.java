@@ -73,7 +73,9 @@ public abstract class UserLoginActivity extends AppCompatActivity {
         super.onStop();
         entranceAuth.removeAuthStateListener(fireBaseAuthListener);
     }
+
     abstract void loadActivity();
+
     abstract void changeScreen();
 
 

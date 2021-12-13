@@ -61,7 +61,7 @@ public class WorkerMapActivity extends UserMapActivity {
         getAssignedCustomer();
     }
 
-    private void initialize(){
+    private void initialize() {
         customerInfo = findViewById(R.id.customerInfo);
         customerIcon = findViewById(R.id.customerIcon);
         customerName = findViewById(R.id.customerName);
@@ -164,7 +164,7 @@ public class WorkerMapActivity extends UserMapActivity {
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        if (isLoggingOut){
+        if (isLoggingOut) {
             return;
         }
         userLocation.lastLocation = location;
@@ -218,7 +218,6 @@ public class WorkerMapActivity extends UserMapActivity {
     protected void loadSetting() {
         Intent intent = new Intent(this, WorkerSettingsActivity.class);
         startActivity(intent);
-        return;
     }
 
     public void ShowDialer(View view){

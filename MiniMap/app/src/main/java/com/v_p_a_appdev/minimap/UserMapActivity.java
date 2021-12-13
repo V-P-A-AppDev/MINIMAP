@@ -51,14 +51,12 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
         //*Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapUtils.setMapFragment((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, mapUtils.LOCATION_REQUEST_CODE);//*
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MapUtilities.LOCATION_REQUEST_CODE);//*
         } else {//*
             mapUtils.getMapFragment().getMapAsync(this);
         }
         settingButton = findViewById(R.id.settings);
-        settingButton.setOnClickListener(v -> {
-            loadSetting();
-        });
+        settingButton.setOnClickListener(v -> loadSetting());
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         userLocation.lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -68,7 +66,7 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mapUtils.setmMap(googleMap);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, mapUtils.LOCATION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MapUtilities.LOCATION_REQUEST_CODE);
         }
         buildGoogleApiClient();
         mapUtils.getmMap().setMyLocationEnabled(true);
@@ -99,12 +97,12 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
             Toast.makeText(getApplicationContext(), "Can't connect to Google. Try again Later.", Toast.LENGTH_LONG).show();
         }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, mapUtils.LOCATION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MapUtilities.LOCATION_REQUEST_CODE);
         }
         LocationServices.FusedLocationApi.requestLocationUpdates(mapUtils.getCurrentGoogleApiClient(), userLocation.locationRequest, this);
     }
 
-    private boolean CheckConnected(){
+    private boolean CheckConnected() {
         int count = 0;
         while (!mapUtils.getCurrentGoogleApiClient().isConnected() && count < 3) {
             try {
@@ -122,7 +120,7 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == mapUtils.LOCATION_REQUEST_CODE) {
+        if (requestCode == MapUtilities.LOCATION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 mapUtils.getMapFragment().getMapAsync(this);
             } else {
@@ -141,15 +139,21 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
 
     }
 
-
     @Override
     protected void onStop() {
         super.onStop();
     }
-
 
     protected abstract void loadSetting();
 
     protected abstract void loadActivity();
 
 }
+
+
+
+
+
+
+
+
