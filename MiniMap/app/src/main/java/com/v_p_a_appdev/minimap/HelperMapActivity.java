@@ -58,7 +58,7 @@ public class HelperMapActivity extends UserMapActivity {
         requesterPhone.setOnClickListener(v -> {
            ShowDialer(requesterPhone);
         });
-        getAssignedRequester();
+        //getAssignedRequester();
     }
 
     private void initialize() {
@@ -106,7 +106,7 @@ public class HelperMapActivity extends UserMapActivity {
     private ValueEventListener assignedReqLocationRefListener;
 
     private void getAssignedRequesterLocation() {
-        assignedReqLocationRef = FirebaseDatabase.getInstance().getReference().child("requesterRequest").child(requesterId).child("l");
+        assignedReqLocationRef = FirebaseDatabase.getInstance().getReference().child("Request").child(requesterId).child("l");
         assignedReqLocationRefListener = assignedReqLocationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

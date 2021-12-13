@@ -69,7 +69,7 @@ public class RequesterMapActivity extends UserMapActivity {
 //                helperFound = false;
 //                radius = 1;
                 String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("requesterRequest");
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
                 GeoFire geoFire = new GeoFire(ref);
                 geoFire.removeLocation(userId);
 
@@ -87,7 +87,7 @@ public class RequesterMapActivity extends UserMapActivity {
             } else {
                 isRequesting = true;
                 String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("requesterRequest");
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
 
                 GeoFire geoFire = new GeoFire(ref);
                 geoFire.setLocation(userId, new GeoLocation(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude()));
@@ -233,7 +233,7 @@ public class RequesterMapActivity extends UserMapActivity {
     protected void onStop() {
         super.onStop();
         LocationServices.FusedLocationApi.removeLocationUpdates(mapUtils.getCurrentGoogleApiClient(), this);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("requesterRequest");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
 
