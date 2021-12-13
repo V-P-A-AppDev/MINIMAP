@@ -35,8 +35,8 @@ A map that shows the user requests around him. connecting a Helper User to The R
 </p>
 
 # Requirements
-1) Android Studio 
-2) Andriod Emulator/Device  
+1) Android Studio.
+2) Andriod Emulator/Device.
 
      
 
