@@ -58,7 +58,7 @@ public class HelperMapActivity extends UserMapActivity {
         requesterPhone.setOnClickListener(v -> {
            ShowDialer(requesterPhone);
         });
-        //getAssignedRequester();
+        getAssignedRequester();
     }
 
     private void initialize() {
