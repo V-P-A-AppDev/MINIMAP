@@ -1,6 +1,5 @@
 package com.v_p_a_appdev.minimap;
 
-import android.content.Intent;
 import android.location.Location;
 import android.view.View;
 
@@ -9,7 +8,7 @@ import androidx.annotation.NonNull;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -125,6 +124,10 @@ public class HelperMapActivityMap extends UserMapActivityMap {
             }
         });
     }
+    public void onMapReady(@NonNull GoogleMap googleMap){
+        super.onMapReady(googleMap);
+    }
+
 
 
     @Override
@@ -132,12 +135,7 @@ public class HelperMapActivityMap extends UserMapActivityMap {
         if (isLoggingOut) {
             return;
         }
-        userLocation.lastLocation = location;
-        LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latlng));
-        //*Basically it goes in between 1 to 21 to i've chosen somewhere in the middle.
-        mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(14));
-
+        super.onLocationChanged(location);
         DatabaseReference refAvailable = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
         DatabaseReference refBusy = FirebaseDatabase.getInstance().getReference("HelpersBusy");
         GeoFire geoFireAvailable = new GeoFire(refAvailable);

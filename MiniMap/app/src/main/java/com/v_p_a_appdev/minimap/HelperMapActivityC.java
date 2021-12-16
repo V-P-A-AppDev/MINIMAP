@@ -1,12 +1,7 @@
 package com.v_p_a_appdev.minimap;
 
-import android.content.Intent;
-import android.view.View;
+
 import android.widget.Button;
-
-import androidx.appcompat.widget.ThemedSpinnerAdapter;
-
-import com.google.firebase.auth.FirebaseAuth;
 
 public class HelperMapActivityC extends UserMapActivityC{
     private HelperMapActivityMap HelperMapAgent;

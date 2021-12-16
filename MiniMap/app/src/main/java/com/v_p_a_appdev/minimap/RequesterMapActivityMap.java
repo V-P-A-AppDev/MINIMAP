@@ -43,10 +43,10 @@ public class RequesterMapActivityMap extends UserMapActivityMap{
     }
     public void Request(){
         if (isRequesting) {
-            createRequest();
+            cancelRequest();
         }
         else {
-            cancelRequest();
+            createRequest();
         }
     }
 

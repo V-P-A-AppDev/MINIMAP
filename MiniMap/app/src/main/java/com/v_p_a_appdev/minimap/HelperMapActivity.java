@@ -1,35 +1,13 @@
 package com.v_p_a_appdev.minimap;
 
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-
-import com.firebase.geofire.GeoFire;
-import com.firebase.geofire.GeoLocation;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class HelperMapActivity extends UserMapActivity {
     private Marker jobMarker;
@@ -43,9 +21,7 @@ public class HelperMapActivity extends UserMapActivity {
         super.onCreate(savedInstanceState);
         initialize();
 
-        requesterPhone.setOnClickListener(v -> {
-            ShowDialer(requesterPhone);
-        });
+        requesterPhone.setOnClickListener(v -> ShowDialer(requesterPhone));
         HelperMapActivityMap MapAgent = new HelperMapActivityMap(this);
         helperMapActivityC = new HelperMapActivityC(findViewById(R.id.settings),
                 MapAgent,

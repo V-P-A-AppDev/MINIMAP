@@ -1,10 +1,8 @@
 package com.v_p_a_appdev.minimap;
 
-import android.content.Intent;
+
 import android.view.View;
 import android.widget.Button;
-
-import com.google.firebase.auth.FirebaseAuth;
 
 public class UserMapActivityC {
     private Button settingButton;

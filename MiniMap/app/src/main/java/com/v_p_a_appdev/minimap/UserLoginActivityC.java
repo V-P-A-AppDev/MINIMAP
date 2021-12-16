@@ -2,7 +2,7 @@ package com.v_p_a_appdev.minimap;
 
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
 
 public class UserLoginActivityC {
     private EditText emailInput, passwordInput;
