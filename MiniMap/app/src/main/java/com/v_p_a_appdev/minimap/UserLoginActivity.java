@@ -14,70 +14,53 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public abstract class UserLoginActivity extends AppCompatActivity {
-    private EditText emailInput, passwordInput;
-    private FirebaseAuth entranceAuth;
-    private FirebaseAuth.AuthStateListener fireBaseAuthListener;
+    private UserLoginActivityC userLoginActivityC;
     protected String userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadActivity();
-        entranceAuth = FirebaseAuth.getInstance();
-        fireBaseAuthListener = firebaseAuth -> {
+        UserLoginActivityFB FBAgent = new UserLoginActivityFB(firebaseAuth -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 changeScreen();
             }
-        };
-
-        emailInput = findViewById(R.id.email);
-        passwordInput = findViewById(R.id.password);
-        Button loginButton = findViewById(R.id.login);
-        Button registrationButton = findViewById(R.id.registration);
-        registrationButton.setOnClickListener(v -> {
-            final String email = emailInput.getText().toString();
-            final String password = passwordInput.getText().toString();
-            if (password.length() < 6) {
-                Toast.makeText(this, "The password should be 6 characters at least .", Toast.LENGTH_SHORT).show();
-            }
-            entranceAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-                if (!task.isSuccessful()) {
-                    Toast.makeText(this, "Something went wrong with the registration process.", Toast.LENGTH_SHORT).show();
-                } else {
-                    String userId = entranceAuth.getCurrentUser().getUid();
-                    DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userType).child(userId).child("name");
-                    String name = email.toString().split("@")[0];
-                    currentUserDB.setValue(name);
-                }
-            });
-        });
-        loginButton.setOnClickListener(v -> {
-            final String email = emailInput.getText().toString();
-            final String password = passwordInput.getText().toString();
-            entranceAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-                if (!task.isSuccessful()) {
-                    Toast.makeText(this, "Something went wrong with the authentication process.", Toast.LENGTH_SHORT).show();
-                }
-            });
-        });
+        },
+                this) ;
+        userLoginActivityC = new UserLoginActivityC(
+                findViewById(R.id.email),
+                findViewById(R.id.password),
+                findViewById(R.id.login),
+                findViewById(R.id.registration),
+                FBAgent);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        entranceAuth.addAuthStateListener(fireBaseAuthListener);
+        userLoginActivityC.addAuthStateListener();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        entranceAuth.removeAuthStateListener(fireBaseAuthListener);
+        userLoginActivityC.removeAuthStateListener();
     }
 
     abstract void loadActivity();
 
     abstract void changeScreen();
+
+    public void registrationError(){
+        Toast.makeText(this, "Something went wrong with the registration process.", Toast.LENGTH_SHORT).show();
+    }
+    public void passwordInputError(){
+        Toast.makeText(this, "The password should be 6 characters at least .", Toast.LENGTH_SHORT).show();
+    }
+    public void authenticationError(){
+        Toast.makeText(this, "Something went wrong with the authentication process.", Toast.LENGTH_SHORT).show();
+    }
 
 
 }
