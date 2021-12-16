@@ -2,6 +2,7 @@ package com.v_p_a_appdev.minimap;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -21,11 +22,16 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
 
-public class UserMapActivityMap implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener  {
-    MapUtilities mapUtils = new MapUtilities();
+import java.util.Objects;
+
+public abstract class UserMapActivityMap implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener  {
+    MapUtilities mapUtils ;
     UserLocation userLocation;
+    protected boolean isLoggingOut = false;
     private UserMapActivity userMapActivity;
+    protected String userId;
 
     public UserMapActivityMap(UserMapActivity userMapActivity) {
         this.userMapActivity = userMapActivity;
@@ -40,7 +46,7 @@ public class UserMapActivityMap implements LocationListener, OnMapReadyCallback,
         LocationManager locationManager = (LocationManager) userMapActivity.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         userLocation.lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
+        userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
     }
 
     @Override
@@ -118,5 +124,22 @@ public class UserMapActivityMap implements LocationListener, OnMapReadyCallback,
 
     public void loadSetting(){
         userMapActivity.loadSetting();
+    }
+
+    public void LogOut(){
+        if (!isLoggingOut) {
+            isLoggingOut = true;
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(userMapActivity, MainActivity.class);
+            userMapActivity.startActivity(intent);
+            userMapActivity.finish();
+        }
+    }
+    public void openMenu(){
+        userMapActivity.openMenu();
+    }
+
+    public void closeMenu(){
+        userMapActivity.closeMenu();
     }
 }

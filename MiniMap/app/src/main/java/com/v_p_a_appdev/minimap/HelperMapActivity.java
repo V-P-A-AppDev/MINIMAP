@@ -33,7 +33,7 @@ import java.util.Objects;
 
 public class HelperMapActivity extends UserMapActivity {
     private Marker jobMarker;
-    private LinearLayout requesterInfo, menuPopUp;
+    private LinearLayout requesterInfo;
     private ImageView requesterIcon;
     private TextView requesterName, requesterPhone;
     private HelperMapActivityC helperMapActivityC;
@@ -60,7 +60,6 @@ public class HelperMapActivity extends UserMapActivity {
         requesterIcon = findViewById(R.id.requesterIcon);
         requesterName = findViewById(R.id.requesterName);
         requesterPhone = findViewById(R.id.requesterPhone);
-        menuPopUp = findViewById(R.id.helperMenu);
     }
 
 
@@ -112,13 +111,6 @@ public class HelperMapActivity extends UserMapActivity {
 
     public void setJobMarker(Marker jobMarker) {
         this.jobMarker = jobMarker;
-    }
-
-    public void openMenu(){
-        menuPopUp.setVisibility(View.VISIBLE);
-    }
-    public void closeMenu(){
-        menuPopUp.setVisibility(View.GONE);
     }
 }
 

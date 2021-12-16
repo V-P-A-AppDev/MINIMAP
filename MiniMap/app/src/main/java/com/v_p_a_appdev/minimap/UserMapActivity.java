@@ -10,7 +10,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,17 +37,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Objects;
 
 public abstract class UserMapActivity extends FragmentActivity {
-    String userId;
+    private LinearLayout menuPopUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadActivity();
-        userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-
+        menuPopUp = findViewById(R.id.helperMenu);
     }
-
-
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -54,6 +52,13 @@ public abstract class UserMapActivity extends FragmentActivity {
     protected abstract void loadSetting();
 
     protected abstract void loadActivity();
+
+    public void openMenu(){
+        menuPopUp.setVisibility(View.VISIBLE);
+    }
+    public void closeMenu(){
+        menuPopUp.setVisibility(View.GONE);
+    }
 
 }
 

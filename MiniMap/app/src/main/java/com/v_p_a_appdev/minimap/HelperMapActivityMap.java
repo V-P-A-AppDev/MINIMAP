@@ -27,9 +27,9 @@ import java.util.Objects;
 public class HelperMapActivityMap extends UserMapActivityMap {
     private DatabaseReference assignedReqLocationRef;
     private ValueEventListener assignedReqLocationRefListener;
-    private boolean isLoggingOut = false;
     private String requesterId = "";
     private HelperMapActivity helperMapActivity;
+
 
     public HelperMapActivityMap(HelperMapActivity userMapActivity) {
         super(userMapActivity);
@@ -138,7 +138,6 @@ public class HelperMapActivityMap extends UserMapActivityMap {
         //*Basically it goes in between 1 to 21 to i've chosen somewhere in the middle.
         mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(14));
 
-        String userId = FirebaseAuth.getInstance().getUid();
         DatabaseReference refAvailable = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
         DatabaseReference refBusy = FirebaseDatabase.getInstance().getReference("HelpersBusy");
         GeoFire geoFireAvailable = new GeoFire(refAvailable);
@@ -164,27 +163,13 @@ public class HelperMapActivityMap extends UserMapActivityMap {
         LocationServices.FusedLocationApi.removeLocationUpdates(mapUtils.getCurrentGoogleApiClient(), this);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
         GeoFire geoFire = new GeoFire(ref);
-        geoFire.removeLocation(helperMapActivity.userId);
+        geoFire.removeLocation(userId);
         ref = FirebaseDatabase.getInstance().getReference("HelpersBusy");
         geoFire = new GeoFire(ref);
-        geoFire.removeLocation(helperMapActivity.userId);
+        geoFire.removeLocation(userId);
     }
     public void LogOut(){
-        if (!isLoggingOut) {
-            isLoggingOut = true;
-            disconnectwHelper();
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(helperMapActivity, MainActivity.class);
-            helperMapActivity.startActivity(intent);
-            helperMapActivity.finish();
-        }
-    }
-    public void openMenu(){
-        helperMapActivity.openMenu();
-    }
-
-    public void closeMenu(){
-        helperMapActivity.closeMenu();
-
+        disconnectwHelper();
+        super.LogOut();
     }
 }
