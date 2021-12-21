@@ -20,7 +20,8 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/blue"
         android:text="Menu."
-        android:visibility="visible"/>
+        android:visibility="visible" />
+
     <LinearLayout
         android:id="@+id/requesterMenu"
         android:layout_width="match_parent"
