@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.LocationServices;
@@ -162,7 +163,12 @@ public class HelperMapActivity extends UserMapActivity {
                     if (map.get("phone") != null) {
                         requesterPhone.setText(Objects.requireNonNull(map.get("phone")).toString());
                     }
-                    requesterIcon.setImageResource(R.mipmap.ic_launcher_foreground);
+                    if (map.get("profileImageUrl") != null) {
+                        String profileImageUrl = (Objects.requireNonNull(map.get("profileImageUrl")).toString());
+                        Glide.with(getApplication()).load(profileImageUrl).into(requesterIcon);
+                    } else {
+                        requesterIcon.setImageResource(R.mipmap.ic_launcher_foreground);
+                    }
                 }
             }
 

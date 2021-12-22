@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -194,7 +195,12 @@ public class RequesterMapActivity extends UserMapActivity {
                     if (map.get("phone") != null) {
                         helperPhone.setText(Objects.requireNonNull(map.get("phone")).toString());
                     }
-                    helperIcon.setImageResource(R.mipmap.helpermarker);
+                    if (map.get("profileImageUrl") != null) {
+                        String profileImageUrl = (Objects.requireNonNull(map.get("profileImageUrl")).toString());
+                        Glide.with(getApplication()).load(profileImageUrl).into(helperIcon);
+                    } else {
+                        helperIcon.setImageResource(R.mipmap.helpermarker);
+                    }
                 }
             }
 
