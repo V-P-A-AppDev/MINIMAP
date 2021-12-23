@@ -8,16 +8,31 @@
     android:padding="20sp"
     tools:context=".RequesterSettingsActivity">
 
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:clickable="true"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toTopOf="@+id/name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.159"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.579" />
+
     <EditText
         android:id="@+id/name"
         android:layout_width="280dp"
         android:layout_height="22dp"
         android:background="@null"
-        android:hint="Name"
+        android:hint="@string/name"
         app:layout_constraintBottom_toTopOf="@+id/phone"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.427"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.871"
         tools:layout_conversion_absoluteHeight="24dp"
         tools:layout_conversion_absoluteWidth="371dp" />
 
@@ -26,12 +41,14 @@
         android:layout_width="277dp"
         android:layout_height="21dp"
         android:background="@null"
-        android:hint="Phone Number"
+        android:hint="@string/phone_number"
         android:inputType="number"
         app:layout_constraintBottom_toTopOf="@+id/previous"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.417"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.816"
         tools:layout_conversion_absoluteHeight="24dp"
         tools:layout_conversion_absoluteWidth="371dp" />
 
@@ -41,13 +58,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#000000FF"
-        android:text="Submit."
+        android:text="@string/submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.77"
+        app:layout_constraintHorizontal_bias="0.755"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.512"
+        app:layout_constraintVertical_bias="0.509"
         tools:layout_conversion_absoluteHeight="48dp"
         tools:layout_conversion_absoluteWidth="88dp" />
 
@@ -55,11 +72,11 @@
         android:id="@+id/previous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#006868FF"
-        android:text="Previous."
+        android:backgroundTint="#000000FF"
+        android:text="@string/previous"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/submit"
-        app:layout_constraintHorizontal_bias="0.375"
+        app:layout_constraintHorizontal_bias="0.361"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.51"

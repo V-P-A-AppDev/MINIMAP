@@ -25,12 +25,28 @@
         <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3828125" />
         <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/layout/activity_customer_login.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/layout/activity_customer_map.xml" value="0.296195652173913" />
+        <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/layout/activity_helper_map.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/layout/activity_helper_settings.xml" value="0.125" />
+        <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/layout/activity_leader_board.xml" value="0.33" />
+        <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/layout/activity_list_values.xml" value="0.1947463768115942" />
         <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/layout/activity_map.xml" value="0.296195652173913" />
+        <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/layout/activity_requester_map.xml" value="0.35104166666666664" />
+        <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/layout/activity_requester_settings.xml" value="0.125" />
         <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/layout/activity_worker_login.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/layout/activity_worker_map.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3828125" />
         <entry key="..\:/Users/porat/Desktop/git_repos/year_3_sem_1/minimap/MiniMap/app/src/main/res/mipmap-anydpi-v26/logo_t.xml" value="0.2203125" />
+        <entry key="..\:/kushn/Desktop/MINIMAP/MiniMap/app/src/main/res/layout/activity_chat.xml" value="0.1" />
+        <entry key="..\:/kushn/Desktop/MINIMAP/MiniMap/app/src/main/res/layout/activity_helper_map.xml" value="0.12447916666666667" />
+        <entry key="..\:/kushn/Desktop/MINIMAP/MiniMap/app/src/main/res/layout/activity_helper_settings.xml" value="0.176" />
+        <entry key="..\:/kushn/Desktop/MINIMAP/MiniMap/app/src/main/res/layout/activity_main.xml" value="0.12454403335070349" />
+        <entry key="..\:/kushn/Desktop/MINIMAP/MiniMap/app/src/main/res/layout/activity_matches.xml" value="0.245018115942029" />
+        <entry key="..\:/kushn/Desktop/MINIMAP/MiniMap/app/src/main/res/layout/activity_requester_map.xml" value="0.12447916666666667" />
+        <entry key="..\:/kushn/Desktop/MINIMAP/MiniMap/app/src/main/res/layout/activity_requester_settings.xml" value="0.176" />
+        <entry key="..\:/kushn/Desktop/MINIMAP/MiniMap/app/src/main/res/layout/item_chat.xml" value="0.245018115942029" />
+        <entry key="..\:/kushn/Desktop/MINIMAP/MiniMap/app/src/main/res/layout/item_matches.xml" value="0.245018115942029" />
+        <entry key="..\:/kushn/Desktop/MINIMAP/MiniMap/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.14322916666666666" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.346875" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.346875" />
         <entry key="app/src/main/res/layout/activity_customer_login.xml" value="0.17291666666666666" />
