@@ -89,7 +89,7 @@ public class RequesterMapActivity extends UserMapActivity {
                     helperFound = false;
                 }
                 radius = 1;
-                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
                 GeoFire geoFire = new GeoFire(ref);
                 geoFire.removeLocation(userId);
@@ -104,10 +104,11 @@ public class RequesterMapActivity extends UserMapActivity {
                 helperInfo.setVisibility(View.GONE);
                 helperName.setText("");
                 helperPhone.setText("");
+                helperIcon.setImageResource(R.mipmap.helpermarker);
 
             } else {
                 isRequesting = true;
-                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
 
                 GeoFire geoFire = new GeoFire(ref);
@@ -118,7 +119,6 @@ public class RequesterMapActivity extends UserMapActivity {
                 getClosestHelper();
             }
         });
-
     }
 
     private void initialize() {
@@ -154,7 +154,38 @@ public class RequesterMapActivity extends UserMapActivity {
                     getHelperLocation();
                     getHelperInfo();
                     requestButton.setText("Looking for someone");
+
+
+                    DatabaseReference currentUserConnectionsDb = FirebaseDatabase.getInstance().getReference().child("Matches").child(requesterId).child(helperFoundId);
+                    currentUserConnectionsDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
+                                FirebaseDatabase.getInstance().getReference().child("Matches").child(Objects.requireNonNull(dataSnapshot.getKey())).child(requesterId).child("ChatId").setValue(key);
+                                FirebaseDatabase.getInstance().getReference().child("Matches").child(requesterId).child(dataSnapshot.getKey()).child("ChatId").setValue(key);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
                 }
+
+
+                helperIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    /*
+                    Intent intent = new Intent(view.getContext(), ChatActivity.class);
+                    Bundle b = new Bundle();
+                    b.putString("matchId", helperFoundId);
+                    intent.putExtras(b);
+                    view.getContext().startActivity(intent);
+                    */
+                    }
+                });
             }
 
             @Override
@@ -201,6 +232,7 @@ public class RequesterMapActivity extends UserMapActivity {
                     } else {
                         helperIcon.setImageResource(R.mipmap.helpermarker);
                     }
+
                 }
             }
 

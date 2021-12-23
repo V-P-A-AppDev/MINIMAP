@@ -53,9 +53,7 @@ public class HelperMapActivity extends UserMapActivity {
             startActivity(intent);
             finish();
         });
-        requesterPhone.setOnClickListener(v -> {
-            ShowDialer(requesterPhone);
-        });
+        requesterPhone.setOnClickListener(v -> ShowDialer(requesterPhone));
         getAssignedRequester();
         openMenuButton.setOnClickListener(v -> {
             menuPopUp.setVisibility(View.VISIBLE);
@@ -66,7 +64,10 @@ public class HelperMapActivity extends UserMapActivity {
             menuPopUp.setVisibility(View.GONE);
             openMenuButton.setVisibility(View.VISIBLE);
         });
-
+        requesterInfo.setVisibility(View.GONE);
+        requesterName.setText("");
+        requesterPhone.setText("");
+        requesterIcon.setImageResource(R.mipmap.ic_launcher_foreground);
 
     }
 
@@ -93,6 +94,36 @@ public class HelperMapActivity extends UserMapActivity {
                     requesterId = Objects.requireNonNull(snapshot.getValue()).toString();
                     getAssignedRequesterLocation();
                     getAssignedRequesterInfo();
+
+
+                    DatabaseReference currentUserConnectionsDb = FirebaseDatabase.getInstance().getReference().child("Matches").child(helperID).child(requesterId);
+                    currentUserConnectionsDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
+                                FirebaseDatabase.getInstance().getReference().child("Matches").child(Objects.requireNonNull(dataSnapshot.getKey())).child(helperID).child("ChatId").setValue(key);
+                                FirebaseDatabase.getInstance().getReference().child("Matches").child(helperID).child(dataSnapshot.getKey()).child("ChatId").setValue(key);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
+                    requesterIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            /*
+                            Intent intent = new Intent(view.getContext(), ChatActivity.class);
+                            Bundle b = new Bundle();
+                            b.putString("matchId", requester);
+                            intent.putExtras(b);
+                            view.getContext().startActivity(intent);
+                            */
+                        }
+                    });
+
                 } else {
                     requesterId = "";
                     if (jobMarker != null) {
@@ -104,6 +135,7 @@ public class HelperMapActivity extends UserMapActivity {
                     requesterInfo.setVisibility(View.GONE);
                     requesterName.setText("");
                     requesterPhone.setText("");
+                    requesterIcon.setImageResource(R.mipmap.ic_launcher_foreground);
                 }
             }
 
@@ -127,7 +159,7 @@ public class HelperMapActivity extends UserMapActivity {
                     List<Object> map = (List<Object>) snapshot.getValue();
                     double ReqLat = 0;
                     double ReqLng = 0;
-                    if (map.get(0) != null) {
+                    if (Objects.requireNonNull(map).get(0) != null) {
                         ReqLat = Double.parseDouble(map.get(0).toString());
                     }
                     if (map.get(0) != null) {
@@ -157,7 +189,7 @@ public class HelperMapActivity extends UserMapActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
-                    if (map.get("name") != null) {
+                    if (Objects.requireNonNull(map).get("name") != null) {
                         requesterName.setText(Objects.requireNonNull(map.get("name")).toString());
                     }
                     if (map.get("phone") != null) {
