@@ -38,6 +38,13 @@
             android:text="X" />
 
         <Button
+            android:id="@+id/leader_board"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/orange"
+            android:text="Leader Board." />
+
+        <Button
             android:id="@+id/settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

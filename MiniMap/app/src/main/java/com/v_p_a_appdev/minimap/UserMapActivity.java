@@ -16,6 +16,7 @@ public abstract class UserMapActivity extends FragmentActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
     }
 
     protected abstract void loadSetting();

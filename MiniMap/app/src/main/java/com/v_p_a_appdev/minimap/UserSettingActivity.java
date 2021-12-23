@@ -22,4 +22,6 @@ public abstract class UserSettingActivity extends AppCompatActivity {
     }
 
     protected abstract void loadActivity();
+
+    protected abstract void loadMap();
 }

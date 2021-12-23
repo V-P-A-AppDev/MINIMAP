@@ -4,7 +4,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
-public class UserLoginActivityC {
+public  class UserLoginActivityC {
     private EditText emailInput, passwordInput;
     private Button loginButton , registrationButton;
     private UserLoginActivityFB FBAgent;

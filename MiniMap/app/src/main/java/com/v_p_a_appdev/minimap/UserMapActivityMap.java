@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -23,15 +25,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
 public abstract class UserMapActivityMap implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener  {
     MapUtilities mapUtils ;
     UserLocation userLocation;
-    protected boolean isLoggingOut = false;
+    protected boolean isLoggingOut = false , initialLocation = false;
     private UserMapActivity userMapActivity;
     protected String userId;
+
 
     public UserMapActivityMap(UserMapActivity userMapActivity) {
         this.userMapActivity = userMapActivity;
@@ -46,6 +51,7 @@ public abstract class UserMapActivityMap implements LocationListener, OnMapReady
         LocationManager locationManager = (LocationManager) userMapActivity.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         userLocation.lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        initialLocation = true;
         userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
     }
 
@@ -72,9 +78,12 @@ public abstract class UserMapActivityMap implements LocationListener, OnMapReady
     public void onLocationChanged(@NonNull Location location) {
         userLocation.lastLocation = location;
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latlng));
-        //*Basically it goes in between 1 to 21 to i've chosen somewhere in the middle.
-        mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(14));
+       try {
+           mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latlng));
+           mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(14));
+       }catch (Exception e){
+           e.printStackTrace();
+       }
     }
 
     @Override
@@ -102,6 +111,7 @@ public abstract class UserMapActivityMap implements LocationListener, OnMapReady
         }
         return mapUtils.getCurrentGoogleApiClient().isConnected();
     }
+
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         userMapActivity.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == MapUtilities.LOCATION_REQUEST_CODE) {
@@ -135,6 +145,7 @@ public abstract class UserMapActivityMap implements LocationListener, OnMapReady
             userMapActivity.finish();
         }
     }
+
     public void openMenu(){
         userMapActivity.openMenu();
     }
@@ -142,4 +153,5 @@ public abstract class UserMapActivityMap implements LocationListener, OnMapReady
     public void closeMenu(){
         userMapActivity.closeMenu();
     }
+
 }

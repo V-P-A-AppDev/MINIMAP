@@ -4,6 +4,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Objects;
+
 
 public class UserLoginActivityFB {
     private FirebaseAuth entranceAuth;
@@ -24,10 +26,7 @@ public class UserLoginActivityFB {
             if (!task.isSuccessful()) {
                 userLoginActivity.registrationError();
             } else {
-                String userId = entranceAuth.getCurrentUser().getUid();
-                DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userLoginActivity.userType).child(userId).child("name");
-                String name = email.split("@")[0];
-                currentUserDB.setValue(name);
+                setInfo(email ,entranceAuth );
             }
         });
     }
@@ -50,5 +49,16 @@ public class UserLoginActivityFB {
 
     public void removeAuthStateListener() {
         entranceAuth.removeAuthStateListener(fireBaseAuthListener);
+    }
+
+    protected void setInfo(String email, FirebaseAuth entranceAuth) {
+        String userId = Objects.requireNonNull(this.entranceAuth.getCurrentUser()).getUid();
+        DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userLoginActivity.userType).child(userId).child("name");
+        String name = email.split("@")[0];
+        currentUserDB.setValue(name);
+        if (userLoginActivity.userType == "Helpers") {
+            currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(userId).child("rating");
+            currentUserDB.setValue(0);
+        }
     }
 }

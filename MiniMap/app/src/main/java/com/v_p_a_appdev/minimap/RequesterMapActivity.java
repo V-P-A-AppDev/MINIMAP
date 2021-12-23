@@ -47,7 +47,7 @@ public class RequesterMapActivity extends UserMapActivity {
 
     @Override
     protected void onStop() {
-
+        requesterMapActivityC.stop();
         super.onStop();
     }
 

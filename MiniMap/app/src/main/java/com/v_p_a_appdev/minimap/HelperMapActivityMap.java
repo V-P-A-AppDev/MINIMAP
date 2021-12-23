@@ -67,8 +67,6 @@ public class HelperMapActivityMap extends UserMapActivityMap {
 
     }
 
-
-
     private void getAssignedRequesterLocation() {
         assignedReqLocationRef = FirebaseDatabase.getInstance().getReference().child("Request").child(requesterId).child("l");
         assignedReqLocationRefListener = assignedReqLocationRef.addValueEventListener(new ValueEventListener() {
@@ -99,7 +97,6 @@ public class HelperMapActivityMap extends UserMapActivityMap {
         });
     }
 
-
     private void getAssignedRequesterInfo() {
         helperMapActivity.getRequesterInfo().setVisibility(View.VISIBLE);
         DatabaseReference requesterDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Requesters").child(requesterId);
@@ -124,10 +121,10 @@ public class HelperMapActivityMap extends UserMapActivityMap {
             }
         });
     }
+
     public void onMapReady(@NonNull GoogleMap googleMap){
         super.onMapReady(googleMap);
     }
-
 
 
     @Override
@@ -135,19 +132,23 @@ public class HelperMapActivityMap extends UserMapActivityMap {
         if (isLoggingOut) {
             return;
         }
+        boolean change = userLocation.lastLocation.distanceTo(location) > 1;
         super.onLocationChanged(location);
-        DatabaseReference refAvailable = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
-        DatabaseReference refBusy = FirebaseDatabase.getInstance().getReference("HelpersBusy");
-        GeoFire geoFireAvailable = new GeoFire(refAvailable);
-        GeoFire geoFireBusy = new GeoFire(refBusy);
-
-        if ("".equals(requesterId)) {//*Case the helper is available.
-            geoFireBusy.removeLocation(userId);
-            geoFireAvailable.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
-        } else {//*Case the helper is currently busy .
-            geoFireAvailable.removeLocation(userId);
-            geoFireBusy.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+        if (change || initialLocation) {
+            DatabaseReference refAvailable = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
+            DatabaseReference refBusy = FirebaseDatabase.getInstance().getReference("HelpersBusy");
+            GeoFire geoFireAvailable = new GeoFire(refAvailable);
+            GeoFire geoFireBusy = new GeoFire(refBusy);
+            if ("".equals(requesterId)) {//*Case the helper is available.
+                geoFireBusy.removeLocation(userId);
+                geoFireAvailable.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+            } else {//*Case the helper is currently busy .
+                geoFireAvailable.removeLocation(userId);
+                geoFireBusy.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+            }
+            initialLocation = false;
         }
+
     }
 
 
@@ -156,8 +157,20 @@ public class HelperMapActivityMap extends UserMapActivityMap {
 
     }
 
+    public void LogOut(){
+        disconnectHelper();
+        super.LogOut();
+    }
 
-    private void disconnectwHelper() {
+    public void openLeaderBoard(){
+        helperMapActivity.openLeaderBoard();
+    }
+
+    public void stop() {
+        disconnectHelper();
+    }
+
+    private void disconnectHelper() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mapUtils.getCurrentGoogleApiClient(), this);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
         GeoFire geoFire = new GeoFire(ref);
@@ -165,9 +178,7 @@ public class HelperMapActivityMap extends UserMapActivityMap {
         ref = FirebaseDatabase.getInstance().getReference("HelpersBusy");
         geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
-    }
-    public void LogOut(){
-        disconnectwHelper();
-        super.LogOut();
+        ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(userId).child("RequesterJobId");
+        ref.removeValue();
     }
 }

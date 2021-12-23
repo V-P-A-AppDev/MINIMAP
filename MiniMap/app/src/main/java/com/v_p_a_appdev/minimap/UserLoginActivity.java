@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public abstract class UserLoginActivity extends AppCompatActivity {
-    private UserLoginActivityC userLoginActivityC;
+    protected UserLoginActivityC userLoginActivityC;
     protected String userType;
 
     @Override

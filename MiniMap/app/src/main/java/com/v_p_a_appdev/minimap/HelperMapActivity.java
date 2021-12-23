@@ -27,7 +27,8 @@ public class HelperMapActivity extends UserMapActivity {
                 MapAgent,
                 findViewById(R.id.logout),
                 findViewById(R.id.openMenu),
-                findViewById(R.id.closeMenu));
+                findViewById(R.id.closeMenu),
+                findViewById(R.id.leader_board));
         helperMapActivityC.getAssignedRequester();
     }
 
@@ -44,13 +45,14 @@ public class HelperMapActivity extends UserMapActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        helperMapActivityC.logOut();
+        helperMapActivityC.stop();
     }
 
     @Override
     protected void loadSetting() {
         Intent intent = new Intent(this, HelperSettingsActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void ShowDialer(View view) {
@@ -87,6 +89,12 @@ public class HelperMapActivity extends UserMapActivity {
 
     public void setJobMarker(Marker jobMarker) {
         this.jobMarker = jobMarker;
+    }
+
+    public void openLeaderBoard(){
+        Intent intent = new Intent(this, LeaderBoardActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
 

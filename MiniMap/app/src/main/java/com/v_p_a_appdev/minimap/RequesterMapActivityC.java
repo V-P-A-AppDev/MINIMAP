@@ -16,4 +16,8 @@ public class RequesterMapActivityC extends UserMapActivityC{
     public Button getRequestButton() {
         return requestButton;
     }
+
+    public void stop() {
+        MapAgent.stop();
+    }
 }

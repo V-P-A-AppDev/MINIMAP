@@ -4,7 +4,7 @@ package com.v_p_a_appdev.minimap;
 import android.view.View;
 import android.widget.Button;
 
-public class UserMapActivityC {
+public abstract class UserMapActivityC {
     private Button settingButton;
     private UserMapActivityMap MapAgent;
     private Button logoutButton, openMenuButton, closeMenuButton;
@@ -28,4 +28,6 @@ public class UserMapActivityC {
             MapAgent.closeMenu();
         });
     }
+
+    public abstract void stop();
 }

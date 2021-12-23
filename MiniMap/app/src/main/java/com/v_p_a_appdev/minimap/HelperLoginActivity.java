@@ -3,6 +3,9 @@ package com.v_p_a_appdev.minimap;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class HelperLoginActivity extends UserLoginActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

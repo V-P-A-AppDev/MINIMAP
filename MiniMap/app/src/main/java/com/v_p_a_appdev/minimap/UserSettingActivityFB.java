@@ -63,6 +63,6 @@ public class UserSettingActivityFB {
     }
 
     public void finishActivity(){
-        userSettingActivity.finish();
+        userSettingActivity.loadMap();
     }
 }
