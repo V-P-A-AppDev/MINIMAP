@@ -51,6 +51,12 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/orange"
             android:text="Logout" />
+        <Button
+            android:id="@+id/leader_board"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/orange"
+            android:text="Leader Board." />
     </LinearLayout>
 
     <LinearLayout

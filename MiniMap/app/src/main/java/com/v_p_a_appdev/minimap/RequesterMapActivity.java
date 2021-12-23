@@ -82,9 +82,25 @@ public class RequesterMapActivity extends UserMapActivity {
                 if (helperFound) {
                     helperLocRef.removeEventListener(helperLocationRefListener);
                     if (helperFoundId != null) {
-                        DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
-                        helperRef.removeValue();
+                        DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId);
+                        helperRef.child("RequesterJobId").removeValue();
                         helperFoundId = null;
+
+                        helperRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                long rating ;
+                                rating = (Long) snapshot.child("rating").getValue();
+                                rating += 1;
+                                helperRef.child("rating").setValue(rating);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                        //int rating = ;
                     }
                     helperFound = false;
                 }

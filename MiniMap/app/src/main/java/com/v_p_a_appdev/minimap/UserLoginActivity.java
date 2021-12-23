@@ -47,10 +47,8 @@ public abstract class UserLoginActivity extends AppCompatActivity {
                 if (!task.isSuccessful()) {
                     Toast.makeText(this, "Something went wrong with the registration process.", Toast.LENGTH_SHORT).show();
                 } else {
-                    String userId = Objects.requireNonNull(entranceAuth.getCurrentUser()).getUid();
-                    DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userType).child(userId).child("name");
-                    String name = email.toString().split("@")[0];
-                    currentUserDB.setValue(name);
+                    setInfo(email ,entranceAuth );
+
                 }
             });
         });
@@ -63,6 +61,13 @@ public abstract class UserLoginActivity extends AppCompatActivity {
                 }
             });
         });
+    }
+
+    void setInfo(String email, FirebaseAuth entranceAuth) {
+        String userId = Objects.requireNonNull(this.entranceAuth.getCurrentUser()).getUid();
+        DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userType).child(userId).child("name");
+        String name = email.split("@")[0];
+        currentUserDB.setValue(name);
     }
 
     @Override

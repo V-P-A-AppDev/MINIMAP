@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class HelperMapActivity extends UserMapActivity {
-    private Button logoutButton, openMenuButton, closeMenuButton;
+    private Button logoutButton, openMenuButton, closeMenuButton , leaderboard;
     private boolean isLoggingOut = false;
     private Marker jobMarker;
     private String requesterId = "";
@@ -68,6 +68,11 @@ public class HelperMapActivity extends UserMapActivity {
         requesterName.setText("");
         requesterPhone.setText("");
         requesterIcon.setImageResource(R.mipmap.ic_launcher_foreground);
+        leaderboard.setOnClickListener(v -> {
+            Intent intent = new Intent(this, LeaderBoardActivity.class);
+            startActivity(intent);
+            finish();
+        });
 
     }
 
@@ -77,6 +82,7 @@ public class HelperMapActivity extends UserMapActivity {
         requesterName = findViewById(R.id.requesterName);
         requesterPhone = findViewById(R.id.requesterPhone);
         logoutButton = findViewById(R.id.logout);
+        leaderboard = findViewById(R.id.leader_board);
 
 
         openMenuButton = findViewById(R.id.openMenu);
@@ -253,7 +259,8 @@ public class HelperMapActivity extends UserMapActivity {
         ref = FirebaseDatabase.getInstance().getReference("HelpersBusy");
         geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
-
+        ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(userId).child("RequesterJobId");
+        ref.removeValue();
     }
 
     @Override
