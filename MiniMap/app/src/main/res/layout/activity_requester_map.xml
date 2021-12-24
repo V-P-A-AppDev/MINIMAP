@@ -31,6 +31,8 @@
         android:orientation="vertical"
         android:visibility="gone">
 
+
+
         <Button
             android:id="@+id/closeMenu"
             android:layout_width="wrap_content"
@@ -55,10 +57,13 @@
     </LinearLayout>
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="vertical">
+
+
 
         <LinearLayout
             android:id="@+id/helperInfo"
@@ -68,6 +73,12 @@
             android:background="@android:color/white"
             android:orientation="horizontal"
             android:visibility="gone">
+
+            <Button
+                android:id="@+id/requesterChatButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chat" />
 
             <ImageView
                 android:id="@+id/helperIcon"
@@ -107,5 +118,9 @@
             android:backgroundTint="@color/blue"
             android:text="Ask For Help" />
 
+
+
     </LinearLayout>
+
+
 </FrameLayout>

@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class HelperMapActivity extends UserMapActivity {
-    private Button logoutButton, openMenuButton, closeMenuButton;
+    private Button logoutButton, openMenuButton, closeMenuButton, chatButton;
     private boolean isLoggingOut = false;
     private Marker jobMarker;
     private String requesterId = "";
@@ -67,6 +67,15 @@ public class HelperMapActivity extends UserMapActivity {
             openMenuButton.setVisibility(View.VISIBLE);
         });
 
+        chatButton.setOnClickListener(v->{
+            Intent intent = new Intent(this, ChatActivity.class);
+            intent.putExtra("UserType", "Requester");
+            intent.putExtra("UserId", requesterId);
+            intent.putExtra("UserName", requesterName.getText());
+            intent.putExtra("ConnectionId", requesterId+userId);
+            startActivity(intent);
+        });
+
 
     }
 
@@ -77,10 +86,10 @@ public class HelperMapActivity extends UserMapActivity {
         requesterPhone = findViewById(R.id.requesterPhone);
         logoutButton = findViewById(R.id.logout);
 
-
         openMenuButton = findViewById(R.id.openMenu);
         closeMenuButton = findViewById(R.id.closeMenu);
         menuPopUp = findViewById(R.id.helperMenu);
+        chatButton = findViewById(R.id.helperChatButton);
     }
 
     private void getAssignedRequester() {

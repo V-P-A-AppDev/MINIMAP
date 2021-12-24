@@ -3,11 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Andrey/AndroidStudioProjects/MINIMAP/MINIMAP/MiniMap/app/src/main/res/drawable/my_message_back.xml" value="0.26205128205128203" />
+        <entry key="..\:/Users/Andrey/AndroidStudioProjects/MINIMAP/MINIMAP/MiniMap/app/src/main/res/drawable/their_message_back.xml" value="0.26205128205128203" />
+        <entry key="..\:/Users/Andrey/AndroidStudioProjects/MINIMAP/MINIMAP/MiniMap/app/src/main/res/layout/activity_chat.xml" value="0.2" />
         <entry key="..\:/Users/Andrey/AndroidStudioProjects/MINIMAP/MINIMAP/MiniMap/app/src/main/res/layout/activity_customer_login.xml" value="0.2" />
         <entry key="..\:/Users/Andrey/AndroidStudioProjects/MINIMAP/MINIMAP/MiniMap/app/src/main/res/layout/activity_customer_map.xml" value="0.2" />
+        <entry key="..\:/Users/Andrey/AndroidStudioProjects/MINIMAP/MINIMAP/MiniMap/app/src/main/res/layout/activity_helper_map.xml" value="0.2" />
         <entry key="..\:/Users/Andrey/AndroidStudioProjects/MINIMAP/MINIMAP/MiniMap/app/src/main/res/layout/activity_main.xml" value="0.12708333333333333" />
+        <entry key="..\:/Users/Andrey/AndroidStudioProjects/MINIMAP/MINIMAP/MiniMap/app/src/main/res/layout/activity_requester_map.xml" value="0.2037037037037037" />
         <entry key="..\:/Users/Andrey/AndroidStudioProjects/MINIMAP/MINIMAP/MiniMap/app/src/main/res/layout/activity_worker_login.xml" value="0.2" />
         <entry key="..\:/Users/Andrey/AndroidStudioProjects/MINIMAP/MINIMAP/MiniMap/app/src/main/res/layout/activity_worker_map.xml" value="0.1" />
+        <entry key="..\:/Users/Andrey/AndroidStudioProjects/MINIMAP/MINIMAP/MiniMap/app/src/main/res/layout/chat_adapter_layout.xml" value="0.2" />
+        <entry key="..\:/Users/Andrey/AndroidStudioProjects/MINIMAP/MINIMAP/MiniMap/app/src/main/res/layout/item_chat.xml" value="0.1743659420289855" />
+        <entry key="..\:/Users/Andrey/AndroidStudioProjects/MINIMAP/MINIMAP/MiniMap/app/src/main/res/layout/messageview.xml" value="0.25" />
         <entry key="..\:/Users/kushn/Desktop/MINIMAP/MiniMap/app/src/main/res/layout/activity_customer_map.xml" value="0.17481884057971014" />
         <entry key="..\:/Users/kushn/Desktop/MINIMAP/MiniMap/app/src/main/res/layout/activity_customer_settings.xml" value="0.17481884057971014" />
         <entry key="..\:/Users/kushn/Desktop/MINIMAP/MiniMap/app/src/main/res/layout/activity_helper_map.xml" value="0.21770833333333334" />
@@ -56,5 +64,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.264" />
+      </ProjectState>
+    </option>
   </component>
 </project>

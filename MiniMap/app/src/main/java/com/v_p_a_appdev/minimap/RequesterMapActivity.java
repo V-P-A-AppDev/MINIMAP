@@ -35,7 +35,7 @@ import java.util.Objects;
 
 public class RequesterMapActivity extends UserMapActivity {
 
-    private Button logoutButton, requestButton, openMenuButton, closeMenuButton;
+    private Button logoutButton, requestButton, openMenuButton, closeMenuButton, chatButton;
     private LatLng requestLocation;
     private boolean isRequesting;
     private Marker helperMarker;
@@ -71,6 +71,17 @@ public class RequesterMapActivity extends UserMapActivity {
             menuPopUp.setVisibility(View.GONE);
             openMenuButton.setVisibility(View.VISIBLE);
         });
+
+        chatButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ChatActivity.class);
+            intent.putExtra("UserType", "helper");
+            intent.putExtra("UserId", helperFoundId);
+            intent.putExtra("UserName", helperName.getText());
+            intent.putExtra("ConnectionId", userId+helperFoundId);
+            startActivity(intent);
+        });
+
+
 
 
         //*When a click on the request button is being performed.
@@ -131,6 +142,7 @@ public class RequesterMapActivity extends UserMapActivity {
         openMenuButton = findViewById(R.id.openMenu);
         closeMenuButton = findViewById(R.id.closeMenu);
         menuPopUp = findViewById(R.id.requesterMenu);
+        chatButton = findViewById(R.id.requesterChatButton);
     }
 
 
