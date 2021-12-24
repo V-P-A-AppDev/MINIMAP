@@ -51,10 +51,13 @@ public abstract class UserMapActivityMap implements LocationListener, OnMapReady
         }
         buildGoogleApiClient();
         mapUtils.getmMap().setMyLocationEnabled(true);
-        if (userLocation.lastLocation == null)
-            createInitialLocation();
-        LatLng latLng = new LatLng(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude());
-        mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        if (checkInitialLocation()){
+            Toast.makeText(userMapActivity.getApplicationContext(), "Can't find your location. Try again Later.", Toast.LENGTH_LONG).show();
+        }
+        else {
+            LatLng latLng = new LatLng(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude());
+            mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        }
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -139,6 +142,20 @@ public abstract class UserMapActivityMap implements LocationListener, OnMapReady
 
     public void closeMenu(){
         userMapActivity.closeMenu();
+    }
+
+    private boolean checkInitialLocation(){
+        int count = 0;
+        while (userLocation.lastLocation == null && count < 3) {
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            createInitialLocation();
+            ++count;
+        }
+        return userLocation.lastLocation == null;
     }
 
     private void createInitialLocation(){

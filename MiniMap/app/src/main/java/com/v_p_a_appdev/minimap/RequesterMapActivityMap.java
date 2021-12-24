@@ -79,9 +79,7 @@ public class RequesterMapActivityMap extends UserMapActivityMap{
                             rating = (Long) snapshot.child("rating").getValue();
                             rating += 1;
                             helperRef.child("rating").setValue(rating);
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
+                        }catch (Exception ignored){}
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {

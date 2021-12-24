@@ -29,8 +29,7 @@ public class HelperMapActivity extends UserMapActivity {
                 findViewById(R.id.logout),
                 findViewById(R.id.openMenu),
                 findViewById(R.id.closeMenu),
-                findViewById(R.id.leader_board),
-                findViewById(R.id.background));
+                findViewById(R.id.leader_board));
         MapAgent.getAssignedRequester();
     }
 
@@ -94,15 +93,6 @@ public class HelperMapActivity extends UserMapActivity {
         Intent intent = new Intent(this, LeaderBoardActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    public void startBackGround() {
-        Intent intent = new Intent(this , BackGroundAvailable.class);
-        startService(intent);
-    }
-    public void stopBackGround() {
-        Intent intent = new Intent(this , BackGroundAvailable.class);
-        stopService(intent);
     }
 }
 

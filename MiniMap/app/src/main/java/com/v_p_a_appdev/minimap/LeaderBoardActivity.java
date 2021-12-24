@@ -44,8 +44,10 @@ public class LeaderBoardActivity extends AppCompatActivity {
                 String name;
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     name = (String) dataSnapshot.child("name").getValue();
-                    rating = Math.toIntExact((Long) dataSnapshot.child("rating").getValue());
-                    list.add(new HelperData(name , rating));
+                    try {
+                        rating = Math.toIntExact((Long) dataSnapshot.child("rating").getValue());
+                        list.add(new HelperData(name , rating));
+                    }catch(Exception ignored){}
                 }
                 Collections.sort(list);
                 users.clear();

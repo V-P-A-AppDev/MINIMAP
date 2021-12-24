@@ -9,14 +9,11 @@ public class HelperMapActivityC extends UserMapActivityC{
     private Button leaderBoardButton;
     private Switch backgroundSwitch;
 
-    public HelperMapActivityC(Button settingButton, HelperMapActivityMap MapAgent, Button logoutButton, Button openMenuButton, Button closeMenuButton , Button leaderBoardButton ,  Switch backgroundSwitch) {
+    public HelperMapActivityC(Button settingButton, HelperMapActivityMap MapAgent, Button logoutButton, Button openMenuButton, Button closeMenuButton , Button leaderBoardButton ) {
         super(settingButton, MapAgent , logoutButton , openMenuButton ,  closeMenuButton );
         this.HelperMapAgent =  MapAgent;
         this.leaderBoardButton = leaderBoardButton;
         leaderBoardButton.setOnClickListener(v -> HelperMapAgent.openLeaderBoard());
         this.backgroundSwitch = backgroundSwitch;
-        this.backgroundSwitch.setChecked(HelperMapAgent.backGround);
-        this.backgroundSwitch.setOnClickListener(v -> HelperMapAgent.BackGround());
-
     }
 }
