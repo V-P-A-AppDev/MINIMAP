@@ -20,7 +20,7 @@ public class HelperLoginActivity extends UserLoginActivity {
 
     @Override
     void changeScreen() {
-        Intent intent = new Intent(HelperLoginActivity.this, HelperMapActivity.class);
+        Intent intent = new Intent(this, HelperMapActivity.class);
         startActivity(intent);
         finish();
     }

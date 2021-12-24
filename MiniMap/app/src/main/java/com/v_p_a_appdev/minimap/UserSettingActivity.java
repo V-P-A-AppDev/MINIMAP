@@ -4,39 +4,39 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class UserSettingActivity extends AppCompatActivity {
-    private UserSettingActivityC userSettingActivityC;
+    protected  UserSettingActivityFB FBAgent;
     protected String userType;
-    ImageView profileImage;
     Uri resultUri;
+    ImageView profileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadActivity();
-        UserSettingActivityFB FBAgent = new UserSettingActivityFB(this);
+
+        FBAgent = new UserSettingActivityFB(this);
         profileImage = findViewById(R.id.profileImage);
-        profileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 1);
-            }
+        profileImage.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent, 1);
         });
-        userSettingActivityC = new UserSettingActivityC(
-                findViewById(R.id.name),
-                findViewById(R.id.phone),
+        EditText nameField = findViewById(R.id.name);
+        EditText phoneField = findViewById(R.id.phone);
+        UserSettingActivityC userSettingActivityC = new UserSettingActivityC(
+                nameField,
+                phoneField,
                 findViewById(R.id.submit),
                 findViewById(R.id.previous),
                 FBAgent);
-        userSettingActivityC.showUserInfo();
+        FBAgent.getUserInfo(nameField , phoneField);
     }
 
     protected abstract void loadActivity();
@@ -49,7 +49,7 @@ public abstract class UserSettingActivity extends AppCompatActivity {
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             final Uri imageUri = data.getData();
             resultUri = imageUri;
-            profileImage.setImageURI(resultUri);
+            profileImage.setImageURI(imageUri);
         }
     }
 }

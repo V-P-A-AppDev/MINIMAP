@@ -14,8 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
-import com.firebase.geofire.GeoFire;
-import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -25,13 +23,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
 public abstract class UserMapActivityMap implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener  {
-    MapUtilities mapUtils ;
+    MapUtilities mapUtils;
     UserLocation userLocation;
     protected boolean isLoggingOut = false , initialLocation = false;
     private UserMapActivity userMapActivity;
@@ -43,15 +39,7 @@ public abstract class UserMapActivityMap implements LocationListener, OnMapReady
         userLocation = new UserLocation();
         mapUtils = new MapUtilities();
         mapUtils.setMapFragment((SupportMapFragment) userMapActivity.getSupportFragmentManager().findFragmentById(R.id.map));
-        if (ActivityCompat.checkSelfPermission(userMapActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(userMapActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(userMapActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MapUtilities.LOCATION_REQUEST_CODE);//*
-        } else {
-            mapUtils.getMapFragment().getMapAsync(this);
-        }
-        LocationManager locationManager = (LocationManager) userMapActivity.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        userLocation.lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        initialLocation = true;
+        createInitialLocation();
         userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
     }
 
@@ -64,7 +52,7 @@ public abstract class UserMapActivityMap implements LocationListener, OnMapReady
         buildGoogleApiClient();
         mapUtils.getmMap().setMyLocationEnabled(true);
         if (userLocation.lastLocation == null)
-            return;
+            createInitialLocation();
         LatLng latLng = new LatLng(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude());
         mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
@@ -129,7 +117,6 @@ public abstract class UserMapActivityMap implements LocationListener, OnMapReady
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 
     public void loadSetting(){
@@ -152,6 +139,19 @@ public abstract class UserMapActivityMap implements LocationListener, OnMapReady
 
     public void closeMenu(){
         userMapActivity.closeMenu();
+    }
+
+    private void createInitialLocation(){
+        if (ActivityCompat.checkSelfPermission(userMapActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(userMapActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(userMapActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MapUtilities.LOCATION_REQUEST_CODE);//*
+        } else {
+            mapUtils.getMapFragment().getMapAsync(this);
+        }
+
+        LocationManager locationManager = (LocationManager) userMapActivity.getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        userLocation.lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        initialLocation = true;
     }
 
 }

@@ -17,15 +17,13 @@ public class RequesterMapActivity extends UserMapActivity {
     private ImageView helperIcon;
     private TextView helperName, helperPhone;
     private RequesterMapActivityC requesterMapActivityC;
-
-
-
+    private RequesterMapActivityMap MapAgent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initialize();
-        RequesterMapActivityMap MapAgent = new RequesterMapActivityMap(this);
+        MapAgent = new RequesterMapActivityMap(this);
         requesterMapActivityC = new RequesterMapActivityC(
                 findViewById(R.id.settings),
                 MapAgent,
@@ -43,11 +41,15 @@ public class RequesterMapActivity extends UserMapActivity {
         menuPopUp = findViewById(R.id.requesterMenu);
     }
 
-
+    @Override
+    protected void onPause() {
+        MapAgent.stop();
+        super.onPause();
+    }
 
     @Override
     protected void onStop() {
-        requesterMapActivityC.stop();
+        MapAgent.stop();
         super.onStop();
     }
 
@@ -55,6 +57,7 @@ public class RequesterMapActivity extends UserMapActivity {
     protected void loadSetting() {
         Intent intent = new Intent(this, RequesterSettingsActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -98,6 +101,7 @@ public class RequesterMapActivity extends UserMapActivity {
     public void setHelperMarker(Marker helperMarker) {
         this.helperMarker = helperMarker;
     }
+
     public void changeRequestButtonText(String text){
         requesterMapActivityC.getRequestButton().setText(text);
     }

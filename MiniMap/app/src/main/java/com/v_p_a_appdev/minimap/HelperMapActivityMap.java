@@ -1,5 +1,6 @@
 package com.v_p_a_appdev.minimap;
 
+import android.content.Intent;
 import android.location.Location;
 import android.view.View;
 
@@ -28,6 +29,7 @@ public class HelperMapActivityMap extends UserMapActivityMap {
     private ValueEventListener assignedReqLocationRefListener;
     private String requesterId = "";
     private HelperMapActivity helperMapActivity;
+    boolean backGround = false;
 
 
     public HelperMapActivityMap(HelperMapActivity userMapActivity) {
@@ -36,8 +38,7 @@ public class HelperMapActivityMap extends UserMapActivityMap {
     }
 
     public void getAssignedRequester() {
-        String helperID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        DatabaseReference assignedReqRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(helperID).child("RequesterJobId");
+        DatabaseReference assignedReqRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(userId).child("RequesterJobId");
         assignedReqRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -57,11 +58,11 @@ public class HelperMapActivityMap extends UserMapActivityMap {
                     helperMapActivity.getRequesterName().setText("");
                     helperMapActivity.getRequesterPhone().setText("");
                 }
+                changeAvailable();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
@@ -92,7 +93,6 @@ public class HelperMapActivityMap extends UserMapActivityMap {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
@@ -117,44 +117,21 @@ public class HelperMapActivityMap extends UserMapActivityMap {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
-
-    public void onMapReady(@NonNull GoogleMap googleMap){
-        super.onMapReady(googleMap);
-    }
-
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
         if (isLoggingOut) {
             return;
         }
-        boolean change = userLocation.lastLocation.distanceTo(location) > 1;
         super.onLocationChanged(location);
-        if (change || initialLocation) {
-            DatabaseReference refAvailable = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
-            DatabaseReference refBusy = FirebaseDatabase.getInstance().getReference("HelpersBusy");
-            GeoFire geoFireAvailable = new GeoFire(refAvailable);
-            GeoFire geoFireBusy = new GeoFire(refBusy);
-            if ("".equals(requesterId)) {//*Case the helper is available.
-                geoFireBusy.removeLocation(userId);
-                geoFireAvailable.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
-            } else {//*Case the helper is currently busy .
-                geoFireAvailable.removeLocation(userId);
-                geoFireBusy.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
-            }
-            initialLocation = false;
-        }
-
     }
 
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
     public void LogOut(){
@@ -172,13 +149,35 @@ public class HelperMapActivityMap extends UserMapActivityMap {
 
     private void disconnectHelper() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mapUtils.getCurrentGoogleApiClient(), this);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(userId).child("RequesterJobId");
+        ref.removeValue();
+        ref = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
         ref = FirebaseDatabase.getInstance().getReference("HelpersBusy");
         geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
-        ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(userId).child("RequesterJobId");
-        ref.removeValue();
+    }
+
+    public void BackGround() {
+        if (backGround)
+            helperMapActivity.startBackGround();
+        else
+            helperMapActivity.stopBackGround();
+    }
+
+    private void changeAvailable(){
+        DatabaseReference refAvailable = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
+        DatabaseReference refBusy = FirebaseDatabase.getInstance().getReference("HelpersBusy");
+        GeoFire geoFireAvailable = new GeoFire(refAvailable);
+        GeoFire geoFireBusy = new GeoFire(refBusy);
+        if ("".equals(requesterId)) {//*Case the helper is available.
+            geoFireBusy.removeLocation(userId);
+            geoFireAvailable.setLocation(userId, new GeoLocation(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude()));
+        } else {//*Case the helper is currently busy .
+            geoFireAvailable.removeLocation(userId);
+            geoFireBusy.setLocation(userId, new GeoLocation(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude()));
+        }
+
     }
 }

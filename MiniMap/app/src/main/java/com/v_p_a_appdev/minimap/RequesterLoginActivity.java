@@ -17,7 +17,7 @@ public class RequesterLoginActivity extends UserLoginActivity {
 
     @Override
     void changeScreen() {
-        Intent intent = new Intent(RequesterLoginActivity.this, RequesterMapActivity.class);
+        Intent intent = new Intent(this, RequesterMapActivity.class);
         startActivity(intent);
         finish();
     }

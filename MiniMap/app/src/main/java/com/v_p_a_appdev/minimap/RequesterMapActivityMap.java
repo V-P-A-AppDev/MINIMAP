@@ -74,14 +74,17 @@ public class RequesterMapActivityMap extends UserMapActivityMap{
                 helperRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        long rating ;
-                        rating = (Long) snapshot.child("rating").getValue();
-                        rating += 1;
-                        helperRef.child("rating").setValue(rating);
+                        long rating;
+                        try {
+                            rating = (Long) snapshot.child("rating").getValue();
+                            rating += 1;
+                            helperRef.child("rating").setValue(rating);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
                 helperFoundId = null;
@@ -122,7 +125,6 @@ public class RequesterMapActivityMap extends UserMapActivityMap{
                     HashMap hmap = new HashMap();
                     hmap.put("RequesterJobId", requesterId);
                     helperRef.updateChildren(hmap);
-                    initialLocation = true;
                     getHelperLocation();
                     getHelperInfo();
                     requesterMapActivity.changeRequestButtonText("found someone");
@@ -131,12 +133,10 @@ public class RequesterMapActivityMap extends UserMapActivityMap{
 
             @Override
             public void onKeyExited(String key) {
-
             }
 
             @Override
             public void onKeyMoved(String key, GeoLocation location) {
-
             }
 
             @Override
@@ -177,7 +177,6 @@ public class RequesterMapActivityMap extends UserMapActivityMap{
             }
         });
     }
-
 
     private void getHelperLocation() {
         helperLocRef = FirebaseDatabase.getInstance().getReference().child("HelpersBusy").child(helperFoundId).child("l");
@@ -232,14 +231,15 @@ public class RequesterMapActivityMap extends UserMapActivityMap{
 
     @Override
     public void LogOut() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mapUtils.getCurrentGoogleApiClient(), this);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
-        GeoFire geoFire = new GeoFire(ref);
-        geoFire.removeLocation(userId);
+        deleteRequest();
         super.LogOut();
     }
 
     public void stop(){
+        deleteRequest();
+    }
+
+    private void deleteRequest(){
         LocationServices.FusedLocationApi.removeLocationUpdates(mapUtils.getCurrentGoogleApiClient(), this);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
         GeoFire geoFire = new GeoFire(ref);

@@ -9,11 +9,6 @@ public class User {
         phoneNumber = "";
     }
 
-    public User(String userName, String phoneNumber) {
-        this.userName = userName;
-        this.phoneNumber = phoneNumber;
-    }
-
     public String getUserName() {
         return userName;
     }

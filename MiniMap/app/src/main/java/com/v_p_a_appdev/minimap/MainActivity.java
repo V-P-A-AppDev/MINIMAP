@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MapUtilities.LOCATION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MapUtilities.LOCATION_REQUEST_CODE);
         }
         Places.initialize(getApplicationContext(), String.valueOf(R.string.google_maps_key));
         PlacesClient placesClient = Places.createClient(this);
@@ -27,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
         Button workerButton = findViewById(R.id.worker);
         Button customerButton = findViewById(R.id.customer);
         workerButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, HelperLoginActivity.class);
+            Intent intent = new Intent(this, HelperLoginActivity.class);
             startActivity(intent);
             finish();
         });
         customerButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, RequesterLoginActivity.class);
+            Intent intent = new Intent(this, RequesterLoginActivity.class);
             startActivity(intent);
             finish();
         });

@@ -15,6 +15,7 @@ public class HelperMapActivity extends UserMapActivity {
     private ImageView requesterIcon;
     private TextView requesterName, requesterPhone;
     private HelperMapActivityC helperMapActivityC;
+    private HelperMapActivityMap MapAgent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,14 +23,15 @@ public class HelperMapActivity extends UserMapActivity {
         initialize();
 
         requesterPhone.setOnClickListener(v -> ShowDialer(requesterPhone));
-        HelperMapActivityMap MapAgent = new HelperMapActivityMap(this);
+        MapAgent = new HelperMapActivityMap(this);
         helperMapActivityC = new HelperMapActivityC(findViewById(R.id.settings),
                 MapAgent,
                 findViewById(R.id.logout),
                 findViewById(R.id.openMenu),
                 findViewById(R.id.closeMenu),
-                findViewById(R.id.leader_board));
-        helperMapActivityC.getAssignedRequester();
+                findViewById(R.id.leader_board),
+                findViewById(R.id.background));
+        MapAgent.getAssignedRequester();
     }
 
     private void initialize() {
@@ -39,13 +41,10 @@ public class HelperMapActivity extends UserMapActivity {
         requesterPhone = findViewById(R.id.requesterPhone);
     }
 
-
-
-
     @Override
     protected void onStop() {
+        MapAgent.stop();
         super.onStop();
-        helperMapActivityC.stop();
     }
 
     @Override
@@ -95,6 +94,15 @@ public class HelperMapActivity extends UserMapActivity {
         Intent intent = new Intent(this, LeaderBoardActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void startBackGround() {
+        Intent intent = new Intent(this , BackGroundAvailable.class);
+        startService(intent);
+    }
+    public void stopBackGround() {
+        Intent intent = new Intent(this , BackGroundAvailable.class);
+        stopService(intent);
     }
 }
 

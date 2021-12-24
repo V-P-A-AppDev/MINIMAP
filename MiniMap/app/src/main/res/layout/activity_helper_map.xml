@@ -58,6 +58,14 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/orange"
             android:text="@string/logout" />
+
+        <Switch
+            android:id="@+id/background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/orange"
+            android:text="@string/available"
+            android:visibility="visible"/>
     </LinearLayout>
 
     <LinearLayout

@@ -17,25 +17,22 @@ public class UserLoginActivityFB {
         this.fireBaseAuthListener = fireBaseAuthListener;
         this.userLoginActivity = userLoginActivity;
     }
+
     public void createUserWithEmailAndPassword(String email , String Password ){
-        if (Password.length() < 6) {
-            userLoginActivity.passwordInputError();
+        if (checkPassword(Password))
             return;
-        }
         entranceAuth.createUserWithEmailAndPassword(email, Password).addOnCompleteListener( userLoginActivity, task -> {
             if (!task.isSuccessful()) {
                 userLoginActivity.registrationError();
             } else {
-                setInfo(email ,entranceAuth );
+                setInfo(email);
             }
         });
     }
 
     public void signInWithEmailAndPassword(String email , String Password ){
-        if (Password.length() < 6) {
-            userLoginActivity.passwordInputError();
+        if (checkPassword(Password))
             return;
-        }
         entranceAuth.signInWithEmailAndPassword(email, Password).addOnCompleteListener(userLoginActivity, task -> {
             if (!task.isSuccessful()) {
                 userLoginActivity.authenticationError();
@@ -51,7 +48,7 @@ public class UserLoginActivityFB {
         entranceAuth.removeAuthStateListener(fireBaseAuthListener);
     }
 
-    protected void setInfo(String email, FirebaseAuth entranceAuth) {
+    protected void setInfo(String email) {
         String userId = Objects.requireNonNull(this.entranceAuth.getCurrentUser()).getUid();
         DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userLoginActivity.userType).child(userId).child("name");
         String name = email.split("@")[0];
@@ -60,5 +57,13 @@ public class UserLoginActivityFB {
             currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(userId).child("rating");
             currentUserDB.setValue(0);
         }
+    }
+
+    private boolean checkPassword(String Password){
+        if (Password.length() < 6) {
+            userLoginActivity.passwordInputError();
+            return true;
+        }
+        return false;
     }
 }

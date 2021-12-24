@@ -11,13 +11,14 @@ import com.google.firebase.auth.FirebaseUser;
 
 public abstract class UserLoginActivity extends AppCompatActivity {
     protected UserLoginActivityC userLoginActivityC;
+    protected UserLoginActivityFB FBAgent;
     protected String userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadActivity();
-        UserLoginActivityFB FBAgent = new UserLoginActivityFB(firebaseAuth -> {
+        FBAgent = new UserLoginActivityFB(firebaseAuth -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 changeScreen();
@@ -35,13 +36,13 @@ public abstract class UserLoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        userLoginActivityC.addAuthStateListener();
+        FBAgent.addAuthStateListener();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        userLoginActivityC.removeAuthStateListener();
+        FBAgent.removeAuthStateListener();
     }
 
     abstract void loadActivity();
