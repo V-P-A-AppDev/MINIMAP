@@ -37,9 +37,9 @@ public class HelperMapActivityMap extends UserMapActivityMap {
 
     public HelperMapActivityMap(HelperMapActivity userMapActivity) {
         super(userMapActivity);
-        NotificationChannel channel= new NotificationChannel("My Notification","My Notification",NotificationManager.IMPORTANCE_DEFAULT);
-        NotificationManager manager =helperMapActivity.getSystemService(NotificationManager.class);
-        manager.createNotificationChannel(channel);
+//        NotificationChannel channel= new NotificationChannel("My Notification","My Notification",NotificationManager.IMPORTANCE_DEFAULT);
+//        NotificationManager manager =helperMapActivity.getSystemService(NotificationManager.class);
+//        manager.createNotificationChannel(channel);
         helperMapActivity = userMapActivity;
     }
 
@@ -50,14 +50,14 @@ public class HelperMapActivityMap extends UserMapActivityMap {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     requesterId = Objects.requireNonNull(snapshot.getValue()).toString();
-                    String message="A request was found!";
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(helperMapActivity,"My Notification");
-                    builder.setContentTitle("REQUEST");
-                    builder.setContentText(message);
-                    builder.setSmallIcon(R.drawable.ic_launcher_background);
-                    builder.setAutoCancel(true);
-                    NotificationManagerCompat managerCompat=NotificationManagerCompat.from(helperMapActivity);
-                    managerCompat.notify(1,builder.build());
+//                    String message="A request was found!";
+//                    NotificationCompat.Builder builder = new NotificationCompat.Builder(helperMapActivity,"My Notification");
+//                    builder.setContentTitle("REQUEST");
+//                    builder.setContentText(message);
+//                    builder.setSmallIcon(R.mipmap.ic_launcher_foreground);
+//                    builder.setAutoCancel(true);
+//                    NotificationManagerCompat managerCompat=NotificationManagerCompat.from(helperMapActivity);
+//                    managerCompat.notify(1,builder.build());
                     getAssignedRequesterLocation();
                     getAssignedRequesterInfo();
                 } else {
