@@ -93,7 +93,9 @@ public class RequesterMapActivity extends UserMapActivity {
                 if (helperFound) {
                     helperLocRef.removeEventListener(helperLocationRefListener);
                     if (helperFoundId != null) {
-                        DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
+                        DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Chat").child(userId+helperFoundId);
+                        helperRef.removeValue();
+                        helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
                         helperRef.removeValue();
                         helperFoundId = null;
                     }
