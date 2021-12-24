@@ -40,6 +40,7 @@ public class HelperMapActivity extends UserMapActivity {
     private LinearLayout requesterInfo, menuPopUp;
     private ImageView requesterIcon;
     private TextView requesterName, requesterPhone;
+    private String requesterImageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class HelperMapActivity extends UserMapActivity {
             intent.putExtra("UserId", requesterId);
             intent.putExtra("UserName", requesterName.getText());
             intent.putExtra("ConnectionId", requesterId+userId);
+            intent.putExtra("imageView",requesterImageUrl);
             startActivity(intent);
         });
 
@@ -173,10 +175,11 @@ public class HelperMapActivity extends UserMapActivity {
                         requesterPhone.setText(Objects.requireNonNull(map.get("phone")).toString());
                     }
                     if (map.get("profileImageUrl") != null) {
-                        String profileImageUrl = (Objects.requireNonNull(map.get("profileImageUrl")).toString());
-                        Glide.with(getApplication()).load(profileImageUrl).into(requesterIcon);
+                        requesterImageUrl = (Objects.requireNonNull(map.get("profileImageUrl")).toString());
+                        Glide.with(getApplication()).load(requesterImageUrl).into(requesterIcon);
                     } else {
                         requesterIcon.setImageResource(R.mipmap.ic_launcher_foreground);
+                        requesterImageUrl="";
                     }
                 }
             }

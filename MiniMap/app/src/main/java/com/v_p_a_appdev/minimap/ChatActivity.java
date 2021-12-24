@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +36,7 @@ public class ChatActivity extends AppCompatActivity {
     private ChatAdapter chatAdapter;
     private RecyclerView chatrecyclerView;
     private ArrayList<ChatList> chatMessages;
-
+    private ImageView imageView;
     DatabaseReference chatDatabaseReference;
 
 
@@ -45,6 +47,12 @@ public class ChatActivity extends AppCompatActivity {
         initialize();
         nameview.setText(getIntent().getStringExtra("UserName"));
 
+        String imageUrl = getIntent().getStringExtra("imageView");
+        if (imageUrl != "") {
+            Glide.with(getApplication()).load(imageUrl).into(imageView);
+        } else {
+            imageView.setImageResource(R.mipmap.ic_launcher_foreground);
+        }
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,20 +83,18 @@ public class ChatActivity extends AppCompatActivity {
         chatDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if(snapshot.exists())
-                {
+                if (snapshot.exists()) {
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
                     String message = null;
                     String messageCreator = null;
 
-                    if(map.get("message") != null){
+                    if (map.get("message") != null) {
                         message = map.get("message").toString();
                     }
-                    if(map.get("createdBy") != null){
+                    if (map.get("createdBy") != null) {
                         messageCreator = map.get("createdBy").toString();
                     }
-                    if(message != null && messageCreator != null)
-                    {
+                    if (message != null && messageCreator != null) {
                         chatMessages.add(new ChatList(message, messageCreator == userId));
                         chatAdapter.notifyDataSetChanged();
                     }
@@ -135,5 +141,6 @@ public class ChatActivity extends AppCompatActivity {
         chatrecyclerView.setHasFixedSize(false);
         chatrecyclerView.setAdapter(chatAdapter);
         chatrecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        imageView = findViewById(R.id.imageView);
     }
 }
