@@ -73,16 +73,7 @@ public class RequesterMapActivity extends UserMapActivity {
 
         getUserInfo();
         logoutButton.setOnClickListener(v -> {
-            if (helperFoundId != null) {
-                helperLocRef.removeEventListener(helperLocationRefListener);
-                DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Chat").child(userId + helperFoundId);
-                helperRef.removeValue();
-                helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
-                helperRef.removeValue();
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child("Requesters").child(userId).child("AssignedHelperIdentification");
-                ref.removeValue();
-                helperFoundId = null;
-            }
+            removeListenersAndUnnecessaryData();
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -363,9 +354,7 @@ public class RequesterMapActivity extends UserMapActivity {
         });
 
     }
-
-    @Override
-    protected void onDestroy() {
+    private void removeListenersAndUnnecessaryData(){
         if (helperFoundId != null) {
             helperLocRef.removeEventListener(helperLocationRefListener);
             DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Chat").child(userId + helperFoundId);
@@ -376,6 +365,11 @@ public class RequesterMapActivity extends UserMapActivity {
             ref.removeValue();
             helperFoundId = null;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        removeListenersAndUnnecessaryData();
         super.onDestroy();
     }
 
