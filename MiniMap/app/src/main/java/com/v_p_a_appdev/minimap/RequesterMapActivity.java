@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +28,7 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.EventListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,6 +117,7 @@ public class RequesterMapActivity extends UserMapActivity {
                 //*requesterMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.logo_t_foreground)));
                 requestButton.setText("Cancel.");
                 getClosestHelper();
+                sendNotificatoin.showNotification(this, "Help on the way", "Helper found",1);
             }
         });
     }
@@ -195,6 +198,7 @@ public class RequesterMapActivity extends UserMapActivity {
                     getHelperLocation();
                     getHelperInfo();
                     listenForcancelation();
+                    sendNotificatoin.listenForMessages(RequesterMapActivity.this, userId,userId + helperFoundId);
                 }
             }
 
@@ -261,6 +265,8 @@ public class RequesterMapActivity extends UserMapActivity {
         helperPhone.setText("");
         helperIcon.setImageResource(R.mipmap.ic_launcher_foreground);
     }
+
+
 
     private void listenForcancelation(){
         DatabaseReference ref = userDatabase.child("AssignedHelperIdentification");

@@ -158,6 +158,7 @@ public class HelperMapActivity extends UserMapActivity {
                     requesterId = Objects.requireNonNull(snapshot.getValue()).toString();
                     getAssignedRequesterLocation();
                     getAssignedRequesterInfo();
+                    sendNotificatoin.listenForMessages(HelperMapActivity.this, userId, requesterId + userId);
                 } else {
                     requesterId = "";
                     if (jobMarker != null) {
