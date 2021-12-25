@@ -1,12 +1,5 @@
 package com.v_p_a_appdev.minimap;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
-import android.content.pm.PackageManager;
-
-import androidx.core.app.ActivityCompat;
-
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;

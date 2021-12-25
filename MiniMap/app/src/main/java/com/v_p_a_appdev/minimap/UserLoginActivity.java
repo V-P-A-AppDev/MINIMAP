@@ -13,6 +13,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Objects;
+
 public abstract class UserLoginActivity extends AppCompatActivity {
     private EditText emailInput, passwordInput;
     private FirebaseAuth entranceAuth;
@@ -45,7 +47,7 @@ public abstract class UserLoginActivity extends AppCompatActivity {
                 if (!task.isSuccessful()) {
                     Toast.makeText(this, "Something went wrong with the registration process.", Toast.LENGTH_SHORT).show();
                 } else {
-                    String userId = entranceAuth.getCurrentUser().getUid();
+                    String userId = Objects.requireNonNull(entranceAuth.getCurrentUser()).getUid();
                     DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userType).child(userId).child("name");
                     String name = email.toString().split("@")[0];
                     currentUserDB.setValue(name);

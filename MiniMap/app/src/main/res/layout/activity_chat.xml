@@ -7,74 +7,72 @@
     android:orientation="vertical"
     tools:context=".ChatActivity">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="401dp"
-        android:layout_height="54dp"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="71dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.008">
+        app:layout_constraintVertical_bias="0.007">
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="32dp"
-            android:layout_height="23dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="62dp"
             android:layout_marginTop="-1dp"
-            android:layout_marginEnd="258dp"
             android:layout_marginBottom="2dp"
             android:src="@mipmap/helpermarker"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.917"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.042"
+            app:layout_constraintStart_toEndOf="@+id/goBack"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.021" />
+            app:layout_constraintVertical_bias="1.0"
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/nameView"
-            android:layout_width="65dp"
-            android:layout_height="23dp"
+            android:layout_width="104dp"
+            android:layout_height="18dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="139dp"
             android:layout_marginTop="1dp"
-            android:layout_marginEnd="148dp"
-            android:layout_marginBottom="0dp"
             android:text="User Name"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.104"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.022" />
+            app:layout_constraintVertical_bias="0.288"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/goBack"
-            android:layout_width="wrap_content"
-            android:layout_height="49dp"
+            android:layout_width="81dp"
+            android:layout_height="41dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="333dp"
-            android:layout_marginBottom="3dp"
-            android:text="Back" />
-    </RelativeLayout>
-
+            android:text="Back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.018"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.533"
+            tools:ignore="HardcodedText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
         android:layout_width="409dp"
         android:layout_height="58dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +83,7 @@
 
         <EditText
             android:id="@+id/messageBox"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
@@ -97,10 +95,11 @@
             android:hint="Type message here"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/sendButton"
@@ -114,9 +113,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/messageBox"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.6" />
+            app:layout_constraintVertical_bias="0.6"
+            tools:ignore="HardcodedText" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView

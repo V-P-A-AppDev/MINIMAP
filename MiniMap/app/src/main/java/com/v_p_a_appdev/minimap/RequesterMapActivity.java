@@ -2,13 +2,9 @@ package com.v_p_a_appdev.minimap;
 
 import androidx.annotation.NonNull;
 
-import android.content.Intent;
 import android.location.Location;
-import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -33,6 +29,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
 public class RequesterMapActivity extends UserMapActivity {
 
     private Button logoutButton, requestButton, openMenuButton, closeMenuButton, chatButton;
@@ -40,15 +42,24 @@ public class RequesterMapActivity extends UserMapActivity {
     private boolean isRequesting;
     private Marker helperMarker;
     private Marker requesterMarker;
-    private LinearLayout helperInfo, menuPopUp;
+    private ConstraintLayout helperInfo, menuPopUp;
     private ImageView helperIcon;
     private TextView helperName, helperPhone;
 
+
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    String userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
+    private DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Requesters").child(userId);
+
+
+    User currentUser = new User();
+    private ImageView userImage;
+    private TextView userName, userPhone, userRating;
     private int radius = 1;
     private boolean helperFound = false;
     private String helperFoundId;
     GeoQuery geoQuery;
-
+    private String helperImageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +67,18 @@ public class RequesterMapActivity extends UserMapActivity {
         initialize();
 
 
+        getUserInfo();
         logoutButton.setOnClickListener(v -> {
+            helperLocRef.removeEventListener(helperLocationRefListener);
+            if (helperFoundId != null) {
+                DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Chat").child(userId + helperFoundId);
+                helperRef.removeValue();
+                helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
+                helperRef.removeValue();
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child("Requesters").child(userId).child("AssignedHelperIdentification");
+                ref.removeValue();
+                helperFoundId = null;
+            }
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -77,12 +99,10 @@ public class RequesterMapActivity extends UserMapActivity {
             intent.putExtra("UserType", "helper");
             intent.putExtra("UserId", helperFoundId);
             intent.putExtra("UserName", helperName.getText());
-            intent.putExtra("ConnectionId", userId+helperFoundId);
+            intent.putExtra("ConnectionId", userId + helperFoundId);
+            intent.putExtra("imageView", helperImageUrl);
             startActivity(intent);
         });
-
-
-
 
         //*When a click on the request button is being performed.
         requestButton.setOnClickListener(v -> {
@@ -93,16 +113,18 @@ public class RequesterMapActivity extends UserMapActivity {
                 if (helperFound) {
                     helperLocRef.removeEventListener(helperLocationRefListener);
                     if (helperFoundId != null) {
-                        DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Chat").child(userId+helperFoundId);
+                        DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Chat").child(userId + helperFoundId);
                         helperRef.removeValue();
                         helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
                         helperRef.removeValue();
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child("Requesters").child(userId).child("AssignedHelperIdentification");
+                        ref.removeValue();
                         helperFoundId = null;
                     }
                     helperFound = false;
                 }
                 radius = 1;
-                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
                 GeoFire geoFire = new GeoFire(ref);
                 geoFire.removeLocation(userId);
@@ -117,21 +139,54 @@ public class RequesterMapActivity extends UserMapActivity {
                 helperInfo.setVisibility(View.GONE);
                 helperName.setText("");
                 helperPhone.setText("");
+                helperIcon.setImageResource(R.mipmap.ic_launcher_foreground);
 
             } else {
                 isRequesting = true;
-                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
 
                 GeoFire geoFire = new GeoFire(ref);
                 geoFire.setLocation(userId, new GeoLocation(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude()));
                 requestLocation = new LatLng(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude());
-                requesterMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.logo_t_foreground)));
+                //*requesterMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.logo_t_foreground)));
                 requestButton.setText("Cancel.");
                 getClosestHelper();
             }
         });
+    }
 
+    private void getUserInfo() {
+        userDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+                    Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
+                    if (Objects.requireNonNull(map).get("name") != null) {
+                        currentUser.setUserName("Name:\n" + Objects.requireNonNull(map.get("name")).toString());
+                        userName.setText(currentUser.getUserName());
+                    }
+                    if (map.get("phone") != null) {
+                        currentUser.setPhoneNumber("Phone Number :\n" + Objects.requireNonNull(map.get("phone")).toString());
+                        userPhone.setText(currentUser.getPhoneNumber());
+                    }
+                    if (map.get("profileImageUrl") != null) {
+                        String userImageUrl = (Objects.requireNonNull(map.get("profileImageUrl")).toString());
+                        Glide.with(getApplication()).load(userImageUrl).into(userImage);
+                    }
+                    if (map.get("rating") != null) {
+                        userRating.setText("Rating:\n" + Objects.requireNonNull(map.get("rating")).toString());
+                    } else {
+                        userRating.setText("Rating:\n 0");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                finish();
+            }
+        });
     }
 
     private void initialize() {
@@ -145,6 +200,10 @@ public class RequesterMapActivity extends UserMapActivity {
         closeMenuButton = findViewById(R.id.closeMenu);
         menuPopUp = findViewById(R.id.requesterMenu);
         chatButton = findViewById(R.id.requesterChatButton);
+        userImage = findViewById(R.id.curProfileImage);
+        userName = findViewById(R.id.curName);
+        userPhone = findViewById(R.id.curPhoneNum);
+        userRating = findViewById(R.id.curRating);
     }
 
 
@@ -165,9 +224,13 @@ public class RequesterMapActivity extends UserMapActivity {
                     HashMap hmap = new HashMap();
                     hmap.put("RequesterJobId", requesterId);
                     helperRef.updateChildren(hmap);
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child("Requesters").child(requesterId);
+                    HashMap hmap1 = new HashMap();
+                    hmap1.put("AssignedHelperIdentification", helperFoundId);
+                    ref.updateChildren(hmap1);
+                    requestButton.setText("Cancel");
                     getHelperLocation();
                     getHelperInfo();
-                    requestButton.setText("Looking for someone");
                 }
             }
 
@@ -210,10 +273,11 @@ public class RequesterMapActivity extends UserMapActivity {
                         helperPhone.setText(Objects.requireNonNull(map.get("phone")).toString());
                     }
                     if (map.get("profileImageUrl") != null) {
-                        String profileImageUrl = (Objects.requireNonNull(map.get("profileImageUrl")).toString());
-                        Glide.with(getApplication()).load(profileImageUrl).into(helperIcon);
+                        helperImageUrl = (Objects.requireNonNull(map.get("profileImageUrl")).toString());
+                        Glide.with(getApplication()).load(helperImageUrl).into(helperIcon);
                     } else {
-                        helperIcon.setImageResource(R.mipmap.helpermarker);
+                        helperIcon.setImageResource(R.mipmap.ic_launcher_foreground);
+                        helperImageUrl = "";
                     }
                 }
             }
@@ -253,7 +317,7 @@ public class RequesterMapActivity extends UserMapActivity {
                     helperLocation.setLongitude(helperLatLng.longitude);
                     float distance = helperLocation.distanceTo(userLocation.lastLocation);
                     if (distance < 100) {
-                        requestButton.setText("Reinforcements has arrived ;) .");
+                        requestButton.setText("Finish.");
                     } else {
                         requestButton.setText("Helper found: " + /*String.valueOf*/(distance));
                     }
@@ -270,8 +334,25 @@ public class RequesterMapActivity extends UserMapActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        helperLocRef.removeEventListener(helperLocationRefListener);
+        if (helperFoundId != null) {
+            DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Chat").child(userId + helperFoundId);
+            helperRef.removeValue();
+            helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
+            helperRef.removeValue();
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child("Requesters").child(userId).child("AssignedHelperIdentification");
+            ref.removeValue();
+            helperFoundId = null;
+        }
+        super.onDestroy();
+    }
+
+    @Override
     protected void onStop() {
+
         super.onStop();
+
         LocationServices.FusedLocationApi.removeLocationUpdates(mapUtils.getCurrentGoogleApiClient(), this);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
         GeoFire geoFire = new GeoFire(ref);

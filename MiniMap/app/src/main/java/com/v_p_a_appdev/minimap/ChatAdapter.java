@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
@@ -34,13 +33,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.getTextView().setText(chatList.get(position).getMessage());
-        if(chatList.get(position).isCurrUser()){
+        if (chatList.get(position).isCurrUser()) {
             holder.message.setGravity(Gravity.END);
-            holder.message.setBackgroundColor(Color.BLUE);
-        }
-        else {
+            holder.message.setTextColor(Color.BLUE);
+        } else {
             holder.message.setGravity(Gravity.START);
-            holder.message.setBackgroundColor(Color.GRAY);
+            holder.message.setTextColor(Color.BLACK);
         }
     }
 
@@ -49,7 +47,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         return chatList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView message;
 
         public ViewHolder(@NonNull View itemView) {
@@ -57,7 +55,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             message = itemView.findViewById(R.id.messageView);
         }
 
-        public TextView getTextView(){
+        public TextView getTextView() {
             return message;
         }
     }

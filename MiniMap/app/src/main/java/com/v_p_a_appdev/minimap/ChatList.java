@@ -25,3 +25,20 @@ public class ChatList {
         this.message = message;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

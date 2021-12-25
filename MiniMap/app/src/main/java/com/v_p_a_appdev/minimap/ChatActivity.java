@@ -23,7 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
@@ -48,24 +47,14 @@ public class ChatActivity extends AppCompatActivity {
         nameview.setText(getIntent().getStringExtra("UserName"));
 
         String imageUrl = getIntent().getStringExtra("imageView");
-        if (imageUrl != "") {
+        if (!imageUrl.equals("")) {
             Glide.with(getApplication()).load(imageUrl).into(imageView);
         } else {
             imageView.setImageResource(R.mipmap.ic_launcher_foreground);
         }
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        backButton.setOnClickListener(v -> finish());
 
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SendMessage();
-            }
-        });
+        sendButton.setOnClickListener(v -> SendMessage());
     }
 
     private void SendMessage() {
@@ -95,7 +84,7 @@ public class ChatActivity extends AppCompatActivity {
                         messageCreator = map.get("createdBy").toString();
                     }
                     if (message != null && messageCreator != null) {
-                        chatMessages.add(new ChatList(message, messageCreator == userId));
+                        chatMessages.add(new ChatList(message, messageCreator.equals(userId)));
                         chatAdapter.notifyDataSetChanged();
                     }
                 }

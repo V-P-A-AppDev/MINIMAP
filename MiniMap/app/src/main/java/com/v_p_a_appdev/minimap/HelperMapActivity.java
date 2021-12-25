@@ -7,10 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.bumptech.glide.Glide;
 import com.firebase.geofire.GeoFire;
@@ -37,15 +37,25 @@ public class HelperMapActivity extends UserMapActivity {
     private boolean isLoggingOut = false;
     private Marker jobMarker;
     private String requesterId = "";
-    private LinearLayout requesterInfo, menuPopUp;
+    private ConstraintLayout requesterInfo, menuPopUp;
     private ImageView requesterIcon;
     private TextView requesterName, requesterPhone;
     private String requesterImageUrl;
+    private ImageView userImage;
+    private TextView userName, userPhone, userRating;
+
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    String userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
+    private DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(userId);
+    User currentUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initialize();
+
+
+        getUserInfo();
         logoutButton.setOnClickListener(v -> {
             isLoggingOut = true;
             disconnectwHelper();
@@ -54,9 +64,7 @@ public class HelperMapActivity extends UserMapActivity {
             startActivity(intent);
             finish();
         });
-        requesterPhone.setOnClickListener(v -> {
-            ShowDialer(requesterPhone);
-        });
+        requesterPhone.setOnClickListener(v -> ShowDialer(requesterPhone));
         getAssignedRequester();
         openMenuButton.setOnClickListener(v -> {
             menuPopUp.setVisibility(View.VISIBLE);
@@ -68,13 +76,13 @@ public class HelperMapActivity extends UserMapActivity {
             openMenuButton.setVisibility(View.VISIBLE);
         });
 
-        chatButton.setOnClickListener(v->{
+        chatButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, ChatActivity.class);
             intent.putExtra("UserType", "Requester");
             intent.putExtra("UserId", requesterId);
             intent.putExtra("UserName", requesterName.getText());
-            intent.putExtra("ConnectionId", requesterId+userId);
-            intent.putExtra("imageView",requesterImageUrl);
+            intent.putExtra("ConnectionId", requesterId + userId);
+            intent.putExtra("imageView", requesterImageUrl);
             startActivity(intent);
         });
 
@@ -87,11 +95,48 @@ public class HelperMapActivity extends UserMapActivity {
         requesterName = findViewById(R.id.requesterName);
         requesterPhone = findViewById(R.id.requesterPhone);
         logoutButton = findViewById(R.id.logout);
-
         openMenuButton = findViewById(R.id.openMenu);
         closeMenuButton = findViewById(R.id.closeMenu);
         menuPopUp = findViewById(R.id.helperMenu);
         chatButton = findViewById(R.id.helperChatButton);
+        userImage = findViewById(R.id.curProfileImage);
+        userName = findViewById(R.id.curName);
+        userPhone = findViewById(R.id.curPhoneNum);
+        userRating = findViewById(R.id.curRating);
+
+    }
+
+    private void getUserInfo() {
+        userDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+                    Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
+                    if (Objects.requireNonNull(map).get("name") != null) {
+                        currentUser.setUserName("Name:\n"+Objects.requireNonNull(map.get("name")).toString());
+                        userName.setText(currentUser.getUserName());
+                    }
+                    if (map.get("phone") != null) {
+                        currentUser.setPhoneNumber("Phone Number :\n"+Objects.requireNonNull(map.get("phone")).toString());
+                        userPhone.setText(currentUser.getPhoneNumber());
+                    }
+                    if (map.get("profileImageUrl") != null) {
+                        String userImageUrl = (Objects.requireNonNull(map.get("profileImageUrl")).toString());
+                        Glide.with(getApplication()).load(userImageUrl).into(userImage);
+                    }
+                    if (map.get("rating") != null) {
+                        userRating.setText("Rating:\n"+Objects.requireNonNull(map.get("rating")).toString());
+                    } else {
+                        userRating.setText("Rating:\n 0");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                finish();
+            }
+        });
     }
 
     private void getAssignedRequester() {
@@ -148,7 +193,8 @@ public class HelperMapActivity extends UserMapActivity {
                     if (jobMarker != null) {
                         jobMarker.remove();
                     }
-                    jobMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(ReqLatLng).title("requester location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.helpermarker)));
+                    jobMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(ReqLatLng).title("requester location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.customermarker)));
+
                 }
             }
 
@@ -179,7 +225,7 @@ public class HelperMapActivity extends UserMapActivity {
                         Glide.with(getApplication()).load(requesterImageUrl).into(requesterIcon);
                     } else {
                         requesterIcon.setImageResource(R.mipmap.ic_launcher_foreground);
-                        requesterImageUrl="";
+                        requesterImageUrl = "";
                     }
                 }
             }
@@ -236,12 +282,19 @@ public class HelperMapActivity extends UserMapActivity {
 
     }
 
+
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
         if (!isLoggingOut) {
             disconnectwHelper();
         }
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
     }
 
     @Override

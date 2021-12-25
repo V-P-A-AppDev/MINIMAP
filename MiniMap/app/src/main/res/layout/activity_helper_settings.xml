@@ -18,7 +18,8 @@
         app:layout_constraintHorizontal_bias="0.144"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.48" />
+        app:layout_constraintVertical_bias="0.48"
+        android:contentDescription="TODO" />
 
 
     <EditText
@@ -34,7 +35,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.944"
         tools:layout_conversion_absoluteHeight="24dp"
-        tools:layout_conversion_absoluteWidth="371dp" />
+        tools:layout_conversion_absoluteWidth="371dp"
+        tools:ignore="HardcodedText" />
 
     <EditText
         android:id="@+id/phone"
@@ -50,7 +52,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.664"
         tools:layout_conversion_absoluteHeight="24dp"
-        tools:layout_conversion_absoluteWidth="371dp" />
+        tools:layout_conversion_absoluteWidth="371dp"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/submit"
@@ -65,7 +68,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.679"
         tools:layout_conversion_absoluteHeight="48dp"
-        tools:layout_conversion_absoluteWidth="88dp" />
+        tools:layout_conversion_absoluteWidth="88dp"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/previous"
@@ -80,5 +84,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.677"
         tools:layout_conversion_absoluteHeight="48dp"
-        tools:layout_conversion_absoluteWidth="94dp" />
+        tools:layout_conversion_absoluteWidth="94dp"
+        tools:ignore="HardcodedText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

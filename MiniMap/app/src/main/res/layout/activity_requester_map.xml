@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RequesterMapActivity">
+    tools:context=".HelperMapActivity">
 
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_height="match_parent"
+        map:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="46dp" />
 
     <Button
         android:id="@+id/openMenu"
@@ -20,107 +21,214 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/blue"
         android:text="Menu."
-        android:visibility="visible" />
+        android:visibility="visible"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintHorizontal_bias="0.049"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toTopOf="parent"
+        map:layout_constraintVertical_bias="0.023"
+        tools:ignore="HardcodedText" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/requesterMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="129dp"
+        android:layout_height="580dp"
         android:layout_gravity="top"
-        android:background="#7D4D4D4D"
+        android:background="#DEBDBDBD"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        map:layout_constraintBottom_toTopOf="@+id/helperInfo"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintHorizontal_bias="0.0"
+        map:layout_constraintStart_toStartOf="@+id/map"
+        map:layout_constraintTop_toTopOf="@+id/map"
+        map:layout_constraintVertical_bias="0.0">
 
 
+        <ImageView
+            android:id="@+id/curProfileImage"
+            android:layout_width="76dp"
+            android:layout_height="80dp"
+            android:contentDescription="TODO"
+            android:src="@mipmap/logo_t_foreground"
+            map:layout_constraintBottom_toTopOf="@+id/settings"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintHorizontal_bias="0.487"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toBottomOf="@+id/closeMenu"
+            map:layout_constraintVertical_bias="0.067" />
+
+
+        <TextView
+            android:id="@+id/curName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            map:layout_constraintBottom_toTopOf="@+id/settings"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toBottomOf="@+id/curProfileImage"
+            map:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/curPhoneNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            map:layout_constraintBottom_toTopOf="@+id/settings"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toBottomOf="@+id/curName"
+            map:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+
+
+            android:id="@+id/curRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            map:layout_constraintBottom_toTopOf="@+id/settings"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toBottomOf="@+id/curPhoneNum"
+            map:layout_constraintVertical_bias="0.138" />
 
         <Button
             android:id="@+id/closeMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="91dp"
+            android:layout_height="43dp"
             android:backgroundTint="@color/blue"
-            android:text="X" />
+            android:text="X"
+            map:layout_constraintBottom_toTopOf="@+id/settings"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintHorizontal_bias="0.246"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="parent"
+            map:layout_constraintVertical_bias="0.03"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="91dp"
+            android:layout_height="43dp"
             android:backgroundTint="@color/blue"
-            android:text="Settings." />
-
+            android:text="Settings."
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintHorizontal_bias="0.578"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="parent"
+            map:layout_constraintVertical_bias="0.642"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="91dp"
+            android:layout_height="43dp"
             android:backgroundTint="@color/blue"
-            android:text="Logout" />
-    </LinearLayout>
+            android:text="Logout"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintHorizontal_bias="0.578"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toBottomOf="@+id/settings"
+            map:layout_constraintVertical_bias="0.161"
+            tools:ignore="HardcodedText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/helperInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:orientation="vertical">
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        map:layout_constraintBottom_toTopOf="@+id/request"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintHorizontal_bias="0.0"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toTopOf="parent"
+        map:layout_constraintVertical_bias="1.0">
+
+        <ImageView
+            android:id="@+id/helperIcon"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+            android:padding="20sp"
+            android:src="@mipmap/logo_t"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintHorizontal_bias="0.0"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="parent"
+            map:layout_constraintVertical_bias="0.0"
+            android:contentDescription="TODO" />
 
 
-
-        <LinearLayout
-            android:id="@+id/helperInfo"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/helperName"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@android:color/white"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:paddingTop="20sp"
+            android:paddingBottom="10sp"
+            android:textColor="@color/black"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintEnd_toStartOf="@+id/requesterChatButton"
+            map:layout_constraintHorizontal_bias="0.192"
+            map:layout_constraintStart_toEndOf="@+id/helperIcon"
+            map:layout_constraintTop_toTopOf="parent"
+            map:layout_constraintVertical_bias="0.0"
+            tools:ignore="UnknownIdInLayout" />
 
-            <Button
-                android:id="@+id/requesterChatButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chat" />
+        <TextView
+            android:id="@+id/helperPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="phone"
+            android:linksClickable="true"
+            android:paddingTop="20sp"
 
-            <ImageView
-                android:id="@+id/helperIcon"
-                android:layout_width="100sp"
-                android:layout_height="100sp"
-                android:padding="20sp"
-                android:src="@mipmap/helpermarker" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="40sp">
-
-                <TextView
-                    android:id="@+id/helperName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="20sp"
-                    android:paddingBottom="10sp" />
-
-                <TextView
-                    android:id="@+id/helperPhone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="20sp"
-                    android:paddingBottom="10sp" />
-
-            </LinearLayout>
-        </LinearLayout>
+            android:paddingBottom="10sp"
+            android:textColor="@color/black"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintEnd_toStartOf="@+id/requesterChatButton"
+            map:layout_constraintHorizontal_bias="0.191"
+            map:layout_constraintStart_toEndOf="@+id/helperIcon"
+            map:layout_constraintTop_toBottomOf="@+id/helperName"
+            map:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/request"
-            android:layout_width="match_parent"
+            android:id="@+id/requesterChatButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:backgroundTint="@color/blue"
-            android:text="Ask For Help" />
+            android:text="Chat"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintHorizontal_bias="0.986"
+            map:layout_constraintStart_toEndOf="@+id/requesterIcon"
+            map:layout_constraintTop_toTopOf="parent"
+            map:layout_constraintVertical_bias="0.519"
+            tools:ignore="HardcodedText,UnknownIdInLayout" />
 
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+    <Button
+        android:id="@+id/request"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/blue"
+        android:text="Ask For Help"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintHorizontal_bias="1.0"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toTopOf="@+id/map"
+        map:layout_constraintVertical_bias="1.0"
+        tools:ignore="HardcodedText" />
 
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>

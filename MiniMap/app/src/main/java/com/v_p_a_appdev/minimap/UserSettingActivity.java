@@ -59,18 +59,13 @@ public abstract class UserSettingActivity extends AppCompatActivity {
         String userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
         userDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userType).child(userId);
         getUserInfo();
-        profileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 1);
-            }
+        profileImage.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent, 1);
         });
         submitButton.setOnClickListener(v -> saveUserInformation(userId));
-        previousButton.setOnClickListener(v -> {
-            finish();
-        });
+        previousButton.setOnClickListener(v -> finish());
     }
 
     private void saveUserInformation(String userId) {
@@ -92,20 +87,17 @@ public abstract class UserSettingActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            assert bitmap != null;
             bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
             byte[] data = byteArrayOutputStream.toByteArray();
             UploadTask uploadTask = filePath.putBytes(data);
-            uploadTask.addOnFailureListener(e -> {
-                finish();
-            });
+            uploadTask.addOnFailureListener(e -> finish());
             uploadTask.addOnSuccessListener(taskSnapshot -> filePath.getDownloadUrl().addOnSuccessListener(uri -> {
                 Map newImage = new HashMap();
                 newImage.put("profileImageUrl", uri.toString());
                 userDatabase.updateChildren(newImage);
                 finish();
-            }).addOnFailureListener(exception -> {
-                finish();
-            }));
+            }).addOnFailureListener(exception -> finish()));
         } else {
             finish();
         }
@@ -143,8 +135,7 @@ public abstract class UserSettingActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            final Uri imageUri = data.getData();
-            resultUri = imageUri;
+            resultUri = data.getData();
             profileImage.setImageURI(resultUri);
         }
     }
