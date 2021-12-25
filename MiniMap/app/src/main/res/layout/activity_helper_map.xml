@@ -210,6 +210,12 @@
             map:layout_constraintVertical_bias="0.519"
             tools:ignore="HardcodedText" />
 
+        <Button
+            android:id="@+id/cancelJobButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel job"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

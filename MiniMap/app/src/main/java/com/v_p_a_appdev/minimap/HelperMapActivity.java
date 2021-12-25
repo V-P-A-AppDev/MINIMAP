@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class HelperMapActivity extends UserMapActivity {
-    private Button logoutButton, openMenuButton, closeMenuButton, chatButton;
+    private Button logoutButton, openMenuButton, closeMenuButton, chatButton, cancelJobButton;
     private boolean isLoggingOut = false;
     private Marker jobMarker;
     private String requesterId = "";
@@ -86,6 +86,15 @@ public class HelperMapActivity extends UserMapActivity {
             startActivity(intent);
         });
 
+        cancelJobButton.setOnClickListener(v -> {
+            userDatabase.child("RequesterJobId").removeValue();
+            if(requesterId != null && requesterId != "") {
+                DatabaseReference requesterRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Requesters").child(requesterId).child("AssignedHelperIdentification");
+                requesterRef.removeValue();
+                requesterId = null;
+            }
+        });
+
 
     }
 
@@ -103,7 +112,7 @@ public class HelperMapActivity extends UserMapActivity {
         userName = findViewById(R.id.curName);
         userPhone = findViewById(R.id.curPhoneNum);
         userRating = findViewById(R.id.curRating);
-
+        cancelJobButton = findViewById(R.id.cancelJobButton);
     }
 
     private void getUserInfo() {

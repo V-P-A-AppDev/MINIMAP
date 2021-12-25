@@ -21,6 +21,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -29,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
@@ -108,39 +112,7 @@ public class RequesterMapActivity extends UserMapActivity {
         requestButton.setOnClickListener(v -> {
             //*If the request button is already pressed then it means that the requester wants to cancel it .
             if (isRequesting) {
-                isRequesting = false;
-                geoQuery.removeAllListeners();
-                if (helperFound) {
-                    helperLocRef.removeEventListener(helperLocationRefListener);
-                    if (helperFoundId != null) {
-                        DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Chat").child(userId + helperFoundId);
-                        helperRef.removeValue();
-                        helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
-                        helperRef.removeValue();
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child("Requesters").child(userId).child("AssignedHelperIdentification");
-                        ref.removeValue();
-                        helperFoundId = null;
-                    }
-                    helperFound = false;
-                }
-                radius = 1;
-                String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
-                GeoFire geoFire = new GeoFire(ref);
-                geoFire.removeLocation(userId);
-
-                if (requesterMarker != null) {
-                    requesterMarker.remove();
-                }
-                if (helperMarker != null) {
-                    helperMarker.remove();
-                }
-                requestButton.setText("Ask for help");
-                helperInfo.setVisibility(View.GONE);
-                helperName.setText("");
-                helperPhone.setText("");
-                helperIcon.setImageResource(R.mipmap.ic_launcher_foreground);
-
+                cancelhelper(1);
             } else {
                 isRequesting = true;
                 String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
@@ -231,6 +203,7 @@ public class RequesterMapActivity extends UserMapActivity {
                     requestButton.setText("Cancel");
                     getHelperLocation();
                     getHelperInfo();
+                    listenForcancelation();
                 }
             }
 
@@ -256,6 +229,64 @@ public class RequesterMapActivity extends UserMapActivity {
             public void onGeoQueryError(DatabaseError error) {
             }
         });
+    }
+
+    private void cancelhelper(int rating){
+        isRequesting = false;
+        geoQuery.removeAllListeners();
+        if (helperFound) {
+            helperLocRef.removeEventListener(helperLocationRefListener);
+            if (helperFoundId != null) {
+                // Delete chat
+                DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Chat").child(userId + helperFoundId);
+                helperRef.removeValue();
+                // Increase helper rating by 1
+                helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("rating");
+                helperRef.setValue(ServerValue.increment(rating));
+                // Remove job
+                helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
+                helperRef.removeValue();
+                helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Requesters").child(userId).child("AssignedHelperIdentification");
+                helperRef.removeValue();
+                helperFoundId = null;
+            }
+            helperFound = false;
+        }
+        radius = 1;
+        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
+        GeoFire geoFire = new GeoFire(ref);
+        geoFire.removeLocation(userId);
+
+        if (requesterMarker != null) {
+            requesterMarker.remove();
+        }
+        if (helperMarker != null) {
+            helperMarker.remove();
+        }
+        requestButton.setText("Ask for help");
+        helperInfo.setVisibility(View.GONE);
+        helperName.setText("");
+        helperPhone.setText("");
+        helperIcon.setImageResource(R.mipmap.ic_launcher_foreground);
+    }
+
+    private void listenForcancelation(){
+        DatabaseReference ref = userDatabase.child("AssignedHelperIdentification");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    cancelhelper(0);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     private void getHelperInfo() {
