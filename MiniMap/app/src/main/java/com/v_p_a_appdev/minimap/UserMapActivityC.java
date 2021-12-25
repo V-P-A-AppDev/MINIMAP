@@ -3,30 +3,28 @@ package com.v_p_a_appdev.minimap;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.Switch;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 public abstract class UserMapActivityC {
-    private Button settingButton;
-    private Button logoutButton, openMenuButton, closeMenuButton;
+    private Button logoutButton, openMenuButton, closeMenuButton, chatButton , settingButton;
 
-
-    public UserMapActivityC(Button settingButton, UserMapActivityMap MapAgent, Button logoutButton, Button openMenuButton, Button closeMenuButton  ) {
-        this.settingButton = settingButton;
+    public UserMapActivityC(Button logoutButton, Button openMenuButton, Button closeMenuButton, Button chatButton, Button settingButton , ConstraintLayout menuPopUp ,UserMapActivityM mapAgent ) {
         this.logoutButton = logoutButton;
         this.openMenuButton = openMenuButton;
         this.closeMenuButton = closeMenuButton;
-        this.settingButton.setOnClickListener(v -> MapAgent.loadSetting());
-        this.logoutButton.setOnClickListener(v -> {
-            MapAgent.LogOut();
-        });
+        this.chatButton = chatButton;
+        this.settingButton = settingButton;
+        this.logoutButton = logoutButton;
         this.openMenuButton.setOnClickListener(v -> {
             openMenuButton.setVisibility(View.GONE);
-            MapAgent.openMenu();
+            menuPopUp.setVisibility(View.VISIBLE);
         });
         this.closeMenuButton.setOnClickListener(v -> {
+            menuPopUp.setVisibility(View.GONE);
             openMenuButton.setVisibility(View.VISIBLE);
-            MapAgent.closeMenu();
         });
-
+        settingButton.setOnClickListener(v -> mapAgent.loadSetting());
+        logoutButton.setOnClickListener(v -> mapAgent.LogOut() );
     }
 }

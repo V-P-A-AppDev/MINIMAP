@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="20sp"
     tools:context=".HelperSettingsActivity">
 
@@ -16,10 +15,11 @@
         android:src="@mipmap/ic_launcher"
         app:layout_constraintBottom_toTopOf="@+id/name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.159"
+        app:layout_constraintHorizontal_bias="0.144"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.579" />
+        app:layout_constraintVertical_bias="0.48"
+        android:contentDescription="TODO" />
 
 
     <EditText
@@ -27,59 +27,63 @@
         android:layout_width="280dp"
         android:layout_height="22dp"
         android:background="@null"
-        android:hint="@string/name"
+        android:hint="Name"
         app:layout_constraintBottom_toTopOf="@+id/phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.427"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.871"
+        app:layout_constraintVertical_bias="0.944"
         tools:layout_conversion_absoluteHeight="24dp"
-        tools:layout_conversion_absoluteWidth="371dp" />
+        tools:layout_conversion_absoluteWidth="371dp"
+        tools:ignore="HardcodedText" />
 
     <EditText
         android:id="@+id/phone"
         android:layout_width="277dp"
         android:layout_height="21dp"
         android:background="@null"
-        android:hint="@string/phone_number"
+        android:hint="Phone Number"
         android:inputType="number"
         app:layout_constraintBottom_toTopOf="@+id/previous"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.417"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.816"
+        app:layout_constraintVertical_bias="0.664"
         tools:layout_conversion_absoluteHeight="24dp"
-        tools:layout_conversion_absoluteWidth="371dp" />
+        tools:layout_conversion_absoluteWidth="371dp"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#000000FF"
-        android:text="@string/submit"
+        android:text="Submit."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.755"
+        app:layout_constraintHorizontal_bias="0.795"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.509"
+        app:layout_constraintVertical_bias="0.679"
         tools:layout_conversion_absoluteHeight="48dp"
-        tools:layout_conversion_absoluteWidth="88dp" />
+        tools:layout_conversion_absoluteWidth="88dp"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/previous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#000000FF"
-        android:text="@string/previous"
+        android:backgroundTint="#006868FF"
+        android:text="Previous."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/submit"
-        app:layout_constraintHorizontal_bias="0.316"
+        app:layout_constraintHorizontal_bias="0.368"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.51"
+        app:layout_constraintVertical_bias="0.677"
         tools:layout_conversion_absoluteHeight="48dp"
-        tools:layout_conversion_absoluteWidth="94dp" />
+        tools:layout_conversion_absoluteWidth="94dp"
+        tools:ignore="HardcodedText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,16 +2,18 @@ package com.v_p_a_appdev.minimap;
 
 import android.widget.Button;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 public class RequesterMapActivityC extends UserMapActivityC{
     private Button requestButton;
-
-    public RequesterMapActivityC(Button settingButton, RequesterMapActivityMap MapAgent, Button logoutButton, Button openMenuButton, Button closeMenuButton, Button requestButton) {
-        super(settingButton, MapAgent, logoutButton, openMenuButton, closeMenuButton);
+    public RequesterMapActivityC(Button logoutButton, Button openMenuButton, Button closeMenuButton, Button chatButton, Button settingButton, ConstraintLayout menuPopUp, Button requestButton , RequesterMapActivityM mapAgent) {
+        super(logoutButton, openMenuButton, closeMenuButton, chatButton,  settingButton, menuPopUp , mapAgent);
+        requestButton.setOnClickListener(v -> mapAgent.Request());
         this.requestButton = requestButton;
-        requestButton.setOnClickListener(v -> MapAgent.Request());
     }
 
-    public Button getRequestButton() {
-        return requestButton;
+    public void changeRequestButtonText(String text){
+        requestButton.setText(text);
     }
+
 }

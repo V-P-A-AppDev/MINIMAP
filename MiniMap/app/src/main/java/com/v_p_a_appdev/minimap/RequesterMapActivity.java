@@ -7,30 +7,40 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class RequesterMapActivity extends UserMapActivity {
     private Marker helperMarker;
     private Marker requesterMarker;
-    private LinearLayout helperInfo, menuPopUp;
+    private ConstraintLayout helperInfo, menuPopUp;
     private ImageView helperIcon;
     private TextView helperName, helperPhone;
     private RequesterMapActivityC requesterMapActivityC;
-    private RequesterMapActivityMap MapAgent;
+    private RequesterMapActivityM MapAgent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initialize();
-        MapAgent = new RequesterMapActivityMap(this);
+        MapAgent = new RequesterMapActivityM(this);
         requesterMapActivityC = new RequesterMapActivityC(
-                findViewById(R.id.settings),
-                MapAgent,
                 findViewById(R.id.logout),
                 findViewById(R.id.openMenu),
+                findViewById(R.id.settings),
                 findViewById(R.id.closeMenu),
-                findViewById(R.id.request));
+                findViewById(R.id.settings),
+                findViewById(R.id.helperMenu),
+                findViewById(R.id.request),
+                MapAgent
+        );
     }
 
     private void initialize() {
@@ -40,19 +50,6 @@ public class RequesterMapActivity extends UserMapActivity {
         helperPhone = findViewById(R.id.helperPhone);
         menuPopUp = findViewById(R.id.requesterMenu);
     }
-
-    @Override
-    protected void onPause() {
-        MapAgent.stop();
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        MapAgent.stop();
-        super.onStop();
-    }
-
     @Override
     protected void loadSetting() {
         Intent intent = new Intent(this, RequesterSettingsActivity.class);
@@ -74,11 +71,11 @@ public class RequesterMapActivity extends UserMapActivity {
         return requesterMarker;
     }
 
-    public LinearLayout getHelperInfo() {
+    public ConstraintLayout getHelperInfo() {
         return helperInfo;
     }
 
-    public LinearLayout getMenuPopUp() {
+    public ConstraintLayout getMenuPopUp() {
         return menuPopUp;
     }
 
@@ -94,16 +91,16 @@ public class RequesterMapActivity extends UserMapActivity {
         return helperPhone;
     }
 
-    public void setRequesterMarker(Marker requesterMarker) {
-        this.requesterMarker = requesterMarker;
+    public void setRequesterMarker(LatLng requestLocation) {
+        this.requesterMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.logo_t_foreground)));
     }
 
-    public void setHelperMarker(Marker helperMarker) {
-        this.helperMarker = helperMarker;
+    public void setHelperMarker(LatLng helperLatLng) {
+        this.helperMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(helperLatLng).title("Your helper").icon(BitmapDescriptorFactory.fromResource(R.mipmap.helpermarker)));
     }
 
     public void changeRequestButtonText(String text){
-        requesterMapActivityC.getRequestButton().setText(text);
+        requesterMapActivityC.changeRequestButtonText(text);
     }
 
     public void openMenu(){
@@ -113,6 +110,39 @@ public class RequesterMapActivity extends UserMapActivity {
         menuPopUp.setVisibility(View.GONE);
     }
 
+    public void ShowAssignedHelperInfo(User Helper){
+        helperInfo.setVisibility(View.VISIBLE);
+        helperName.setText(Helper.getUserName());
+        helperName.setText(Helper.getPhoneNumber());
+        if (!Helper.getUserImageUrl().equals(""))
+            Glide.with(getApplication()).load(Helper.getUserImageUrl()).into(helperIcon);
+        else
+            helperIcon.setImageResource(R.mipmap.ic_launcher_foreground);
+    }
+
+    public void RemoveHelper() {
+        if (requesterMarker != null) {
+            requesterMarker.remove();
+        }
+        if (helperMarker != null) {
+            helperMarker.remove();
+        }
+        changeRequestButtonText("Ask for help");
+        helperInfo.setVisibility(View.GONE);
+        helperName.setText("");
+        helperPhone.setText("");
+        helperIcon.setImageResource(R.mipmap.ic_launcher_foreground);
+    }
+
+    public void sendNotification(String userId , String helperFoundId){
+        //sendNotificatoin.listenForMessages(RequesterMapActivity.this, userId,userId + helperFoundId);
+    }
+
+    @Override
+    protected void onDestroy() {
+        MapAgent.LogOut();
+        super.onDestroy();
+    }
 }
 
 

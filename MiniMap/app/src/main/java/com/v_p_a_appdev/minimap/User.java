@@ -3,10 +3,10 @@ package com.v_p_a_appdev.minimap;
 public class User {
     private String userName;
     private String phoneNumber;
+    private String userImageUrl;
+    private String Rating;
 
     public User() {
-        userName = "";
-        phoneNumber = "";
     }
 
     public String getUserName() {
@@ -23,5 +23,21 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getUserImageUrl() {
+        return userImageUrl;
+    }
+
+    public void setUserImageUrl(String userImageUrl) {
+        this.userImageUrl = userImageUrl;
+    }
+
+    public String getRating() {
+        return Rating;
+    }
+
+    public void setRating(String rating) {
+        Rating = rating;
     }
 }

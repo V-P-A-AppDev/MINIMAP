@@ -1,22 +1,13 @@
 package com.v_p_a_appdev.minimap;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Intent;
 import android.location.Location;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,20 +19,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class HelperMapActivityMap extends UserMapActivityMap {
+public class HelperMActivityM extends UserMapActivityM {
     private DatabaseReference assignedReqLocationRef;
     private ValueEventListener assignedReqLocationRefListener;
     private String requesterId = "";
     private HelperMapActivity helperMapActivity;
+    protected boolean isLoggingOut = false;
 
 
-    public HelperMapActivityMap(HelperMapActivity userMapActivity) {
+    public HelperMActivityM(HelperMapActivity userMapActivity) {
         super(userMapActivity);
-//        NotificationChannel channel= new NotificationChannel("My Notification","My Notification",NotificationManager.IMPORTANCE_DEFAULT);
-//        NotificationManager manager =helperMapActivity.getSystemService(NotificationManager.class);
-//        manager.createNotificationChannel(channel);
         helperMapActivity = userMapActivity;
     }
+
+    public void cancelJob() {
+        userDatabase.child("RequesterJobId").removeValue();
+        if (requesterId != null && requesterId != "") {
+            DatabaseReference requesterRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Requesters").child(requesterId).child("AssignedHelperIdentification");
+            requesterRef.removeValue();
+            requesterId = null;
+        }
+    }
+
 
     public void getAssignedRequester() {
         DatabaseReference assignedReqRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(userId).child("RequesterJobId");
@@ -50,14 +49,6 @@ public class HelperMapActivityMap extends UserMapActivityMap {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     requesterId = Objects.requireNonNull(snapshot.getValue()).toString();
-//                    String message="A request was found!";
-//                    NotificationCompat.Builder builder = new NotificationCompat.Builder(helperMapActivity,"My Notification");
-//                    builder.setContentTitle("REQUEST");
-//                    builder.setContentText(message);
-//                    builder.setSmallIcon(R.mipmap.ic_launcher_foreground);
-//                    builder.setAutoCancel(true);
-//                    NotificationManagerCompat managerCompat=NotificationManagerCompat.from(helperMapActivity);
-//                    managerCompat.notify(1,builder.build());
                     getAssignedRequesterLocation();
                     getAssignedRequesterInfo();
                 } else {
@@ -72,7 +63,6 @@ public class HelperMapActivityMap extends UserMapActivityMap {
                     helperMapActivity.getRequesterName().setText("");
                     helperMapActivity.getRequesterPhone().setText("");
                 }
-                changeAvailable();
             }
 
             @Override
@@ -101,7 +91,7 @@ public class HelperMapActivityMap extends UserMapActivityMap {
                     if (helperMapActivity.getJobMarker() != null) {
                         helperMapActivity.getJobMarker().remove();
                     }
-                    helperMapActivity.setJobMarker( mapUtils.getmMap().addMarker(new MarkerOptions().position(ReqLatLng).title("requester location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.helpermarker))));
+                    helperMapActivity.setJobMarker(ReqLatLng);
                 }
             }
 
@@ -118,14 +108,19 @@ public class HelperMapActivityMap extends UserMapActivityMap {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+                    User Requester = new User();
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
                     if (map.get("name") != null) {
-                        helperMapActivity.getRequesterName().setText(Objects.requireNonNull(map.get("name")).toString());
+                        Requester.setUserName(Objects.requireNonNull(map.get("name")).toString());
                     }
                     if (map.get("phone") != null) {
-                        helperMapActivity.getRequesterPhone().setText(Objects.requireNonNull(map.get("phone")).toString());
+                        Requester.setPhoneNumber(Objects.requireNonNull(map.get("phone")).toString());
                     }
-                    helperMapActivity.getRequesterIcon().setImageResource(R.mipmap.ic_launcher_foreground);
+                    if (map.get("profileImageUrl") != null) {
+                        Requester.setUserImageUrl(Objects.requireNonNull(map.get("profileImageUrl")).toString());
+
+                    }
+                    helperMapActivity.ShowAssignedRequesterInfo(Requester);
                 }
             }
 
@@ -134,18 +129,8 @@ public class HelperMapActivityMap extends UserMapActivityMap {
             }
         });
     }
-
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-        if (isLoggingOut) {
-            return;
-        }
-        super.onLocationChanged(location);
-    }
-
-
-    @Override
-    public void onConnectionSuspended(int i) {
+    public boolean isLoggingOut(){
+        return isLoggingOut;
     }
 
     public void LogOut(){
@@ -161,8 +146,8 @@ public class HelperMapActivityMap extends UserMapActivityMap {
         disconnectHelper();
     }
 
-    private void disconnectHelper() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mapUtils.getCurrentGoogleApiClient(), this);
+    public void disconnectHelper() {
+        helperMapActivity.removeLocationUpdates();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(userId).child("RequesterJobId");
         ref.removeValue();
         ref = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
@@ -173,18 +158,18 @@ public class HelperMapActivityMap extends UserMapActivityMap {
         geoFire.removeLocation(userId);
     }
 
-    private void changeAvailable(){
+    public void changeHelperAvailable(Location location) {
         DatabaseReference refAvailable = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
         DatabaseReference refBusy = FirebaseDatabase.getInstance().getReference("HelpersBusy");
         GeoFire geoFireAvailable = new GeoFire(refAvailable);
         GeoFire geoFireBusy = new GeoFire(refBusy);
+
         if ("".equals(requesterId)) {//*Case the helper is available.
             geoFireBusy.removeLocation(userId);
-            geoFireAvailable.setLocation(userId, new GeoLocation(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude()));
+            geoFireAvailable.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
         } else {//*Case the helper is currently busy .
             geoFireAvailable.removeLocation(userId);
-            geoFireBusy.setLocation(userId, new GeoLocation(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude()));
+            geoFireBusy.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
         }
-
     }
 }

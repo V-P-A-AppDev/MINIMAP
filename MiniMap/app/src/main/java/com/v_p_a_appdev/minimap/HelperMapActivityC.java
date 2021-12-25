@@ -2,18 +2,13 @@ package com.v_p_a_appdev.minimap;
 
 
 import android.widget.Button;
-import android.widget.Switch;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class HelperMapActivityC extends UserMapActivityC{
-    private HelperMapActivityMap HelperMapAgent;
-    private Button leaderBoardButton;
-    private Switch backgroundSwitch;
+    public HelperMapActivityC(Button logoutButton, Button openMenuButton, Button closeMenuButton, Button chatButton, Button settingButton, ConstraintLayout menuPopUp, Button cancelJobButton,  HelperMActivityM mapAgent) {
+        super(logoutButton, openMenuButton, closeMenuButton, chatButton,  settingButton, menuPopUp , mapAgent);
+        cancelJobButton.setOnClickListener(v -> mapAgent.cancelJob());
 
-    public HelperMapActivityC(Button settingButton, HelperMapActivityMap MapAgent, Button logoutButton, Button openMenuButton, Button closeMenuButton , Button leaderBoardButton ) {
-        super(settingButton, MapAgent , logoutButton , openMenuButton ,  closeMenuButton );
-        this.HelperMapAgent =  MapAgent;
-        this.leaderBoardButton = leaderBoardButton;
-        leaderBoardButton.setOnClickListener(v -> HelperMapAgent.openLeaderBoard());
-        this.backgroundSwitch = backgroundSwitch;
     }
 }

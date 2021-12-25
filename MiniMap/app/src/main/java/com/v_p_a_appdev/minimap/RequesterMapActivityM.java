@@ -9,15 +9,14 @@ import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class RequesterMapActivityMap extends UserMapActivityMap{
+public class RequesterMapActivityM extends UserMapActivityM {
     private RequesterMapActivity requesterMapActivity;
     private int radius = 1;
     private boolean helperFound = false;
@@ -37,7 +36,7 @@ public class RequesterMapActivityMap extends UserMapActivityMap{
     private ValueEventListener helperLocationRefListener;
 
 
-    public RequesterMapActivityMap(RequesterMapActivity requesterMapActivity) {
+    public RequesterMapActivityM(RequesterMapActivity requesterMapActivity) {
         super(requesterMapActivity);
         this.requesterMapActivity = requesterMapActivity;
     }
@@ -56,9 +55,9 @@ public class RequesterMapActivityMap extends UserMapActivityMap{
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
 
         GeoFire geoFire = new GeoFire(ref);
-        geoFire.setLocation(userId, new GeoLocation(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude()));
-        requestLocation = new LatLng(userLocation.lastLocation.getLatitude(), userLocation.lastLocation.getLongitude());
-        requesterMapActivity.setRequesterMarker(mapUtils.getmMap().addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.logo_t_foreground))));
+        geoFire.setLocation(userId, new GeoLocation(requesterMapActivity.getLastLocation().getLatitude(), requesterMapActivity.getLastLocation().getLongitude()));
+        requestLocation = new LatLng(requesterMapActivity.getLastLocation().getLatitude(), requesterMapActivity.getLastLocation().getLongitude());
+        requesterMapActivity.setRequesterMarker(requestLocation);
         requesterMapActivity.changeRequestButtonText("Cancel.");
         getClosestHelper();
     }
@@ -119,12 +118,16 @@ public class RequesterMapActivityMap extends UserMapActivityMap{
                     helperFound = true;
                     helperFoundId = key;
                     DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId);
-                    String requesterId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-                    HashMap hmap = new HashMap();
-                    hmap.put("RequesterJobId", requesterId);
-                    helperRef.updateChildren(hmap);
+                    HashMap hashMap = new HashMap();
+                    hashMap.put("RequesterJobId", userId);
+                    helperRef.updateChildren(hashMap);
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child("Requesters").child(userId);
+                    HashMap hmap1 = new HashMap();
+                    hmap1.put("AssignedHelperIdentification", helperFoundId);
+                    ref.updateChildren(hmap1);
                     getHelperLocation();
                     getHelperInfo();
+                    listenForCancelation();
                     requesterMapActivity.changeRequestButtonText("found someone");
                 }
             }
@@ -151,21 +154,72 @@ public class RequesterMapActivityMap extends UserMapActivityMap{
         });
     }
 
+    private void cancelHelper(int rating){
+        isRequesting = false;
+        geoQuery.removeAllListeners();
+        if (helperFound) {
+            helperLocRef.removeEventListener(helperLocationRefListener);
+            if (helperFoundId != null) {
+                // Delete chat
+                DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Chat").child(userId + helperFoundId);
+                helperRef.removeValue();
+                // Increase helper rating by 1
+                helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("rating");
+                helperRef.setValue(ServerValue.increment(rating));
+                // Remove job
+                helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
+                helperRef.removeValue();
+                helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Requesters").child(userId).child("AssignedHelperIdentification");
+                helperRef.removeValue();
+                helperFoundId = null;
+            }
+            helperFound = false;
+        }
+        radius = 1;
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
+        GeoFire geoFire = new GeoFire(ref);
+        geoFire.removeLocation(userId);
+        requesterMapActivity.RemoveHelper();
+    }
+
+
+
+    private void listenForCancelation(){
+        DatabaseReference ref = userDatabase.child("AssignedHelperIdentification");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    cancelHelper(0);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
     private void getHelperInfo() {
-        requesterMapActivity.getHelperInfo().setVisibility(View.VISIBLE);
         DatabaseReference requesterDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(helperFoundId);
         requesterDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+                    User Helper = new User();
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
                     if (map.get("name") != null) {
-                        requesterMapActivity.getHelperName().setText(Objects.requireNonNull(map.get("name")).toString());
+                        Helper.setUserName(Objects.requireNonNull(map.get("name")).toString());
                     }
                     if (map.get("phone") != null) {
-                        requesterMapActivity.getHelperPhone().setText(Objects.requireNonNull(map.get("phone")).toString());
+                        Helper.setPhoneNumber(Objects.requireNonNull(map.get("phone")).toString());
                     }
-                    requesterMapActivity.getHelperIcon().setImageResource(R.mipmap.helpermarker);
+                    if (map.get("profileImageUrl") != null) {
+                        Helper.setUserImageUrl(Objects.requireNonNull(map.get("profileImageUrl")).toString());
+                    }
+                    requesterMapActivity.ShowAssignedHelperInfo(Helper);
                 }
             }
 
@@ -199,13 +253,13 @@ public class RequesterMapActivityMap extends UserMapActivityMap{
                     Location helperLocation = new Location("");
                     helperLocation.setLatitude(helperLatLng.latitude);
                     helperLocation.setLongitude(helperLatLng.longitude);
-                    float distance = helperLocation.distanceTo(userLocation.lastLocation);
+                    float distance = helperLocation.distanceTo(requesterMapActivity.getLastLocation());
                     if (distance < 100) {
                         requesterMapActivity.changeRequestButtonText("Reinforcements has arrived ;) .");
                     } else {
                         requesterMapActivity.changeRequestButtonText("Helper found: " + /*String.valueOf*/(distance));
                     }
-                    requesterMapActivity.setHelperMarker(mapUtils.getmMap().addMarker(new MarkerOptions().position(helperLatLng).title("Your helper").icon(BitmapDescriptorFactory.fromResource(R.mipmap.helpermarker))));
+                    requesterMapActivity.setHelperMarker(helperLatLng);
                 }
             }
 
@@ -216,31 +270,24 @@ public class RequesterMapActivityMap extends UserMapActivityMap{
         });
 
     }
-
-    @Override
-    public void openMenu() {
-        requesterMapActivity.openMenu();
-    }
-
-    @Override
-    public void closeMenu() {
-        requesterMapActivity.closeMenu();
+    private void removeListenersAndUnnecessaryData(){
+        if (helperFoundId != null) {
+            helperLocRef.removeEventListener(helperLocationRefListener);
+            DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Chat").child(userId + helperFoundId);
+            helperRef.removeValue();
+            helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
+            helperRef.removeValue();
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child("Requesters").child(userId).child("AssignedHelperIdentification");
+            ref.removeValue();
+            helperFoundId = null;
+        }
     }
 
     @Override
     public void LogOut() {
-        deleteRequest();
+        removeListenersAndUnnecessaryData();
         super.LogOut();
     }
 
-    public void stop(){
-        deleteRequest();
-    }
 
-    private void deleteRequest(){
-        LocationServices.FusedLocationApi.removeLocationUpdates(mapUtils.getCurrentGoogleApiClient(), this);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
-        GeoFire geoFire = new GeoFire(ref);
-        geoFire.removeLocation(userId);
-    }
 }
