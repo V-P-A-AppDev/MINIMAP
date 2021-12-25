@@ -73,8 +73,8 @@ public class RequesterMapActivity extends UserMapActivity {
 
         getUserInfo();
         logoutButton.setOnClickListener(v -> {
-            helperLocRef.removeEventListener(helperLocationRefListener);
             if (helperFoundId != null) {
+                helperLocRef.removeEventListener(helperLocationRefListener);
                 DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Chat").child(userId + helperFoundId);
                 helperRef.removeValue();
                 helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
@@ -366,8 +366,8 @@ public class RequesterMapActivity extends UserMapActivity {
 
     @Override
     protected void onDestroy() {
-        helperLocRef.removeEventListener(helperLocationRefListener);
         if (helperFoundId != null) {
+            helperLocRef.removeEventListener(helperLocationRefListener);
             DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Chat").child(userId + helperFoundId);
             helperRef.removeValue();
             helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId).child("RequesterJobId");
