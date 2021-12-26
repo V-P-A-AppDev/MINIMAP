@@ -2,12 +2,12 @@ package com.v_p_a_appdev.minimap;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.ThemedSpinnerAdapter;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.bumptech.glide.Glide;
@@ -27,10 +27,12 @@ public class RequesterMapActivity extends UserMapActivity {
     private RequesterMapActivityM mapAgent;
     private String helperImageUrl;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initialize();
+        helperPhone.setOnClickListener(v -> ShowDialer(helperPhone));
         mapAgent = new RequesterMapActivityM(this);
         mapAgent.getUserInfo();
         requesterMapActivityC = new RequesterMapActivityC(
@@ -75,10 +77,6 @@ public class RequesterMapActivity extends UserMapActivity {
         return helperInfo;
     }
 
-    public ImageView getHelperIcon() {
-        return helperIcon;
-    }
-
     public TextView getHelperName() {
         return helperName;
     }
@@ -87,9 +85,7 @@ public class RequesterMapActivity extends UserMapActivity {
         return helperPhone;
     }
 
-    public void setRequesterMarker(LatLng requestLocation) {
-        this.requesterMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(requestLocation).title("Help Needed Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.logo_t_foreground)));
-    }
+
 
     public void setHelperMarker(LatLng helperLatLng) {
         this.helperMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(helperLatLng).title("Your helper").icon(BitmapDescriptorFactory.fromResource(R.mipmap.helpermarker)));
@@ -102,7 +98,7 @@ public class RequesterMapActivity extends UserMapActivity {
     public void ShowAssignedHelperInfo(User Helper){
         helperInfo.setVisibility(View.VISIBLE);
         helperName.setText(Helper.getUserName());
-        helperName.setText(Helper.getPhoneNumber());
+        helperPhone.setText(Helper.getPhoneNumber());
         if (!Helper.getUserImageUrl().equals(""))
             Glide.with(getApplication()).load(Helper.getUserImageUrl()).into(helperIcon);
         else
@@ -124,26 +120,24 @@ public class RequesterMapActivity extends UserMapActivity {
         helperIcon.setImageResource(R.mipmap.ic_launcher_foreground);
     }
 
-    public void sendNotification(String userId , String helperFoundId){
-        //sendNotificatoin.listenForMessages(RequesterMapActivity.this, userId,userId + helperFoundId);
+
+    public void ShowDialer(View view) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + helperPhone.getText().toString()));
+        startActivity(intent);
     }
 
-    @Override
-    protected void onDestroy() {
-        if (mapAgent.isLoggingOut())
-            mapAgent.LogOut();
-        super.onDestroy();
-    }
 
     @Override
     protected void onStop() {
-        if (mapAgent.isLoggingOut())
-            mapAgent.LogOut();
+        if(!inChat)
+            mapAgent.disconnectRequester();
         super.onStop();
     }
 
     @Override
     public void loadChat(String userId, String otherId) {
+        inChat = true;
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("UserType", "helper");
         intent.putExtra("UserId", otherId);

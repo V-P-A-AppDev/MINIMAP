@@ -24,6 +24,7 @@ public class HelperMapActivityM extends UserMapActivityM {
     private ValueEventListener assignedReqLocationRefListener;
     private String requesterId = "";
     private HelperMapActivity helperMapActivity;
+    private boolean disconnect;
 
     public HelperMapActivityM(HelperMapActivity userMapActivity) {
         super(userMapActivity);
@@ -34,6 +35,7 @@ public class HelperMapActivityM extends UserMapActivityM {
 
     public void cancelJob() {
         userDatabase.child("RequesterJobId").removeValue();
+        changeHelperAvailable(helperMapActivity.getLastLocation());
         if (requesterId != null && requesterId != "") {
             DatabaseReference requesterRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Requesters").child(requesterId).child("AssignedHelperIdentification");
             requesterRef.removeValue();
@@ -64,8 +66,8 @@ public class HelperMapActivityM extends UserMapActivityM {
                     helperMapActivity.getRequesterName().setText("");
                     helperMapActivity.getRequesterPhone().setText("");
                 }
+                changeHelperAvailable(helperMapActivity.getLastLocation());
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -152,14 +154,19 @@ public class HelperMapActivityM extends UserMapActivityM {
         ref = FirebaseDatabase.getInstance().getReference("HelpersBusy");
         geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
+        disconnect = true;
+        cancelJob();
     }
 
     public void changeHelperAvailable(Location location) {
+        if (disconnect)
+            return;
         DatabaseReference refAvailable = FirebaseDatabase.getInstance().getReference("HelpersAvailable");
         DatabaseReference refBusy = FirebaseDatabase.getInstance().getReference("HelpersBusy");
         GeoFire geoFireAvailable = new GeoFire(refAvailable);
         GeoFire geoFireBusy = new GeoFire(refBusy);
-
+        if (location == null)
+            helperMapActivity.getLastLocation();
         if ("".equals(requesterId)) {//*Case the helper is available.
             geoFireBusy.removeLocation(userId);
             geoFireAvailable.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));

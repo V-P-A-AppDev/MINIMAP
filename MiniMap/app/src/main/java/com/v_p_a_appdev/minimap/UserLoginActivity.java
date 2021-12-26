@@ -1,6 +1,7 @@
 package com.v_p_a_appdev.minimap;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -59,5 +60,11 @@ public abstract class UserLoginActivity extends AppCompatActivity {
         Toast.makeText(this, "Something went wrong with the authentication process.", Toast.LENGTH_SHORT).show();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this , MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

@@ -32,7 +32,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/helperMenu"
         android:layout_width="133dp"
-        android:layout_height="604dp"
+        android:layout_height="525dp"
         android:layout_gravity="top"
         android:background="#DEBDBDBD"
         android:orientation="vertical"
@@ -58,24 +58,24 @@
             map:layout_constraintTop_toBottomOf="@+id/closeMenu"
             map:layout_constraintVertical_bias="0.07" />
 
+
         <TextView
             android:id="@+id/curName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
+            android:layout_marginTop="40dp"
             map:layout_constraintEnd_toEndOf="parent"
-            map:layout_constraintHorizontal_bias="0.45"
+            map:layout_constraintHorizontal_bias="0.451"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toBottomOf="@+id/curProfileImage" />
-
 
         <TextView
             android:id="@+id/curPhoneNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="44dp"
             map:layout_constraintEnd_toEndOf="parent"
-            map:layout_constraintHorizontal_bias="0.45"
+            map:layout_constraintHorizontal_bias="0.451"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toBottomOf="@+id/curName" />
 
@@ -91,7 +91,7 @@
             map:layout_constraintHorizontal_bias="0.451"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toBottomOf="@+id/curPhoneNum"
-            map:layout_constraintVertical_bias="0.015" />
+            map:layout_constraintVertical_bias="0.147" />
 
         <Button
             android:id="@+id/closeMenu"
@@ -109,7 +109,7 @@
 
         <Button
             android:id="@+id/settings"
-            android:layout_width="91dp"
+            android:layout_width="wrap_content"
             android:layout_height="43dp"
             android:backgroundTint="@color/orange"
             android:text="Settings."
@@ -118,12 +118,12 @@
             map:layout_constraintHorizontal_bias="0.38"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toTopOf="parent"
-            map:layout_constraintVertical_bias="0.659"
+            map:layout_constraintVertical_bias="0.788"
             tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/logout"
-            android:layout_width="91dp"
+            android:layout_width="wrap_content"
             android:layout_height="43dp"
             android:backgroundTint="@color/orange"
             android:text="Logout"
@@ -132,12 +132,12 @@
             map:layout_constraintHorizontal_bias="0.38"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toBottomOf="@+id/settings"
-            map:layout_constraintVertical_bias="0.121"
+            map:layout_constraintVertical_bias="0.0"
             tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/leaderboard"
-            android:layout_width="91dp"
+            android:layout_width="wrap_content"
             android:layout_height="43dp"
             android:backgroundTint="@color/orange"
             android:text="Leader Board"
@@ -146,7 +146,7 @@
             map:layout_constraintHorizontal_bias="0.38"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toBottomOf="@+id/logout"
-            map:layout_constraintVertical_bias="0.121"
+            map:layout_constraintVertical_bias="0.0"
             tools:ignore="HardcodedText" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -165,20 +165,20 @@
         map:layout_constraintTop_toTopOf="parent"
         map:layout_constraintVertical_bias="1.0">
 
+
         <ImageView
             android:id="@+id/requesterIcon"
             android:layout_width="100sp"
             android:layout_height="100sp"
+            android:contentDescription="TODO"
             android:padding="20sp"
             android:src="@mipmap/logo_t"
             map:layout_constraintBottom_toBottomOf="parent"
             map:layout_constraintEnd_toEndOf="parent"
-            map:layout_constraintHorizontal_bias="0.0"
+            map:layout_constraintHorizontal_bias="0.073"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toTopOf="parent"
-            map:layout_constraintVertical_bias="0.0"
-            android:contentDescription="TODO" />
-
+            map:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/requesterName"
@@ -203,13 +203,13 @@
             android:paddingTop="20sp"
             android:paddingBottom="10sp"
 
+            android:textColor="@color/black"
             map:layout_constraintBottom_toBottomOf="parent"
             map:layout_constraintEnd_toEndOf="parent"
-            map:layout_constraintHorizontal_bias="0.132"
+            map:layout_constraintHorizontal_bias="0.191"
             map:layout_constraintStart_toEndOf="@+id/requesterIcon"
-            map:layout_constraintTop_toTopOf="parent"
-            map:layout_constraintVertical_bias="0.774"
-            android:textColor="@color/black"/>
+            map:layout_constraintTop_toBottomOf="@+id/requesterName"
+            map:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/helperChatButton"
@@ -228,7 +228,14 @@
             android:id="@+id/cancelJobButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel job"/>
+            android:text="Cancel job"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintHorizontal_bias="0.052"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toBottomOf="@+id/requesterIcon"
+            map:layout_constraintVertical_bias="1.0"
+            tools:ignore="MissingConstraints" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

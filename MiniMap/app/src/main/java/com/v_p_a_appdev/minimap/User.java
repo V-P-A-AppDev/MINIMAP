@@ -7,6 +7,7 @@ public class User {
     private String Rating;
 
     public User() {
+        userName =phoneNumber = userImageUrl = Rating ="";
     }
 
     public String getUserName() {

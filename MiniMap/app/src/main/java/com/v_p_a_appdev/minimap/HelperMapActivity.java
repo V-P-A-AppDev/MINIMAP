@@ -22,7 +22,7 @@ public class HelperMapActivity extends UserMapActivity {
     private Marker jobMarker;
     private ConstraintLayout requesterInfo;
     private ImageView requesterIcon;
-    private TextView requesterName, requesterPhone;
+    private TextView requesterName, requesterPhone , userRating ;
     private HelperMapActivityC helperMapActivityC;
     private HelperMapActivityM mapAgent;
     private String requesterImageUrl;
@@ -54,21 +54,15 @@ public class HelperMapActivity extends UserMapActivity {
         requesterIcon = findViewById(R.id.requesterIcon);
         requesterName = findViewById(R.id.requesterName);
         requesterPhone = findViewById(R.id.requesterPhone);
+        userRating = findViewById(R.id.curRating);
     }
 
-    @Override
-    protected void onDestroy() {
-        if (!mapAgent.isLoggingOut()) {
-            mapAgent.disconnectHelper();
-        }
-        super.onDestroy();
-    }
+
 
     @Override
     protected void onStop() {
-        if (!mapAgent.isLoggingOut()) {
+        if (!inChat)
             mapAgent.disconnectHelper();
-        }
         super.onStop();
     }
 
@@ -121,14 +115,13 @@ public class HelperMapActivity extends UserMapActivity {
         if (mapAgent.isLoggingOut()) {
             return;
         }
-        if (userLocation.lastLocation.distanceTo(location) > 1) {
+        if (userLocation.lastLocation == null || userLocation.lastLocation.distanceTo(location) > 1) {
             userLocation.lastLocation = location;
             LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
             mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latlng));
             //*Basically it goes in between 1 to 21 to i've chosen somewhere in the middle.
-
         }
-        mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(14));
+        mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(18));
         mapAgent.changeHelperAvailable(userLocation.lastLocation);
 
     }
@@ -152,6 +145,7 @@ public class HelperMapActivity extends UserMapActivity {
 
     @Override
     public void loadChat(String userId, String otherId) {
+        inChat = true;
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("UserType", "Requester");
         intent.putExtra("UserId", otherId);
@@ -159,6 +153,12 @@ public class HelperMapActivity extends UserMapActivity {
         intent.putExtra("ConnectionId", otherId + userId);
         intent.putExtra("imageView", requesterImageUrl);
         startActivity(intent);
+    }
+
+    @Override
+    public void ChangeUserInfo(User currentUser) {
+        super.ChangeUserInfo(currentUser);
+        userRating.setText(currentUser.getRating());
     }
 }
 

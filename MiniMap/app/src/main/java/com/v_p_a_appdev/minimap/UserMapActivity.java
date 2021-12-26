@@ -31,9 +31,9 @@ import com.google.android.gms.maps.model.LatLng;
 public abstract class UserMapActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
     protected MapUtilities mapUtils = new MapUtilities();
     protected ImageView userImage;
-    protected TextView userName, userPhone, userRating;
+    protected TextView userName, userPhone;
     UserLocation userLocation;
-
+    protected boolean inChat;
 
 
     @Override
@@ -43,6 +43,7 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
 
         loadActivity();
         initialize();
+        inChat = false;
 
         //*Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapUtils.setMapFragment((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
@@ -55,11 +56,12 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         userLocation.lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
-    private void initialize(){
+
+    private void initialize() {
         userImage = findViewById(R.id.curProfileImage);
         userName = findViewById(R.id.curName);
         userPhone = findViewById(R.id.curPhoneNum);
-        userRating = findViewById(R.id.curRating);
+
     }
 
     @Override
@@ -90,7 +92,7 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
         mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latlng));
         //*Basically it goes in between 1 to 21 to i've chosen somewhere in the middle.
-        mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(14));
+        mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(18));
     }
 
     @Override
@@ -151,7 +153,7 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
 
     protected abstract void loadActivity();
 
-    public void ChangeScreenToMain(){
+    public void ChangeScreenToMain() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -160,16 +162,19 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
     public void ChangeUserInfo(User currentUser) {
         userName.setText(currentUser.getUserName());
         userPhone.setText(currentUser.getPhoneNumber());
-        userRating.setText(currentUser.getRating());
         Glide.with(getApplication()).load(currentUser.getUserImageUrl()).into(userImage);
     }
 
-    public void removeLocationUpdates(){
+    public void removeLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mapUtils.getCurrentGoogleApiClient(), this);
     }
 
-    public Location getLastLocation(){
+    public Location getLastLocation() {
+        if (userLocation.lastLocation == null) {
+            userLocation.lastLocation = new Location(LocationManager.GPS_PROVIDER);
+        }
         return userLocation.lastLocation;
+
     }
 
     public abstract void loadChat(String userId, String otherId);
@@ -178,5 +183,11 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
     public void onBackPressed() {
         super.onBackPressed();
         ChangeScreenToMain();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        inChat = false;
     }
 }
