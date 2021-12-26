@@ -134,6 +134,20 @@
             map:layout_constraintTop_toBottomOf="@+id/settings"
             map:layout_constraintVertical_bias="0.121"
             tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/leaderboard"
+            android:layout_width="91dp"
+            android:layout_height="43dp"
+            android:backgroundTint="@color/orange"
+            android:text="Leader Board"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintHorizontal_bias="0.38"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toBottomOf="@+id/logout"
+            map:layout_constraintVertical_bias="0.121"
+            tools:ignore="HardcodedText" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

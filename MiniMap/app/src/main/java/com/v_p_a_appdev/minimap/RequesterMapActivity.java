@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.ThemedSpinnerAdapter;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.bumptech.glide.Glide;
@@ -20,26 +20,28 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class RequesterMapActivity extends UserMapActivity {
     private Marker helperMarker;
     private Marker requesterMarker;
-    private ConstraintLayout helperInfo, menuPopUp;
+    private ConstraintLayout helperInfo ;
     private ImageView helperIcon;
     private TextView helperName, helperPhone;
     private RequesterMapActivityC requesterMapActivityC;
-    private RequesterMapActivityM MapAgent;
+    private RequesterMapActivityM mapAgent;
+    private String helperImageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initialize();
-        MapAgent = new RequesterMapActivityM(this);
+        mapAgent = new RequesterMapActivityM(this);
+        mapAgent.getUserInfo();
         requesterMapActivityC = new RequesterMapActivityC(
                 findViewById(R.id.logout),
                 findViewById(R.id.openMenu),
-                findViewById(R.id.settings),
                 findViewById(R.id.closeMenu),
+                findViewById(R.id.requesterChatButton),
                 findViewById(R.id.settings),
-                findViewById(R.id.helperMenu),
+                findViewById(R.id.requesterMenu),
                 findViewById(R.id.request),
-                MapAgent
+                mapAgent
         );
     }
 
@@ -48,13 +50,11 @@ public class RequesterMapActivity extends UserMapActivity {
         helperIcon = findViewById(R.id.helperIcon);
         helperName = findViewById(R.id.helperName);
         helperPhone = findViewById(R.id.helperPhone);
-        menuPopUp = findViewById(R.id.requesterMenu);
     }
     @Override
     protected void loadSetting() {
         Intent intent = new Intent(this, RequesterSettingsActivity.class);
         startActivity(intent);
-        finish();
     }
 
     @Override
@@ -73,10 +73,6 @@ public class RequesterMapActivity extends UserMapActivity {
 
     public ConstraintLayout getHelperInfo() {
         return helperInfo;
-    }
-
-    public ConstraintLayout getMenuPopUp() {
-        return menuPopUp;
     }
 
     public ImageView getHelperIcon() {
@@ -103,13 +99,6 @@ public class RequesterMapActivity extends UserMapActivity {
         requesterMapActivityC.changeRequestButtonText(text);
     }
 
-    public void openMenu(){
-        menuPopUp.setVisibility(View.VISIBLE);
-    }
-    public void closeMenu(){
-        menuPopUp.setVisibility(View.GONE);
-    }
-
     public void ShowAssignedHelperInfo(User Helper){
         helperInfo.setVisibility(View.VISIBLE);
         helperName.setText(Helper.getUserName());
@@ -118,6 +107,7 @@ public class RequesterMapActivity extends UserMapActivity {
             Glide.with(getApplication()).load(Helper.getUserImageUrl()).into(helperIcon);
         else
             helperIcon.setImageResource(R.mipmap.ic_launcher_foreground);
+        helperImageUrl = Helper.getUserImageUrl();
     }
 
     public void RemoveHelper() {
@@ -140,8 +130,27 @@ public class RequesterMapActivity extends UserMapActivity {
 
     @Override
     protected void onDestroy() {
-        MapAgent.LogOut();
+        if (mapAgent.isLoggingOut())
+            mapAgent.LogOut();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        if (mapAgent.isLoggingOut())
+            mapAgent.LogOut();
+        super.onStop();
+    }
+
+    @Override
+    public void loadChat(String userId, String otherId) {
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("UserType", "helper");
+        intent.putExtra("UserId", otherId);
+        intent.putExtra("UserName", helperName.getText());
+        intent.putExtra("ConnectionId", userId + otherId);
+        intent.putExtra("imageView", helperImageUrl);
+        startActivity(intent);
     }
 }
 

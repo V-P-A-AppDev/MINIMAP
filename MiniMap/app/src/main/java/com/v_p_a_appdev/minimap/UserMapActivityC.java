@@ -26,5 +26,6 @@ public abstract class UserMapActivityC {
         });
         settingButton.setOnClickListener(v -> mapAgent.loadSetting());
         logoutButton.setOnClickListener(v -> mapAgent.LogOut() );
+        chatButton.setOnClickListener(v -> mapAgent.loadChat());
     }
 }

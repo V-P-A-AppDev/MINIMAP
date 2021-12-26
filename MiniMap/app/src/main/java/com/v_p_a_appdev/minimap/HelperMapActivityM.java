@@ -19,17 +19,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class HelperMActivityM extends UserMapActivityM {
+public class HelperMapActivityM extends UserMapActivityM {
     private DatabaseReference assignedReqLocationRef;
     private ValueEventListener assignedReqLocationRefListener;
     private String requesterId = "";
     private HelperMapActivity helperMapActivity;
-    protected boolean isLoggingOut = false;
 
-
-    public HelperMActivityM(HelperMapActivity userMapActivity) {
+    public HelperMapActivityM(HelperMapActivity userMapActivity) {
         super(userMapActivity);
         helperMapActivity = userMapActivity;
+        userDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(userId);
+
     }
 
     public void cancelJob() {
@@ -129,9 +129,7 @@ public class HelperMActivityM extends UserMapActivityM {
             }
         });
     }
-    public boolean isLoggingOut(){
-        return isLoggingOut;
-    }
+
 
     public void LogOut(){
         disconnectHelper();
@@ -142,9 +140,6 @@ public class HelperMActivityM extends UserMapActivityM {
         helperMapActivity.openLeaderBoard();
     }
 
-    public void stop() {
-        disconnectHelper();
-    }
 
     public void disconnectHelper() {
         helperMapActivity.removeLocationUpdates();
@@ -171,5 +166,10 @@ public class HelperMActivityM extends UserMapActivityM {
             geoFireAvailable.removeLocation(userId);
             geoFireBusy.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
         }
+    }
+
+    @Override
+    public void loadChat() {
+        helperMapActivity.loadChat(userId,requesterId);
     }
 }

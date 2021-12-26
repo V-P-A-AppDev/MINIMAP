@@ -6,9 +6,10 @@ import android.widget.Button;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class HelperMapActivityC extends UserMapActivityC{
-    public HelperMapActivityC(Button logoutButton, Button openMenuButton, Button closeMenuButton, Button chatButton, Button settingButton, ConstraintLayout menuPopUp, Button cancelJobButton,  HelperMActivityM mapAgent) {
+    public HelperMapActivityC(Button logoutButton, Button openMenuButton, Button closeMenuButton, Button chatButton, Button settingButton, ConstraintLayout menuPopUp, Button cancelJobButton, Button leaderBoardButton,  HelperMapActivityM mapAgent) {
         super(logoutButton, openMenuButton, closeMenuButton, chatButton,  settingButton, menuPopUp , mapAgent);
         cancelJobButton.setOnClickListener(v -> mapAgent.cancelJob());
+        leaderBoardButton.setOnClickListener(v ->mapAgent.openLeaderBoard());
 
     }
 }

@@ -52,4 +52,10 @@ public abstract class UserSettingActivity extends AppCompatActivity {
             profileImage.setImageURI(imageUri);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        loadMap();
+    }
 }

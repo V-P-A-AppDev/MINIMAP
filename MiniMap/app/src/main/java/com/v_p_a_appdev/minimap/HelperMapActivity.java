@@ -6,14 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -26,7 +24,8 @@ public class HelperMapActivity extends UserMapActivity {
     private ImageView requesterIcon;
     private TextView requesterName, requesterPhone;
     private HelperMapActivityC helperMapActivityC;
-    private HelperMActivityM MapAgent;
+    private HelperMapActivityM mapAgent;
+    private String requesterImageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +33,20 @@ public class HelperMapActivity extends UserMapActivity {
         initialize();
 
         requesterPhone.setOnClickListener(v -> ShowDialer(requesterPhone));
-        MapAgent = new HelperMActivityM(this);
+        mapAgent = new HelperMapActivityM(this);
+        mapAgent.getUserInfo();
         helperMapActivityC = new HelperMapActivityC(
                 findViewById(R.id.logout),
                 findViewById(R.id.openMenu),
-                findViewById(R.id.settings),
                 findViewById(R.id.closeMenu),
+                findViewById(R.id.helperChatButton),
                 findViewById(R.id.settings),
                 findViewById(R.id.helperMenu),
                 findViewById(R.id.cancelJobButton),
-                MapAgent
+                 findViewById(R.id.leaderboard),
+                 mapAgent
                 );
-        MapAgent.getAssignedRequester();
+        mapAgent.getAssignedRequester();
     }
 
     private void initialize() {
@@ -57,16 +58,18 @@ public class HelperMapActivity extends UserMapActivity {
 
     @Override
     protected void onDestroy() {
-        if (!MapAgent.isLoggingOut()) {
-            MapAgent.disconnectHelper();
+        if (!mapAgent.isLoggingOut()) {
+            mapAgent.disconnectHelper();
         }
         super.onDestroy();
     }
 
     @Override
     protected void onStop() {
+        if (!mapAgent.isLoggingOut()) {
+            mapAgent.disconnectHelper();
+        }
         super.onStop();
-
     }
 
 
@@ -85,7 +88,6 @@ public class HelperMapActivity extends UserMapActivity {
 
     @Override
     protected void loadActivity() {
-
         setContentView(R.layout.activity_helper_map);
     }
 
@@ -97,10 +99,6 @@ public class HelperMapActivity extends UserMapActivity {
         return requesterInfo;
     }
 
-    public ImageView getRequesterIcon() {
-        return requesterIcon;
-    }
-
     public TextView getRequesterName() {
         return requesterName;
     }
@@ -110,27 +108,29 @@ public class HelperMapActivity extends UserMapActivity {
     }
 
     public void setJobMarker(LatLng reqLatLng) {
-
         this.jobMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(reqLatLng).title("requester location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.helpermarker)));
     }
 
     public void openLeaderBoard(){
         Intent intent = new Intent(this, LeaderBoardActivity.class);
         startActivity(intent);
-        finish();
     }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        if (MapAgent.isLoggingOut()) {
+        if (mapAgent.isLoggingOut()) {
             return;
         }
-        userLocation.lastLocation = location;
-        LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latlng));
-        //*Basically it goes in between 1 to 21 to i've chosen somewhere in the middle.
+        if (userLocation.lastLocation.distanceTo(location) > 1) {
+            userLocation.lastLocation = location;
+            LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
+            mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latlng));
+            //*Basically it goes in between 1 to 21 to i've chosen somewhere in the middle.
+
+        }
         mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(14));
-        MapAgent.changeHelperAvailable(location);
+        mapAgent.changeHelperAvailable(userLocation.lastLocation);
+
     }
 
 
@@ -147,7 +147,18 @@ public class HelperMapActivity extends UserMapActivity {
             Glide.with(getApplication()).load(Requester.getUserImageUrl()).into(requesterIcon);
         else
             requesterIcon.setImageResource(R.mipmap.ic_launcher_foreground);
+        requesterImageUrl = Requester.getUserImageUrl();
+    }
 
+    @Override
+    public void loadChat(String userId, String otherId) {
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("UserType", "Requester");
+        intent.putExtra("UserId", otherId);
+        intent.putExtra("UserName", requesterName.getText());
+        intent.putExtra("ConnectionId", otherId + userId);
+        intent.putExtra("imageView", requesterImageUrl);
+        startActivity(intent);
     }
 }
 

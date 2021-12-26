@@ -30,8 +30,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 public abstract class UserMapActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
     protected MapUtilities mapUtils = new MapUtilities();
-    private ImageView userImage;
-    private TextView userName, userPhone, userRating;
+    protected ImageView userImage;
+    protected TextView userName, userPhone, userRating;
     UserLocation userLocation;
 
 
@@ -42,7 +42,7 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
         userLocation = new UserLocation();
 
         loadActivity();
-
+        initialize();
 
         //*Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapUtils.setMapFragment((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
@@ -55,10 +55,17 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         userLocation.lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
+    private void initialize(){
+        userImage = findViewById(R.id.curProfileImage);
+        userName = findViewById(R.id.curName);
+        userPhone = findViewById(R.id.curPhoneNum);
+        userRating = findViewById(R.id.curRating);
+    }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mapUtils.setmMap(googleMap);
+        System.out.println("Map Ready");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MapUtilities.LOCATION_REQUEST_CODE);
         }
@@ -77,6 +84,8 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
+        if (mapUtils.getmMap() == null)
+            return;
         userLocation.lastLocation = location;
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
         mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latlng));
@@ -161,5 +170,13 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
 
     public Location getLastLocation(){
         return userLocation.lastLocation;
+    }
+
+    public abstract void loadChat(String userId, String otherId);
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ChangeScreenToMain();
     }
 }

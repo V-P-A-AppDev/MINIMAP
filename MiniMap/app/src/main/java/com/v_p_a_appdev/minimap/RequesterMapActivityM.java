@@ -39,6 +39,8 @@ public class RequesterMapActivityM extends UserMapActivityM {
     public RequesterMapActivityM(RequesterMapActivity requesterMapActivity) {
         super(requesterMapActivity);
         this.requesterMapActivity = requesterMapActivity;
+        userDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Requesters").child(userId);
+
     }
 
     public void Request(){
@@ -289,5 +291,8 @@ public class RequesterMapActivityM extends UserMapActivityM {
         super.LogOut();
     }
 
-
+    @Override
+    public void loadChat() {
+        requesterMapActivity.loadChat(userId , helperFoundId);
+    }
 }
