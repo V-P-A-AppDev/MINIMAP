@@ -51,6 +51,7 @@ public class HelperMapActivityM extends UserMapActivityM {
                     requesterId = Objects.requireNonNull(snapshot.getValue()).toString();
                     getAssignedRequesterLocation();
                     getAssignedRequesterInfo();
+                    sendNotificatoin.listenForMessages(helperMapActivity, userId, requesterId + userId);
                 } else {
                     requesterId = "";
                     if (helperMapActivity.getJobMarker() != null) {

@@ -131,6 +131,7 @@ public class RequesterMapActivityM extends UserMapActivityM {
                     getHelperInfo();
                     listenForCancelation();
                     requesterMapActivity.changeRequestButtonText("found someone");
+                    sendNotificatoin.showNotification(requesterMapActivity, "Help on the way", "Helper found",1);
                 }
             }
 
