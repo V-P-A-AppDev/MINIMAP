@@ -22,7 +22,7 @@ public class HelperMapActivity extends UserMapActivity {
     private Marker jobMarker;
     private ConstraintLayout requesterInfo;
     private ImageView requesterIcon;
-    private TextView requesterName, requesterPhone , userRating ;
+    private TextView requesterName, requesterPhone, userRating;
     private HelperMapActivityC helperMapActivityC;
     private HelperMapActivityM mapAgent;
     private String requesterImageUrl;
@@ -43,9 +43,9 @@ public class HelperMapActivity extends UserMapActivity {
                 findViewById(R.id.settings),
                 findViewById(R.id.helperMenu),
                 findViewById(R.id.cancelJobButton),
-                 findViewById(R.id.leaderboard),
-                 mapAgent
-                );
+                findViewById(R.id.leaderboard),
+                mapAgent
+        );
         mapAgent.getAssignedRequester();
     }
 
@@ -56,7 +56,6 @@ public class HelperMapActivity extends UserMapActivity {
         requesterPhone = findViewById(R.id.requesterPhone);
         userRating = findViewById(R.id.curRating);
     }
-
 
 
     @Override
@@ -102,10 +101,10 @@ public class HelperMapActivity extends UserMapActivity {
     }
 
     public void setJobMarker(LatLng reqLatLng) {
-        this.jobMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(reqLatLng).title("requester location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.helpermarker)));
+        this.jobMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(reqLatLng).title("Requester location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.customermarker)));
     }
 
-    public void openLeaderBoard(){
+    public void openLeaderBoard() {
         inSubScreen = true;
         Intent intent = new Intent(this, LeaderBoardActivity.class);
         startActivity(intent);
@@ -133,7 +132,7 @@ public class HelperMapActivity extends UserMapActivity {
 
     }
 
-    public void ShowAssignedRequesterInfo(User Requester){
+    public void ShowAssignedRequesterInfo(User Requester) {
         requesterInfo.setVisibility(View.VISIBLE);
         requesterName.setText(Requester.getUserName());
         requesterPhone.setText(Requester.getPhoneNumber());
