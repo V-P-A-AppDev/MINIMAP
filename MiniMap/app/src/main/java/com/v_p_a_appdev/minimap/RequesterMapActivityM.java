@@ -1,7 +1,6 @@
 package com.v_p_a_appdev.minimap;
 
 import android.location.Location;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -9,9 +8,7 @@ import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,13 +32,14 @@ public class RequesterMapActivityM extends UserMapActivityM {
     private boolean isRequesting;
     private DatabaseReference helperLocRef;
     private ValueEventListener helperLocationRefListener;
+    private ArrayList<String> canceled;
 
 
     public RequesterMapActivityM(RequesterMapActivity requesterMapActivity) {
         super(requesterMapActivity);
         this.requesterMapActivity = requesterMapActivity;
         userDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Requesters").child(userId);
-
+        canceled = new ArrayList<>();
     }
 
     public void Request(){
@@ -53,6 +52,7 @@ public class RequesterMapActivityM extends UserMapActivityM {
     }
 
     private void createRequest(){
+        canceled.clear();
         isRequesting = true;
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
 
@@ -65,45 +65,14 @@ public class RequesterMapActivityM extends UserMapActivityM {
 
     private void cancelRequest(){
         isRequesting = false;
-        geoQuery.removeAllListeners();
-        if (helperFound) {
-            helperLocRef.removeEventListener(helperLocationRefListener);
-            if (helperFoundId != null) {
-                DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId);
-                helperRef.child("RequesterJobId").removeValue();
-                helperRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        long rating;
-                        try {
-                            rating = (Long) snapshot.child("rating").getValue();
-                            rating += 1;
-                            helperRef.child("rating").setValue(rating);
-                        }catch (Exception ignored){}
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
-                helperFoundId = null;
-            }
-            helperFound = false;
-        }
-        radius = 1;
+        cancelHelper(1);
+        deleteRequest();
+    }
+
+    private void deleteRequest() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
-
-        if (requesterMapActivity.getRequesterMarker() != null) {
-            requesterMapActivity.getRequesterMarker().remove();
-        }
-        if (requesterMapActivity.getHelperMarker() != null) {
-            requesterMapActivity.getHelperMarker().remove();
-        }
-        requesterMapActivity.changeRequestButtonText("Ask for help");
-        requesterMapActivity.getHelperInfo().setVisibility(View.GONE);
-        requesterMapActivity.getHelperName().setText("");
-        requesterMapActivity.getHelperPhone().setText("");
     }
 
     private void getClosestHelper() {
@@ -116,8 +85,12 @@ public class RequesterMapActivityM extends UserMapActivityM {
             //*After the first helper was found , even if there's more in the area , he would be the choice.
             public void onKeyEntered(String key, GeoLocation location) {
                 if (!helperFound && isRequesting) {
-                    helperFound = true;
                     helperFoundId = key;
+                    if (canceled.contains(helperFoundId)) {
+                        helperFoundId = null;
+                        return;
+                    }
+                    helperFound = true;
                     DatabaseReference helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Helpers").child(helperFoundId);
                     HashMap hashMap = new HashMap();
                     hashMap.put("RequesterJobId", userId);
@@ -157,7 +130,7 @@ public class RequesterMapActivityM extends UserMapActivityM {
     }
 
     private void cancelHelper(int rating){
-        isRequesting = false;
+        //isRequesting = false;
         geoQuery.removeAllListeners();
         if (helperFound) {
             helperLocRef.removeEventListener(helperLocationRefListener);
@@ -173,14 +146,12 @@ public class RequesterMapActivityM extends UserMapActivityM {
                 helperRef.removeValue();
                 helperRef = FirebaseDatabase.getInstance().getReference("Users").child("Requesters").child(userId).child("AssignedHelperIdentification");
                 helperRef.removeValue();
+                canceled.add(helperFoundId);
                 helperFoundId = null;
             }
             helperFound = false;
         }
         radius = 1;
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Request");
-        GeoFire geoFire = new GeoFire(ref);
-        geoFire.removeLocation(userId);
         requesterMapActivity.RemoveHelper();
     }
 
@@ -193,6 +164,7 @@ public class RequesterMapActivityM extends UserMapActivityM {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(!snapshot.exists()){
                     cancelHelper(0);
+                    getClosestHelper();
                 }
             }
 
@@ -299,8 +271,6 @@ public class RequesterMapActivityM extends UserMapActivityM {
     public void disconnectRequester(){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Requesters").child(userId).child("AssignedHelperIdentification");
         ref.removeValue();
-        ref = FirebaseDatabase.getInstance().getReference("Request");
-        GeoFire geoFire = new GeoFire(ref);
-        geoFire.removeLocation(userId);
+        deleteRequest();
     }
 }

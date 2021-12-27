@@ -61,7 +61,7 @@ public class HelperMapActivity extends UserMapActivity {
 
     @Override
     protected void onStop() {
-        if (!inChat)
+        if (!inSubScreen)
             mapAgent.disconnectHelper();
         super.onStop();
     }
@@ -69,9 +69,9 @@ public class HelperMapActivity extends UserMapActivity {
 
     @Override
     protected void loadSetting() {
+        inSubScreen = true;
         Intent intent = new Intent(this, HelperSettingsActivity.class);
         startActivity(intent);
-        finish();
     }
 
     public void ShowDialer(View view) {
@@ -106,6 +106,7 @@ public class HelperMapActivity extends UserMapActivity {
     }
 
     public void openLeaderBoard(){
+        inSubScreen = true;
         Intent intent = new Intent(this, LeaderBoardActivity.class);
         startActivity(intent);
     }
@@ -121,7 +122,7 @@ public class HelperMapActivity extends UserMapActivity {
             mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latlng));
             //*Basically it goes in between 1 to 21 to i've chosen somewhere in the middle.
         }
-        mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(18));
+        //mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(zoom));
         mapAgent.changeHelperAvailable(userLocation.lastLocation);
 
     }
@@ -145,7 +146,7 @@ public class HelperMapActivity extends UserMapActivity {
 
     @Override
     public void loadChat(String userId, String otherId) {
-        inChat = true;
+        inSubScreen = true;
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("UserType", "Requester");
         intent.putExtra("UserId", otherId);

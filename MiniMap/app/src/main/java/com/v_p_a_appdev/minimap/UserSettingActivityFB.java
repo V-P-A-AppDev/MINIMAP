@@ -1,7 +1,6 @@
 package com.v_p_a_appdev.minimap;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.provider.MediaStore;
 import android.widget.EditText;
 

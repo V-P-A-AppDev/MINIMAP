@@ -53,7 +53,7 @@ public class UserLoginActivityFB {
         DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userLoginActivity.userType).child(userId).child("name");
         String name = email.split("@")[0];
         currentUserDB.setValue(name);
-        if (userLoginActivity.userType == "Helpers") {
+        if (userLoginActivity.userType.equals("Helpers")) {
             currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers").child(userId).child("rating");
             currentUserDB.setValue(0);
         }

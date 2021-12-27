@@ -1,16 +1,13 @@
 package com.v_p_a_appdev.minimap;
 
 
-import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
-import com.firebase.geofire.GeoFire;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;

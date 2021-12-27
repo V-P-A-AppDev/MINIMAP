@@ -17,7 +17,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 public class LeaderBoardActivity extends AppCompatActivity {
     private Button  returnButton;

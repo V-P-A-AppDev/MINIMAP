@@ -19,7 +19,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class RequesterMapActivity extends UserMapActivity {
     private Marker helperMarker;
-    private Marker requesterMarker;
     private ConstraintLayout helperInfo ;
     private ImageView helperIcon;
     private TextView helperName, helperPhone;
@@ -55,6 +54,7 @@ public class RequesterMapActivity extends UserMapActivity {
     }
     @Override
     protected void loadSetting() {
+        inSubScreen = true;
         Intent intent = new Intent(this, RequesterSettingsActivity.class);
         startActivity(intent);
     }
@@ -68,24 +68,6 @@ public class RequesterMapActivity extends UserMapActivity {
     public Marker getHelperMarker() {
         return helperMarker;
     }
-
-    public Marker getRequesterMarker() {
-        return requesterMarker;
-    }
-
-    public ConstraintLayout getHelperInfo() {
-        return helperInfo;
-    }
-
-    public TextView getHelperName() {
-        return helperName;
-    }
-
-    public TextView getHelperPhone() {
-        return helperPhone;
-    }
-
-
 
     public void setHelperMarker(LatLng helperLatLng) {
         this.helperMarker = mapUtils.getmMap().addMarker(new MarkerOptions().position(helperLatLng).title("Your helper").icon(BitmapDescriptorFactory.fromResource(R.mipmap.helpermarker)));
@@ -107,9 +89,6 @@ public class RequesterMapActivity extends UserMapActivity {
     }
 
     public void RemoveHelper() {
-        if (requesterMarker != null) {
-            requesterMarker.remove();
-        }
         if (helperMarker != null) {
             helperMarker.remove();
         }
@@ -122,6 +101,7 @@ public class RequesterMapActivity extends UserMapActivity {
 
 
     public void ShowDialer(View view) {
+        inSubScreen = true;
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + helperPhone.getText().toString()));
         startActivity(intent);
@@ -130,14 +110,14 @@ public class RequesterMapActivity extends UserMapActivity {
 
     @Override
     protected void onStop() {
-        if(!inChat)
+        if(!inSubScreen)
             mapAgent.disconnectRequester();
         super.onStop();
     }
 
     @Override
     public void loadChat(String userId, String otherId) {
-        inChat = true;
+        inSubScreen = true;
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("UserType", "helper");
         intent.putExtra("UserId", otherId);

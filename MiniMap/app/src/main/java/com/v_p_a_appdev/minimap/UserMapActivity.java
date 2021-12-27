@@ -33,17 +33,18 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
     protected ImageView userImage;
     protected TextView userName, userPhone;
     UserLocation userLocation;
-    protected boolean inChat;
+    protected boolean inSubScreen;
+    protected int zoom;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userLocation = new UserLocation();
-
+        zoom = 15;
         loadActivity();
         initialize();
-        inChat = false;
+        inSubScreen = false;
 
         //*Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapUtils.setMapFragment((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
@@ -92,7 +93,7 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
         mapUtils.getmMap().moveCamera(CameraUpdateFactory.newLatLng(latlng));
         //*Basically it goes in between 1 to 21 to i've chosen somewhere in the middle.
-        mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(18));
+       // mapUtils.getmMap().animateCamera(CameraUpdateFactory.zoomTo(zoom));
     }
 
     @Override
@@ -188,6 +189,6 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
     @Override
     protected void onResume() {
         super.onResume();
-        inChat = false;
+        inSubScreen = false;
     }
 }
