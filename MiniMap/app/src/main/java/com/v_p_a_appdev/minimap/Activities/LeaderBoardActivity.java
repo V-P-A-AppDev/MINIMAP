@@ -35,7 +35,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
         });
         ArrayList<String> users = new ArrayList<>();
         ArrayAdapter adapter = new ArrayAdapter(this , R.layout.activity_list_values , users);
-        ListView listView = (ListView) findViewById(R.id.rating_list);
+        ListView listView = findViewById(R.id.rating_list);
         DatabaseReference Helpers = FirebaseDatabase.getInstance().getReference().child("Users").child("Helpers");
         Helpers.addValueEventListener(new ValueEventListener() {
             @Override
