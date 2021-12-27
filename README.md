@@ -42,7 +42,7 @@ A map that shows the user requests around him. connecting a Helper User to The R
 2) Andriod Emulator/Device.
 
  
-# [Presentation](https://msmailarielac-my.sharepoint.com/:p:/g/personal/victor_kushnir_msmail_ariel_ac_il/EdhkGbq8O-5DoIcfoqL36XkBbUXIB7PH6bX5yjof0yC0cA?e=IkeI68)
+# [Presentation](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1.pptx)
 
 ![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide1.jpg)
 ![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide2.jpg)
@@ -53,7 +53,6 @@ A map that shows the user requests around him. connecting a Helper User to The R
 ![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide7.jpg)
 ![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide8.jpg)
 ![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide9.jpg)
-![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide10.jpg)
 ![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide11.jpg)
 ![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide12.jpg)
 ![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide13.jpg)
@@ -63,12 +62,7 @@ A map that shows the user requests around him. connecting a Helper User to The R
 ![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide17.jpg)
 ![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide18.jpg)
 ![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide19.jpg)
-![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide20.jpg)
 ![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide21.jpg)
-![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide22.jpg)
-![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide23.jpg)
-![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide24.jpg)
-![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide25.jpg)
 
 # Download
 
