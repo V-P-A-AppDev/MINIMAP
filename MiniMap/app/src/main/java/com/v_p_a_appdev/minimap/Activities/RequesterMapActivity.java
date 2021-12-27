@@ -1,4 +1,4 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.Activities;
 
 
 import android.content.Intent;
@@ -15,6 +15,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.v_p_a_appdev.minimap.R;
+import com.v_p_a_appdev.minimap.Controls.RequesterMapActivityC;
+import com.v_p_a_appdev.minimap.FireBase.RequesterMapActivityM;
+import com.v_p_a_appdev.minimap.Utils.User;
 
 
 public class RequesterMapActivity extends UserMapActivity {
@@ -53,7 +57,7 @@ public class RequesterMapActivity extends UserMapActivity {
         helperPhone = findViewById(R.id.helperPhone);
     }
     @Override
-    protected void loadSetting() {
+    public void loadSetting() {
         inSubScreen = true;
         Intent intent = new Intent(this, RequesterSettingsActivity.class);
         startActivity(intent);

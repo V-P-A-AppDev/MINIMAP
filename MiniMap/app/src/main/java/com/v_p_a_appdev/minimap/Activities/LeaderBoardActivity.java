@@ -1,4 +1,4 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.v_p_a_appdev.minimap.Activities.HelperMapActivity;
+import com.v_p_a_appdev.minimap.R;
 
 import java.util.ArrayList;
 import java.util.Collections;

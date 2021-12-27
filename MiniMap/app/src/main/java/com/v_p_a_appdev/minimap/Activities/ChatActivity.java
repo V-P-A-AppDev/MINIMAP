@@ -1,4 +1,4 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +19,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.v_p_a_appdev.minimap.Utils.ChatAdapter;
+import com.v_p_a_appdev.minimap.Utils.ChatList;
+import com.v_p_a_appdev.minimap.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

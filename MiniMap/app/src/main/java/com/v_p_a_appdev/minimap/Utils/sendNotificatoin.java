@@ -1,4 +1,4 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.Utils;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -15,6 +15,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.v_p_a_appdev.minimap.R;
 
 import java.util.Map;
 

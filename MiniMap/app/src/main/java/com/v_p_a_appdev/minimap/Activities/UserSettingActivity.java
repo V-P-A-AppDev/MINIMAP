@@ -1,4 +1,4 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,11 +10,15 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.v_p_a_appdev.minimap.R;
+import com.v_p_a_appdev.minimap.Controls.UserSettingActivityC;
+import com.v_p_a_appdev.minimap.FireBase.UserSettingActivityFB;
+
 public abstract class UserSettingActivity extends AppCompatActivity {
-    protected  UserSettingActivityFB FBAgent;
-    protected String userType;
-    Uri resultUri;
-    ImageView profileImage;
+    protected UserSettingActivityFB FBAgent;
+    public String userType;
+    public Uri resultUri;
+    public ImageView profileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,7 @@ public abstract class UserSettingActivity extends AppCompatActivity {
 
     protected abstract void loadActivity();
 
-    protected abstract void loadMap();
+    public abstract void loadMap();
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

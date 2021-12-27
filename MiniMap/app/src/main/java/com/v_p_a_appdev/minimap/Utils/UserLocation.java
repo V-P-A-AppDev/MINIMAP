@@ -1,12 +1,12 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.Utils;
 
 import android.location.Location;
 
 import com.google.android.gms.location.LocationRequest;
 
 public class UserLocation {
-    Location lastLocation;
-    LocationRequest locationRequest;
+    public Location lastLocation;
+    public LocationRequest locationRequest;
 
     public void CreateLocationRequest() {
         locationRequest = new LocationRequest();

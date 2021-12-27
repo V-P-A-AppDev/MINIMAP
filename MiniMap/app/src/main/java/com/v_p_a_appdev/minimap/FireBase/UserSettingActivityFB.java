@@ -1,4 +1,4 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.FireBase;
 
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
@@ -16,6 +16,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.v_p_a_appdev.minimap.Activities.UserSettingActivity;
+import com.v_p_a_appdev.minimap.Utils.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

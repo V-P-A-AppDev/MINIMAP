@@ -1,8 +1,9 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.FireBase;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.v_p_a_appdev.minimap.Activities.UserLoginActivity;
 
 import java.util.Objects;
 

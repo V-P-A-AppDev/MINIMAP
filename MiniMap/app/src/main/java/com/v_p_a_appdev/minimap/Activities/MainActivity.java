@@ -1,4 +1,4 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.Activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.v_p_a_appdev.minimap.Utils.MapUtilities;
+import com.v_p_a_appdev.minimap.R;
 
 
 public class MainActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.Activities;
 
 import android.content.Intent;
 import android.location.Location;
@@ -17,6 +17,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.v_p_a_appdev.minimap.Controls.HelperMapActivityC;
+import com.v_p_a_appdev.minimap.FireBase.HelperMapActivityM;
+import com.v_p_a_appdev.minimap.R;
+import com.v_p_a_appdev.minimap.Utils.User;
 
 public class HelperMapActivity extends UserMapActivity {
     private Marker jobMarker;
@@ -67,7 +71,7 @@ public class HelperMapActivity extends UserMapActivity {
 
 
     @Override
-    protected void loadSetting() {
+    public void loadSetting() {
         inSubScreen = true;
         Intent intent = new Intent(this, HelperSettingsActivity.class);
         startActivity(intent);

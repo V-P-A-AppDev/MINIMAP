@@ -1,219 +1,51 @@
 @startuml
-class com.v_p_a_appdev.minimap.databinding.ActivityRequesterSettingsBinding {
-- ConstraintLayout rootView
-+ EditText name
-+ EditText phone
-+ Button previous
-+ Button submit
-- <<Create>> ActivityRequesterSettingsBinding(ConstraintLayout,EditText,EditText,Button,Button)
-+ ConstraintLayout getRoot()
-+ {static} ActivityRequesterSettingsBinding inflate(LayoutInflater)
-+ {static} ActivityRequesterSettingsBinding inflate(LayoutInflater,ViewGroup,boolean)
-+ {static} ActivityRequesterSettingsBinding bind(View)
+class sendNotificatoin {
++ {static} void showNotification(Context,String,String,int)
++ {static} void listenForMessages(Context,String,String)
 }
-class com.v_p_a_appdev.minimap.databinding.ActivityRequesterMapBinding {
-- FrameLayout rootView
-+ Button closeMenu
-+ ImageView helperIcon
-+ LinearLayout helperInfo
-+ TextView helperName
-+ TextView helperPhone
-+ Button logout
-+ Button openMenu
-+ Button request
-+ LinearLayout requesterMenu
-+ Button settings
-- <<Create>> ActivityRequesterMapBinding(FrameLayout,Button,ImageView,LinearLayout,TextView,TextView,Button,Button,Button,LinearLayout,Button)
-+ FrameLayout getRoot()
-+ {static} ActivityRequesterMapBinding inflate(LayoutInflater)
-+ {static} ActivityRequesterMapBinding inflate(LayoutInflater,ViewGroup,boolean)
-+ {static} ActivityRequesterMapBinding bind(View)
-}
-class com.v_p_a_appdev.minimap.RequesterSettingsActivity {
-# void onCreate(Bundle)
-# void loadActivity()
-}
-class com.v_p_a_appdev.minimap.databinding.ActivityMainBinding {
-- ConstraintLayout rootView
-+ Button customer
-+ ImageView imageView2
-+ Button worker
-- <<Create>> ActivityMainBinding(ConstraintLayout,Button,ImageView,Button)
-+ ConstraintLayout getRoot()
-+ {static} ActivityMainBinding inflate(LayoutInflater)
-+ {static} ActivityMainBinding inflate(LayoutInflater,ViewGroup,boolean)
-+ {static} ActivityMainBinding bind(View)
-}
-class com.v_p_a_appdev.minimap.ExampleInstrumentedTest {
-+ void useAppContext()
-}
-class com.v_p_a_appdev.minimap.HelperLoginActivity {
-# void onCreate(Bundle)
-~ void loadActivity()
-~ void changeScreen()
-}
-class com.v_p_a_appdev.minimap.databinding.ActivityHelperMapBinding {
-- FrameLayout rootView
-+ Button closeMenu
-+ LinearLayout helperMenu
-+ Button logout
-+ FragmentContainerView map
-+ Button openMenu
-+ ImageView requesterIcon
-+ LinearLayout requesterInfo
-+ TextView requesterName
-+ TextView requesterPhone
-+ Button settings
-- <<Create>> ActivityHelperMapBinding(FrameLayout,Button,LinearLayout,Button,FragmentContainerView,Button,ImageView,LinearLayout,TextView,TextView,Button)
-+ FrameLayout getRoot()
-+ {static} ActivityHelperMapBinding inflate(LayoutInflater)
-+ {static} ActivityHelperMapBinding inflate(LayoutInflater,ViewGroup,boolean)
-+ {static} ActivityHelperMapBinding bind(View)
-}
-class com.v_p_a_appdev.minimap.UserLocation {
-~ Location lastLocation
-~ LocationRequest locationRequest
-+ void CreateLocationRequest()
-}
-class com.v_p_a_appdev.minimap.databinding.ActivityHelperLoginBinding {
-- ConstraintLayout rootView
-+ EditText email
-+ ImageView imageView2
-+ Button login
-+ EditText password
-+ Button registration
-- <<Create>> ActivityHelperLoginBinding(ConstraintLayout,EditText,ImageView,Button,EditText,Button)
-+ ConstraintLayout getRoot()
-+ {static} ActivityHelperLoginBinding inflate(LayoutInflater)
-+ {static} ActivityHelperLoginBinding inflate(LayoutInflater,ViewGroup,boolean)
-+ {static} ActivityHelperLoginBinding bind(View)
-}
-abstract class com.v_p_a_appdev.minimap.UserLoginActivity {
-- EditText emailInput
-- FirebaseAuth entranceAuth
-- FirebaseAuth.AuthStateListener fireBaseAuthListener
-# String userType
-# void onCreate(Bundle)
-# void onStart()
-# void onStop()
+abstract class UserLoginActivity {
 ~ {abstract}void loadActivity()
 ~ {abstract}void changeScreen()
++ void registrationError()
++ void passwordInputError()
++ void authenticationError()
++ void onBackPressed()
 }
-class com.v_p_a_appdev.minimap.ExampleUnitTest {
+class ExampleUnitTest {
 + void addition_isCorrect()
 }
-class com.v_p_a_appdev.minimap.databinding.ActivityHelperSettingsBinding {
-- ConstraintLayout rootView
-+ EditText name
-+ EditText phone
-+ Button previous
-+ Button submit
-- <<Create>> ActivityHelperSettingsBinding(ConstraintLayout,EditText,EditText,Button,Button)
-+ ConstraintLayout getRoot()
-+ {static} ActivityHelperSettingsBinding inflate(LayoutInflater)
-+ {static} ActivityHelperSettingsBinding inflate(LayoutInflater,ViewGroup,boolean)
-+ {static} ActivityHelperSettingsBinding bind(View)
+class UserLoginActivityFB {
++ void createUserWithEmailAndPassword(String,String)
++ void signInWithEmailAndPassword(String,String)
++ void addAuthStateListener()
++ void removeAuthStateListener()
 }
-class com.v_p_a_appdev.minimap.databinding.ActivityRequesterLoginBinding {
-- ConstraintLayout rootView
-+ EditText email
-+ ImageView imageView2
-+ Button login
-+ EditText password
-+ Button registration
-- <<Create>> ActivityRequesterLoginBinding(ConstraintLayout,EditText,ImageView,Button,EditText,Button)
-+ ConstraintLayout getRoot()
-+ {static} ActivityRequesterLoginBinding inflate(LayoutInflater)
-+ {static} ActivityRequesterLoginBinding inflate(LayoutInflater,ViewGroup,boolean)
-+ {static} ActivityRequesterLoginBinding bind(View)
+class ChatActivity {
+~ DatabaseReference chatDatabaseReference
 }
-class com.v_p_a_appdev.minimap.BuildConfig {
-+ {static} boolean DEBUG
-+ {static} String APPLICATION_ID
-+ {static} String BUILD_TYPE
-+ {static} int VERSION_CODE
-+ {static} String VERSION_NAME
+abstract class UserMapActivityC {
 }
-class com.v_p_a_appdev.minimap.HelperMapActivity {
-- Button logoutButton
-- boolean isLoggingOut
-- Marker jobMarker
-- String requesterId
-- LinearLayout requesterInfo
-- ImageView requesterIcon
-- TextView requesterName
-- DatabaseReference assignedReqLocationRef
-- ValueEventListener assignedReqLocationRefListener
-# void onCreate(Bundle)
-- void initialize()
-- void getAssignedRequester()
-- void getAssignedRequesterLocation()
-- void getAssignedRequesterInfo()
-+ void onLocationChanged(Location)
-+ void onConnectionSuspended(int)
-- void disconnectwHelper()
-# void onStop()
-# void loadSetting()
-+ void ShowDialer(View)
-# void loadActivity()
-}
-class com.v_p_a_appdev.minimap.User {
-- String userName
-- String phoneNumber
-+ <<Create>> User()
-+ <<Create>> User(String,String)
+class User {
 + String getUserName()
 + void setUserName(String)
 + String getPhoneNumber()
 + void setPhoneNumber(String)
++ String getUserImageUrl()
++ void setUserImageUrl(String)
++ String getRating()
++ void setRating(String)
 }
-class com.v_p_a_appdev.minimap.MainActivity {
-# void onCreate(Bundle)
+class RequesterLoginActivity {
+~ void loadActivity()
+~ void changeScreen()
 }
-class com.v_p_a_appdev.minimap.HelperSettingsActivity {
-# void onCreate(Bundle)
-# void loadActivity()
+class RequesterMapActivityC {
++ void changeRequestButtonText(String)
 }
-class com.v_p_a_appdev.minimap.RequesterMapActivity {
-- Button logoutButton
-- LatLng requestLocation
-- boolean isRequesting
-- Marker helperMarker
-- Marker requesterMarker
-- LinearLayout helperInfo
-- ImageView helperIcon
-- TextView helperName
-- int radius
-- boolean helperFound
-- String helperFoundId
-~ GeoQuery geoQuery
-- DatabaseReference helperLocRef
-- ValueEventListener helperLocationRefListener
-# void onCreate(Bundle)
-- void initialize()
-- void getClosestHelper()
-- void getHelperInfo()
-- void getHelperLocation()
-# void onStop()
-# void loadSetting()
-# void loadActivity()
-}
-abstract class com.v_p_a_appdev.minimap.UserSettingActivity {
-- EditText nameField
-- DatabaseReference UserDatabase
-# String userType
-~ User currentUser
-# void onCreate(Bundle)
-- void saveUserInformation()
-- void getUserInfo()
-# {abstract}void loadActivity()
-}
-class com.v_p_a_appdev.minimap.MapUtilities {
+class MapUtilities {
 + {static} int LOCATION_REQUEST_CODE
-- GoogleMap mMap
 ~ GoogleApiClient currentGoogleApiClient
 ~ SupportMapFragment mapFragment
-+ <<Create>> MapUtilities()
 + GoogleApiClient getCurrentGoogleApiClient()
 + GoogleMap getmMap()
 + SupportMapFragment getMapFragment()
@@ -221,51 +53,152 @@ class com.v_p_a_appdev.minimap.MapUtilities {
 + void setMapFragment(SupportMapFragment)
 + void setmMap(GoogleMap)
 }
-class com.v_p_a_appdev.minimap.RequesterLoginActivity {
-# void onCreate(Bundle)
+class ExampleInstrumentedTest {
++ void useAppContext()
+}
+class UserSettingActivityC {
+}
+class LeaderBoardActivity {
+}
+class LeaderBoardActivity.HelperData {
+~ String name
+~ int rating
++ String toString()
++ int compareTo(HelperData)
+}
+class ChatAdapter {
++ ViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(ViewHolder,int)
++ int getItemCount()
+}
+class ChatAdapter.ViewHolder {
++ TextView getTextView()
+}
+class HelperMapActivityM {
++ void cancelJob()
++ void getAssignedRequester()
++ void LogOut()
++ void openLeaderBoard()
++ void disconnectHelper()
++ void changeHelperAvailable(Location)
++ void loadChat()
+}
+class UserLocation {
+~ Location lastLocation
+~ LocationRequest locationRequest
++ void CreateLocationRequest()
+}
+class RequesterMapActivityM {
+~ GeoQuery geoQuery
++ void Request()
++ void LogOut()
++ void loadChat()
++ void disconnectRequester()
+}
+class UserLoginActivityC {
+}
+class HelperLoginActivity {
 ~ void loadActivity()
 ~ void changeScreen()
 }
-abstract class com.v_p_a_appdev.minimap.UserMapActivity {
-# MapUtilities mapUtils
-~ String userId
+class HelperSettingsActivity {
+}
+class UserSettingActivityFB {
++ void saveUserInformation(String,String)
++ void getUserInfo(EditText,EditText)
++ void finishActivity()
+}
+class RequesterSettingsActivity {
+}
+class HelperMapActivityC {
+}
+class HelperMapActivity {
++ void ShowDialer(View)
++ Marker getJobMarker()
++ ConstraintLayout getRequesterInfo()
++ TextView getRequesterName()
++ TextView getRequesterPhone()
++ void setJobMarker(LatLng)
++ void openLeaderBoard()
++ void onLocationChanged(Location)
++ void onConnectionSuspended(int)
++ void ShowAssignedRequesterInfo(User)
++ void loadChat(String,String)
++ void ChangeUserInfo(User)
+}
+class MainActivity {
+}
+abstract class UserMapActivity {
 ~ UserLocation userLocation
-- Button settingButton
-# void onCreate(Bundle)
 + void onMapReady(GoogleMap)
-# void buildGoogleApiClient()
 + void onLocationChanged(Location)
 + void onConnected(Bundle)
-- boolean CheckConnected()
 + void onRequestPermissionsResult(int,String[],int[])
 + void onConnectionSuspended(int)
 + void onConnectionFailed(ConnectionResult)
-# void onStop()
-# {abstract}void loadSetting()
-# {abstract}void loadActivity()
++ void ChangeScreenToMain()
++ void ChangeUserInfo(User)
++ void removeLocationUpdates()
++ Location getLastLocation()
++ {abstract}void loadChat(String,String)
++ void onBackPressed()
+}
+class ChatList {
++ boolean isCurrUser()
++ void setCurrUser(boolean)
++ String getMessage()
++ void setMessage(String)
+}
+abstract class UserMapActivityM {
+~ FirebaseAuth auth
+~ String userId
+~ User currentUser
++ void getUserInfo()
++ void loadSetting()
++ void LogOut()
++ boolean isLoggingOut()
++ {abstract}void loadChat()
+}
+abstract class UserSettingActivity {
+~ Uri resultUri
+~ ImageView profileImage
++ void onBackPressed()
+}
+class RequesterMapActivity {
++ Marker getHelperMarker()
++ void setHelperMarker(LatLng)
++ void changeRequestButtonText(String)
++ void ShowAssignedHelperInfo(User)
++ void RemoveHelper()
++ void ShowDialer(View)
++ void loadChat(String,String)
 }
 
 
-androidx.viewbinding.ViewBinding <|.. com.v_p_a_appdev.minimap.databinding.ActivityRequesterSettingsBinding
-androidx.viewbinding.ViewBinding <|.. com.v_p_a_appdev.minimap.databinding.ActivityRequesterMapBinding
-com.v_p_a_appdev.minimap.UserSettingActivity <|-- com.v_p_a_appdev.minimap.RequesterSettingsActivity
-androidx.viewbinding.ViewBinding <|.. com.v_p_a_appdev.minimap.databinding.ActivityMainBinding
-com.v_p_a_appdev.minimap.UserLoginActivity <|-- com.v_p_a_appdev.minimap.HelperLoginActivity
-androidx.viewbinding.ViewBinding <|.. com.v_p_a_appdev.minimap.databinding.ActivityHelperMapBinding
-androidx.viewbinding.ViewBinding <|.. com.v_p_a_appdev.minimap.databinding.ActivityHelperLoginBinding
-androidx.appcompat.app.AppCompatActivity <|-- com.v_p_a_appdev.minimap.UserLoginActivity
-androidx.viewbinding.ViewBinding <|.. com.v_p_a_appdev.minimap.databinding.ActivityHelperSettingsBinding
-androidx.viewbinding.ViewBinding <|.. com.v_p_a_appdev.minimap.databinding.ActivityRequesterLoginBinding
-com.v_p_a_appdev.minimap.UserMapActivity <|-- com.v_p_a_appdev.minimap.HelperMapActivity
-androidx.appcompat.app.AppCompatActivity <|-- com.v_p_a_appdev.minimap.MainActivity
-com.v_p_a_appdev.minimap.UserSettingActivity <|-- com.v_p_a_appdev.minimap.HelperSettingsActivity
-com.v_p_a_appdev.minimap.UserMapActivity <|-- com.v_p_a_appdev.minimap.RequesterMapActivity
-androidx.appcompat.app.AppCompatActivity <|-- com.v_p_a_appdev.minimap.UserSettingActivity
-com.v_p_a_appdev.minimap.UserLoginActivity <|-- com.v_p_a_appdev.minimap.RequesterLoginActivity
-android.location.LocationListener <|.. com.v_p_a_appdev.minimap.UserMapActivity
-com.google.android.gms.maps.OnMapReadyCallback <|.. com.v_p_a_appdev.minimap.UserMapActivity
-com.v_p_a_appdev.minimap.ConnectionCallbacks <|.. com.v_p_a_appdev.minimap.UserMapActivity
-com.v_p_a_appdev.minimap.OnConnectionFailedListener <|.. com.v_p_a_appdev.minimap.UserMapActivity
-android.location.LocationListener <|.. com.v_p_a_appdev.minimap.UserMapActivity
-androidx.fragment.app.FragmentActivity <|-- com.v_p_a_appdev.minimap.UserMapActivity
+AppCompatActivity <|-- UserLoginActivity
+AppCompatActivity <|-- ChatActivity
+UserLoginActivity <|-- RequesterLoginActivity
+UserMapActivityC <|-- RequesterMapActivityC
+AppCompatActivity <|-- LeaderBoardActivity
+LeaderBoardActivity +.. LeaderBoardActivity.HelperData
+Comparable <|.. LeaderBoardActivity.HelperData
+Adapter <|-- ChatAdapter
+ChatAdapter +.. ChatAdapter.ViewHolder
+ViewHolder <|-- ChatAdapter.ViewHolder
+UserMapActivityM <|-- HelperMapActivityM
+UserMapActivityM <|-- RequesterMapActivityM
+UserLoginActivity <|-- HelperLoginActivity
+UserSettingActivity <|-- HelperSettingsActivity
+UserSettingActivity <|-- RequesterSettingsActivity
+UserMapActivityC <|-- HelperMapActivityC
+UserMapActivity <|-- HelperMapActivity
+AppCompatActivity <|-- MainActivity
+LocationListener <|.. UserMapActivity
+OnMapReadyCallback <|.. UserMapActivity
+ConnectionCallbacks <|.. UserMapActivity
+OnConnectionFailedListener <|.. UserMapActivity
+LocationListener <|.. UserMapActivity
+FragmentActivity <|-- UserMapActivity
+AppCompatActivity <|-- UserSettingActivity
+UserMapActivity <|-- RequesterMapActivity
 @enduml

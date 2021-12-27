@@ -1,4 +1,4 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.Utils;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.v_p_a_appdev.minimap.R;
 
 import java.util.ArrayList;
 

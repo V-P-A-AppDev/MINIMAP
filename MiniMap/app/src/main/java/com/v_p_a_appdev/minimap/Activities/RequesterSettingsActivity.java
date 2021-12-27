@@ -1,8 +1,10 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.Activities;
 
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.v_p_a_appdev.minimap.R;
 
 public class RequesterSettingsActivity extends UserSettingActivity {
     @Override
@@ -17,7 +19,7 @@ public class RequesterSettingsActivity extends UserSettingActivity {
     }
 
     @Override
-    protected void loadMap() {
+    public void loadMap() {
         Intent intent = new Intent(this , RequesterMapActivity.class);
         startActivity(intent);
         finish();

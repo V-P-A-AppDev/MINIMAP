@@ -1,4 +1,4 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.Activities;
 
 import android.Manifest;
 import android.content.Context;
@@ -26,13 +26,18 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.v_p_a_appdev.minimap.Activities.MainActivity;
+import com.v_p_a_appdev.minimap.R;
+import com.v_p_a_appdev.minimap.Utils.MapUtilities;
+import com.v_p_a_appdev.minimap.Utils.User;
+import com.v_p_a_appdev.minimap.Utils.UserLocation;
 
 
 public abstract class UserMapActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
     protected MapUtilities mapUtils = new MapUtilities();
     protected ImageView userImage;
     protected TextView userName, userPhone;
-    UserLocation userLocation;
+    public UserLocation userLocation;
     protected boolean inSubScreen;
     protected int zoom;
 
@@ -150,7 +155,7 @@ public abstract class UserMapActivity extends FragmentActivity implements Locati
         super.onStop();
     }
 
-    protected abstract void loadSetting();
+    public abstract void loadSetting();
 
     protected abstract void loadActivity();
 

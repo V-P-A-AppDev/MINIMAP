@@ -1,4 +1,4 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.FireBase;
 
 import android.location.Location;
 
@@ -15,6 +15,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.v_p_a_appdev.minimap.Activities.RequesterMapActivity;
+import com.v_p_a_appdev.minimap.Utils.User;
+import com.v_p_a_appdev.minimap.Utils.sendNotificatoin;
 
 import java.util.ArrayList;
 import java.util.HashMap;

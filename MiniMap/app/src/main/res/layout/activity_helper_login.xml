@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.v_p_a_appdev.minimap.HelperLoginActivity">
+    tools:context="com.v_p_a_appdev.minimap.Activities.HelperLoginActivity">
 
     <ImageView
         android:layout_width="match_parent"

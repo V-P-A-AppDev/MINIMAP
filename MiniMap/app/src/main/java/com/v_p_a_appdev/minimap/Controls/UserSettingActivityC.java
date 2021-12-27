@@ -1,7 +1,9 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.Controls;
 
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.v_p_a_appdev.minimap.FireBase.UserSettingActivityFB;
 
 public class UserSettingActivityC {
     private Button submitButton , previousButton;

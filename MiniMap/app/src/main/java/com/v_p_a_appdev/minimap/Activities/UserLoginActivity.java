@@ -1,4 +1,4 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.Activities;
 
 
 import android.content.Intent;
@@ -9,11 +9,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.v_p_a_appdev.minimap.R;
+import com.v_p_a_appdev.minimap.Controls.UserLoginActivityC;
+import com.v_p_a_appdev.minimap.FireBase.UserLoginActivityFB;
 
 public abstract class UserLoginActivity extends AppCompatActivity {
     protected UserLoginActivityC userLoginActivityC;
     protected UserLoginActivityFB FBAgent;
-    protected String userType;
+    public String userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

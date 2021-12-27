@@ -23,19 +23,19 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".LeaderBoardActivity"
+            android:name=".Activities.LeaderBoardActivity"
             android:exported="false" />
         <activity
-            android:name=".HelperSettingsActivity"
+            android:name=".Activities.HelperSettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".RequesterSettingsActivity"
+            android:name=".Activities.RequesterSettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".RequesterMapActivity"
+            android:name=".Activities.RequesterMapActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatActivity"
+            android:name=".Activities.ChatActivity"
             android:exported="false" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -53,17 +53,17 @@
             android:value="true" />
 
         <activity
-            android:name=".HelperMapActivity"
+            android:name=".Activities.HelperMapActivity"
             android:exported="false"
             android:label="@string/title_activity_worker_map" />
         <activity
-            android:name=".RequesterLoginActivity"
+            android:name=".Activities.RequesterLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".HelperLoginActivity"
+            android:name=".Activities.HelperLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

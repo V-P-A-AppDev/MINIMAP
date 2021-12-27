@@ -1,4 +1,4 @@
-package com.v_p_a_appdev.minimap;
+package com.v_p_a_appdev.minimap.FireBase;
 
 
 
@@ -9,6 +9,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.v_p_a_appdev.minimap.Activities.UserMapActivity;
+import com.v_p_a_appdev.minimap.Utils.User;
 
 import java.util.Map;
 import java.util.Objects;
