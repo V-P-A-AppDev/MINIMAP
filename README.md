@@ -44,6 +44,32 @@ A map that shows the user requests around him. connecting a Helper User to The R
  
 # [Presentation](https://msmailarielac-my.sharepoint.com/:p:/g/personal/victor_kushnir_msmail_ariel_ac_il/EdhkGbq8O-5DoIcfoqL36XkBbUXIB7PH6bX5yjof0yC0cA?e=IkeI68)
 
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide1.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide2.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide3.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide4.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide5.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide6.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide7.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide8.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide9.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide10.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide11.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide12.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide13.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide14.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide15.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide16.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide17.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide18.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide19.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide20.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide21.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide22.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide23.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide24.jpg)
+![](https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/PRES1/Slide25.jpg)
+
 # Download
 
 <p align="center">
