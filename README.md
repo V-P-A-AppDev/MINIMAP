@@ -4,6 +4,8 @@
      <img src = https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/minimaplogo.png?raw=true>
 </p>
 
+# [Presentation](https://msmailarielac-my.sharepoint.com/:p:/g/personal/victor_kushnir_msmail_ariel_ac_il/EdhkGbq8O-5DoIcfoqL36XkBbUXIB7PH6bX5yjof0yC0cA?e=IkeI68)
+
 This reposetory contains Android application code.
 ___
 ## Introduction
@@ -31,9 +33,8 @@ A map that shows the user requests around him. connecting a Helper User to The R
 
 
 
-
 <p align="center">
-     <img src="https://github.com/V-P-A-AppDev/MINIMAP/blob/main/MiniMap/gradle/uml.png"/>
+     <img src="https://github.com/V-P-A-AppDev/MINIMAP/blob/main/images/uml_new.png"/>
 </p>
 
 # Requirements
@@ -43,4 +44,5 @@ A map that shows the user requests around him. connecting a Helper User to The R
      
 
 
+ 
 
