@@ -74,11 +74,7 @@ A map that shows the user requests around him. connecting a Helper User to The R
 
 ###### Scan the following QR code with your android device:
 
-<p align="center">
-     <img src=https://github.com/V-P-A-AppDev/MINIMAP/blob/main/Release/27.12.2021/qr-code.png width="250" height="250"> 
-</p>
+<img src=https://github.com/V-P-A-AppDev/MINIMAP/blob/main/Release/27.12.2021/qr-code.png width="250" height="250"> 
 
 [Or Click Here To Download](https://github.com/V-P-A-AppDev/MINIMAP/raw/main/Release/27.12.2021/MiniMap_27_12_2021_14_59.apk) 
-
-
 
