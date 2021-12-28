@@ -73,5 +73,5 @@ A map that shows the user requests around him. connecting a Helper User to The R
 *  **Use it on your own risk.**
 
 
-[<img src="https://github.com/V-P-A-AppDev/MINIMAP/blob/main/Release/27.12.2021/qr-code.png" width="250" height="250" align="center">](https://github.com/V-P-A-AppDev/MINIMAP/raw/main/Release/27.12.2021/MiniMap_27_12_2021_14_59.apk)
+[<img align="center" width="250" height="250" src="https://github.com/V-P-A-AppDev/MINIMAP/blob/main/Release/27.12.2021/qr-code.png">](https://github.com/V-P-A-AppDev/MINIMAP/raw/main/Release/27.12.2021/MiniMap_27_12_2021_14_59.apk)
 
