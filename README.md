@@ -10,7 +10,7 @@ This repository contains Android application code for MiniMap, a location-based 
 
 MiniMap is an Android application that facilitates community assistance by connecting people who need help with those willing to provide it. The app uses real-time location services and Firebase to create a seamless helping experience.
 
-### 👥 User Types
+### 👥 User Types And Their Roles
 
 #### Helper
 - Users who agree to help others
