@@ -53,14 +53,28 @@ public abstract class UserLoginActivity extends AppCompatActivity {
 
     abstract void changeScreen();
 
-    public void registrationError(){
-        Toast.makeText(this, "Something went wrong with the registration process.", Toast.LENGTH_SHORT).show();
+    public void registrationError(String errorMessage){
+        Toast.makeText(this, "Registration failed: " + errorMessage, Toast.LENGTH_LONG).show();
     }
+    
+    public void registrationError(){
+        Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show();
+    }
+    
+    public void passwordInputError(String errorMessage){
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+    }
+    
     public void passwordInputError(){
         Toast.makeText(this, "The password should be 6 characters at least .", Toast.LENGTH_SHORT).show();
     }
+    
+    public void authenticationError(String errorMessage){
+        Toast.makeText(this, "Authentication failed: " + errorMessage, Toast.LENGTH_LONG).show();
+    }
+    
     public void authenticationError(){
-        Toast.makeText(this, "Something went wrong with the authentication process.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show();
     }
 
     @Override

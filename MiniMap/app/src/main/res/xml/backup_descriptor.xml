@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <full-backup-content>
-    <!-- Exclude specific shared preferences that contain GCM registration Id -->
+    <!-- Exclude sensitive user data from backups -->
+    <exclude domain="sharedpref" path="user_credentials.xml" />
+    <exclude domain="sharedpref" path="firebase_auth.xml" />
+    <exclude domain="sharedpref" path="user_session.xml" />
+    <exclude domain="database" path="user_data.db" />
+    <exclude domain="file" path="user_images/" />
+    <exclude domain="file" path="chat_data/" />
+
+    <!-- Include only necessary app data -->
+    <include domain="sharedpref" path="app_settings.xml" />
+    <include domain="sharedpref" path="ui_preferences.xml" />
 </full-backup-content>
